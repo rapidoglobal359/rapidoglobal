@@ -131,12 +131,24 @@
     storageBucket: "rapido-global.firebasestorage.app",
     messagingSenderId: "205317876725",
     appId: "1:205317876725:web:8da4ca7164e2bc0022cebc"
+  };<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD98AmOX8eHYn2QSxU8ImcRGzyDqQ9QXQs",
+    authDomain: "rapido-global.firebaseapp.com",
+    projectId: "rapido-global",
+    storageBucket: "rapido-global.firebasestorage.app",
+    messagingSenderId: "205317876725",
+    appId: "1:205317876725:web:8da4ca7164e2bc0022cebc"
   };
 
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+</script>
+
 <script>
-// --- FUNCIÓN PARA REGISTRAR CLIENTES ---
 document.getElementById('formRegistro').addEventListener('submit', async (e) => {
   e.preventDefault();
   const mensaje = document.getElementById('mensajeRegistro');
@@ -158,7 +170,6 @@ document.getElementById('formRegistro').addEventListener('submit', async (e) => 
   }
 });
 
-// --- FUNCIÓN PARA BUSCAR PAQUETES ---
 async function buscarPaquete() {
   const guia = document.getElementById('guiaBuscar').value.trim();
   const resultado = document.getElementById('resultadoSeguimiento');
@@ -192,4 +203,5 @@ async function buscarPaquete() {
     resultado.innerHTML = `<p style="color: red;">❌ Error al buscar: ${error.message}</p>`;
   }
 }
-</script></script>/html>
+</script>
+  
