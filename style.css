@@ -1,0 +1,135 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f5f7fa;
+    color:#333;
+}
+
+header{
+    background:#003366;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 10%;
+    flex-wrap:wrap;
+}
+
+.logo h2{
+    font-size:28px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    font-weight:bold;
+}
+
+nav a:hover{
+    color:#FFD700;
+}
+
+.hero{
+    background:#0055A5;
+    color:white;
+    text-align:center;
+    padding:80px 20px;
+}
+
+.hero h1{
+    font-size:42px;
+    margin-bottom:20px;
+}
+
+.hero p{
+    font-size:20px;
+    margin-bottom:30px;
+}
+
+.boton{
+    background:#FFD700;
+    color:#003366;
+    padding:15px 30px;
+    text-decoration:none;
+    border-radius:8px;
+    font-weight:bold;
+} .boton:hover{
+    background:#FFC107;
+}
+
+section{
+    padding:60px 10%;
+}
+
+section h2{
+    text-align:center;
+    color:#003366;
+    margin-bottom:30px;
+    font-size:32px;
+}
+
+ul{
+    list-style:none;
+    text-align:center;
+}
+
+ul li{
+    padding:12px;
+    font-size:20px;
+}
+
+#nosotros p,
+#contacto p{
+    max-width:800px;
+    margin:15px auto;
+    text-align:center;
+    line-height:1.7;
+    font-size:18px;
+}
+
+#contacto{
+    text-align:center;
+}
+
+footer{
+    background:#003366;
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin-top:40px;
+}
+
+@media (max-width:768px){
+
+header{
+    flex-direction:column;
+    text-align:center;
+}
+
+nav{
+    margin-top:15px;
+}
+
+nav a{
+    display:block;
+    margin:10px 0;
+}
+
+.hero h1{
+    font-size:30px;
+}
+
+.hero p{
+    font-size:18px;
+}
+
+section{
+    padding:40px 20px;
+}
+}
