@@ -39,15 +39,14 @@ btnRegistrar.addEventListener("click", async () => {
         const cantidad = await getDocs(collection(db, "usuarios"));
 
         const codigo = generarCodigo(cantidad.size + 1);await addDoc(collection(db, "usuarios"), {
-            uid: credencial.user.uid,
-            nombre: nombre,
-            correo: correo,
-            telefono: telefono,
-            codigo: codigo,
-            fechaRegistro: new Date()
-        });
-
-        alert(
+    uid: credencial.user.uid,
+    nombre: nombre,
+    cedula: cedula,
+    correo: correo,
+    telefono: telefono,
+    codigo: codigo,
+    fechaRegistro: new Date()
+});        alert(
             "Registro exitoso.\n\n" +
             "Su código de cliente es: " + codigo
         );
