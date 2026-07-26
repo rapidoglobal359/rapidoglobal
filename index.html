@@ -1,186 +1,41 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rápido Global | Casillero Internacional</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rápido Global</title>
+
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-  <div class="logo">
-    <h2>Rápido Global</h2>
-  </div>
+<h1>RÁPIDO GLOBAL</h1>
 
-  <nav>
-    <a href="#inicio">Inicio</a>
-    <a href="#servicios">Servicios</a>
-    <a href="#nosotros">Nosotros</a>
-    <a href="#contacto">Contacto</a>
-  </nav>
-</header>
+<div class="contenedor">
 
-<section id="inicio" class="hero">
-  <h1>Compra en Shein, Temu, Amazon y AliExpress</h1>
+<h2>Registro de Usuario</h2>
 
-  <p>
-    Recibimos tus compras en Colombia y las enviamos de forma rápida y segura a Venezuela.
-  </p>
+<input type="text" id="nombre" placeholder="Nombre completo">
 
-  <a href="https://wa.me/584228440410" class="boton">
-    Escríbenos por WhatsApp
-  </a>
-</section>
+<input type="email" id="correo" placeholder="Correo electrónico">
 
-<section id="servicios">
-  <h2>Nuestros Servicios</h2>
+<input type="password" id="password" placeholder="Contraseña">
 
-  <ul>
-    <li>📦 Casillero para Shein</li>
-    <li>📦 Casillero para Temu</li>
-    <li>📦 Casillero para Amazon</li>
-    <li>📦 Casillero para AliExpress</li>
-    <li>🚚 Envíos de Colombia a Venezuela</li>
-  </ul>
-</section> <section id="nosotros">
-  <h2>¿Quiénes Somos?</h2>
+<button id="registrar">Registrarme</button>
 
-  <p>
-    En <strong>Rápido Global</strong> ofrecemos un servicio de casillero internacional para que puedas comprar en tus tiendas favoritas como Shein, Temu, Amazon y AliExpress, recibiendo tus paquetes en Colombia y enviándolos de forma segura hasta Venezuela.
-  </p>
+<hr>
 
-  <p>
-    Nuestro compromiso es brindar un servicio rápido, confiable y con atención personalizada para que tus compras lleguen sin preocupaciones.
-  </p>
-</section>
+<h2>Prealerta</h2>
 
-<section id="contacto">
-  <h2>Contáctanos</h2>
+<input type="text" id="tracking" placeholder="Número de Tracking">
 
-  <p>📱 WhatsApp: +58 422 844 0410</p>
+<button id="prealerta">Registrar Prealerta</button>
 
-  <p>📍 Casillero en Colombia</p>
+</div>
 
-  <a href="https://wa.me/584228440410" class="boton">
-    Hablar por WhatsApp
-  </a>
-</section>
-<!-- SECCIÓN: REGISTRO DE CLIENTES -->
-<section id="registro" style="max-width: 800px; margin: 40px auto; padding: 20px;">
-  <h2 style="text-align: center; color: #004a99;">📝 Regístrate para obtener tu casillero</h2>
-  <p style="text-align: center;">Llena tus datos y te enviaremos tu dirección de casillero a tu correo/WhatsApp</p>
+<script type="module" src="firebase.js"></script>
+<script type="module" src="app.js"></script>
 
-  <form id="formRegistro" style="background: #f8f9fa; padding: 25px; border-radius: 10px; margin-top: 20px;">
-    <div style="margin-bottom: 15px;">
-      <label>Nombre completo:</label>
-      <input type="text" id="nombre" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
-    </div>
-    <div style="margin-bottom: 15px;">
-      <label>Correo electrónico:</label>
-      <input type="email" id="correo" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
-    </div>
-    <div style="margin-bottom: 15px;">
-      <label>Número de WhatsApp:</label>
-      <input type="tel" id="whatsapp" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
-    </div>
-    <div style="margin-bottom: 15px;">
-      <label>Ciudad y país de destino:</label>
-      <input type="text" id="destino" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
-    </div>
-    <button type="submit" style="background: #ffc107; color: #000; padding: 12px 25px; border: none; border-radius: 5px; font-weight: bold; width: 100%; cursor: pointer;">
-      Registrarme y obtener mi casillero
-    </button>
-  </form>
-  <div id="mensajeRegistro" style="margin-top: 15px; text-align: center;"></div>
-</section>
-
-<hr style="max-width: 800px; margin: 40px auto;">
-
-<!-- SECCIÓN: SEGUIMIENTO DE PAQUETES -->
-<section id="seguimiento" style="max-width: 800px; margin: 40px auto; padding: 20px;">
-  <h2 style="text-align: center; color: #004a99;">📦 Rastrea tu paquete</h2>
-  <p style="text-align: center;">Escribe tu número de guía para ver su estado actual</p>
-
-  <div style="background: #f8f9fa; padding: 25px; border-radius: 10px; margin-top: 20px;">
-    <input type="text" id="guiaBuscar" placeholder="Ej: SH123456789" required style="width: 70%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
-    <button onclick="buscarPaquete()" style="background: #004a99; color: white; padding: 10px 20px; border: none; border-radius: 5px; margin-left: 10px; cursor: pointer;">
-      Buscar
-    </button>
-  </div>
-  <div id="resultadoSeguimiento" style="margin-top: 20px; text-align: center;"></div>
-</section> <footer>
-  <p>©️ 2026 Rápido Global. Todos los derechos reservados.</p>
-</footer>
-<script>
-(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="IOoTakuPMYMU003b-JgMK";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
-<script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js"></script>
-
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyD98AmOX8eHYn2QSxU8ImcRGzyDqQ9QXQs",
-    authDomain: "rapido-global.firebaseapp.com",
-    projectId: "rapido-global",
-    storageBucket: "rapido-global.firebasestorage.app",
-    messagingSenderId: "205317876725",
-    appId: "1:205317876725:web:8da4ca7164e2bc0022cebc"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  window.db = firebase.firestore();
-  document.getElementById('formRegistro').addEventListener('submit', async (e) => {    e.preventDefault();
-    const mensaje = document.getElementById('mensajeRegistro');
-    
-    try {
-      await window.db.collection('clientes').add({        nombre: document.getElementById('nombre').value,
-        correo: document.getElementById('correo').value,
-        whatsapp: document.getElementById('whatsapp').value,
-        destino: document.getElementById('destino').value,
-        fechaRegistro: new Date(),
-        casilleroAsignado: `RAPIDO-${Math.floor(Math.random() * 90000) + 10000}`
-      });
-
-      mensaje.innerHTML = `<p style="color: green; font-weight: bold;">✅ ¡Registro exitoso! Te llegará tu casillero al WhatsApp/correo en breve.</p>`;
-      e.target.reset();
-    } catch (error) {
-      mensaje.innerHTML = `<p style="color: red;">❌ Error: ${error.message}</p>`;
-    }
-  });
-
-  async function buscarPaquete() {
-    const guia = document.getElementById('guiaBuscar').value.trim();
-    const resultado = document.getElementById('resultadoSeguimiento');
-
-    if (!guia) {
-      resultado.innerHTML = `<p style="color: red;">Escribe un número de guía válido</p>`;
-      return;
-    }
-
-    try {
-      const consulta = await window.db.collection('paquetes').where('numeroGuia', '==', guia).get();      if (consulta.empty) {
-        resultado.innerHTML = `<p style="color: orange;">⚠️ No se encontró ningún paquete con esa guía. Verifica el número.</p>`;
-        return;
-      }
-
-      consulta.forEach(doc => {
-        const datos = doc.data();
-        resultado.innerHTML = `
-          <div style="border: 1px solid #004a99; padding: 20px; border-radius: 10px; background: white;">
-            <h3>📦 Paquete encontrado</h3>
-            <p><strong>Número de guía:</strong> ${datos.numeroGuia}</p>
-            <p><strong>Estado:</strong> <span style="color: ${datos.estado === 'Entregado' ? 'green' : '#004a99'};">${datos.estado || 'Pendiente'}</span></p>
-            <p><strong>Tienda:</strong> ${datos.tienda || 'No especificada'}</p>
-            <p><strong>Última actualización:</strong> ${datos.fechaActualizacion ? new Date(datos.fechaActualizacion.seconds * 1000).toLocaleString('es-CO') : 'Pendiente'}</p>
-          </div>
-        `;
-      });
-    } catch (error) {
-      resultado.innerHTML = `<p style="color: red;">❌ Error al buscar: ${error.message}</p>`;
-    }
-  }
-</script>}
-
-  
+</body>
+</html>
