@@ -103,11 +103,12 @@ btnPrealerta.addEventListener("click", async () => {
 });
 
 btnIniciarSesion.addEventListener("click", async () => {
+console.log("Botón iniciar sesión presionado");
+  
+const correo = document.getElementById("loginCorreo").value.trim();
+const password = document.getElementById("loginPassword").value;
 
-    const correo = document.getElementById("loginCorreo").value.trim();
-    const password = document.getElementById("loginPassword").value;
-
-    try {
+try {
 
         await signInWithEmailAndPassword(
             auth,
