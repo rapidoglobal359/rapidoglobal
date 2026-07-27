@@ -18,16 +18,15 @@ function generarCodigo(numero) {
 
 btnRegistrar.addEventListener("click", async () => {
 
-    const nombre = document.getElementById("nombre").value.trim();
-    const correo = document.getElementById("correo").value.trim();
-    const telefono = document.getElementById("telefono").value.trim();
-    const password = document.getElementById("password").value;
-
+const nombre = document.getElementById("nombre").value.trim();
+const cedula = document.getElementById("cedula").value.trim();
+const correo = document.getElementById("correo").value.trim();
+const telefono = document.getElementById("telefono").value.trim();
+const password = document.getElementById("password").value;
+  
     if (!nombre || !correo || !telefono || !password) {
         alert("Complete todos los campos.");
         return;
-    }
-
     try {
 
         const credencial = await createUserWithEmailAndPassword(
