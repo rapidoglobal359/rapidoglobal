@@ -1,7 +1,10 @@
 import { auth, db } from "./firebase.js";
 
 import {
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
 import {
@@ -14,6 +17,9 @@ const btnRegistrar = document.getElementById("registrar");
 console.log("app.js cargado");
 
 const btnPrealerta = document.getElementById("prealerta");
+const btnIniciarSesion = document.getElementById("iniciarSesion");
+const btnCerrarSesion = document.getElementById("cerrarSesion");
+const cuentaUsuario = document.getElementById("cuentaUsuario");
 
 function generarCodigo(numero) {
     return "RG" + const btnRegistrar = document.getElementById("registrar");
@@ -92,6 +98,53 @@ btnPrealerta.addEventListener("click", async () => {
 
     } catch (error) {
         alert("Error al registrar la prealerta: " + error.message);
+    }
+
+});
+
+btnIniciarSesion.addEventListener("click", async () => {
+
+    const correo = document.getElementById("loginCorreo").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    try {
+
+        await signInWithEmailAndPassword(
+            auth,
+            correo,
+            password
+        );
+
+        alert("Inicio de sesión exitoso");
+
+    } catch (error) {
+        alert("Error al iniciar sesión: " + error.message);
+    }
+
+});
+
+
+btnCerrarSesion.addEventListener("click", async () => {
+
+    await signOut(auth);
+
+    alert("Sesión cerrada");
+
+});
+
+
+onAuthStateChanged(auth, (usuario) => {
+
+    if (usuario) {
+
+        cuentaUsuario.innerHTML =
+        "Usuario conectado: " + usuario.email;
+
+    } else {
+
+        cuentaUsuario.innerHTML =
+        "No hay sesión iniciada";
+
     }
 
 });
