@@ -11,10 +11,14 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 const btnRegistrar = document.getElementById("registrar");
+console.log("app.js cargado");
+
 const btnPrealerta = document.getElementById("prealerta");
 
 function generarCodigo(numero) {
-    return "RG" + numero.toString().padStart(5, "0");
+    return "RG" + const btnRegistrar = document.getElementById("registrar");
+console.log("app.js cargado");
+.toString().padStart(5, "0");
 }
 
 btnRegistrar.addEventListener("click", async () => {
