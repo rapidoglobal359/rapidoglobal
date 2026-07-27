@@ -90,6 +90,8 @@ if (!usuario) {
     alert("Debe iniciar sesión para registrar una prealerta.");
     return;
 }
+console.log("Usuario:", usuario);
+console.log("Correo:", usuario.email);
 
 await addDoc(collection(db, "prealertas"), {
     uid: usuario.uid,
