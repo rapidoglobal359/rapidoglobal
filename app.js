@@ -123,8 +123,8 @@ try {
             password
         );
 
-        alert("Inicio de sesión exitoso");
-
+window.location.href = "cliente.html";
+  
     } catch (error) {
         alert("Error al iniciar sesión: " + error.message);
     }
