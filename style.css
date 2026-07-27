@@ -105,3 +105,28 @@ hr{
     }
 
 }
+/* ===== ENCABEZADO RÁPIDO GLOBAL ===== */
+
+.hero{
+    width:100%;
+    background:linear-gradient(135deg,#002b5c,#004c99,#0A84FF);
+    color:white;
+    padding:60px 20px;
+    text-align:center;
+    box-shadow:0 8px 25px rgba(0,0,0,.25);
+}
+
+.hero h1{
+    font-size:48px;
+    color:#FFD700;
+    margin-bottom:15px;
+    text-shadow:2px 2px 8px rgba(0,0,0,.4);
+}
+
+.hero p{
+    max-width:800px;
+    margin:auto;
+    font-size:20px;
+    line-height:1.7;
+    color:white;
+}
