@@ -8,10 +8,7 @@
 body{
     background:linear-gradient(135deg,#003366,#0055A5,#0A84FF);
     min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:40px 20px;
+    margin:0;
 }
 
 .contenedor{
