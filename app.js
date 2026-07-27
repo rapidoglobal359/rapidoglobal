@@ -37,7 +37,11 @@ const password = document.getElementById("password").value;
 
         const cantidad = await getDocs(collection(db, "usuarios"));
 
-        const codigo = generarCodigo(cantidad.size + 1);await addDoc(collection(db, "usuarios"), {
+    const codigo = generarCodigo(cantidad.size + 1);
+
+console.log("Cédula:", cedula);
+
+await addDoc(collection(db, "usuarios"), {
     uid: credencial.user.uid,
     nombre: nombre,
     cedula: cedula,
