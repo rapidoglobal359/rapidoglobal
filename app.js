@@ -22,11 +22,8 @@ const btnCerrarSesion = document.getElementById("cerrarSesion");
 const cuentaUsuario = document.getElementById("cuentaUsuario");
 
 function generarCodigo(numero) {
-    return "RG" + const btnRegistrar = document.getElementById("registrar");
-console.log("app.js cargado");
-.toString().padStart(5, "0");
+    return "RG" + numero.toString().padStart(5, "0");
 }
-
 btnRegistrar.addEventListener("click", async () => {
 
     const nombre = document.getElementById("nombre").value.trim();
