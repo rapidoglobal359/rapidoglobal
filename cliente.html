@@ -76,22 +76,49 @@ Cerrar sesión
 
 <script type="module">
 
-import { getAuth, signOut } from 
-"https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+import { auth, db } from "./firebase.js";
 
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
-const auth = getAuth();
+import {
+  collection,
+  query,
+  where,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
+window.cerrarSesion = async function () {
+  await signOut(auth);
+  window.location.href = "index.html";
+};
 
-window.cerrarSesion = function(){
+onAuthStateChanged(auth, async (usuario) => {
 
-signOut(auth).then(()=>{
+  if (!usuario) {
+    window.location.href = "index.html";
+    return;
+  }
 
-window.location.href="index.html";
+  document.getElementById("correoCliente").textContent = usuario.email;
+
+  const consulta = query(
+    collection(db, "usuarios"),
+    where("uid", "==", usuario.uid)
+  );
+
+  const resultado = await getDocs(consulta);
+
+  if (!resultado.empty) {
+    const datos = resultado.docs[0].data();
+
+    document.getElementById("nombreCliente").textContent = datos.nombre;
+    document.getElementById("codigoCliente").textContent = datos.codigo;
+  }
 
 });
-
-}
 
 </script>
 
