@@ -3,18 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rápido Global</title>
+
+<title>Rápido Global | Casillero Internacional</title>
 
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h1>RÁPIDO GLOBAL</h1>
-
 <div class="contenedor">
 
-<h2>Registro de Usuario</h2>
+<h1>🚚 RÁPIDO GLOBAL</h1>
+
+<p style="text-align:center; color:#555; margin-bottom:20px;">
+Tu casillero internacional desde Colombia para Venezuela.
+Compra online y recibe tus paquetes de forma segura.
+</p>
+
+
+<h2>Registro de Cliente</h2>
 
 <input type="text" id="nombre" placeholder="Nombre completo">
 
@@ -26,32 +33,59 @@
 
 <input type="password" id="password" placeholder="Contraseña">
 
-<button id="registrar">Registrarme</button>
-<hr>
+
+<button id="registrar">
+Crear mi cuenta
+</button>
+
+
 <hr>
 
-<h2>Iniciar sesión</h2>
+
+<h2>Acceso de Cliente</h2>
 
 <input id="loginCorreo" type="email" placeholder="Correo electrónico">
 
 <input id="loginPassword" type="password" placeholder="Contraseña">
 
-<button id="iniciarSesion">Iniciar sesión</button>
 
-<button id="cerrarSesion">Cerrar sesión</button>
+<button id="iniciarSesion">
+Ingresar
+</button>
+
+
+<button id="cerrarSesion">
+Cerrar sesión
+</button>
+
 
 <div id="cuentaUsuario"></div>
 
-<h2>Prealerta</h2>
+
+<hr>
+
+
+<h2>📦 Prealerta de Paquete</h2>
+
+<p style="text-align:center; color:#555;">
+Registra el número de tracking de tu compra.
+</p>
 
 <input type="text" id="tracking" placeholder="Número de Tracking">
 
-<button id="prealerta">Registrar Prealerta</button>
+
+<button id="prealerta">
+Registrar Prealerta
+</button>
+
 
 </div>
 
+
 <script type="module" src="firebase.js"></script>
+
 <script type="module" src="app.js"></script>
+
 
 </body>
 </html>
