@@ -84,11 +84,19 @@ btnPrealerta.addEventListener("click", async () => {
 
     try {
 
-        await addDoc(collection(db, "prealertas"), {
-            tracking: tracking,
-            fecha: new Date()
-        });
+        const usuario = auth.currentUser;
 
+if (!usuario) {
+    alert("Debe iniciar sesión para registrar una prealerta.");
+    return;
+}
+
+await addDoc(collection(db, "prealertas"), {
+    uid: usuario.uid,
+    correo: usuario.email,
+    tracking: tracking,
+    fecha: new Date()
+});
         alert("Prealerta registrada correctamente.");
 
         document.getElementById("tracking").value = "";
