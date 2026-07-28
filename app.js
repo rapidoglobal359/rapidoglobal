@@ -73,42 +73,6 @@ btnRegistrar.addEventListener("click", async () => {
 });
 
 
-btnPrealerta.addEventListener("click", async () => {
-
-    const tracking = document.getElementById("tracking").value.trim();
-
-    if (!tracking) {
-        alert("Ingrese el número de tracking.");
-        return;
-    }
-
-    try {
-
-        const usuario = auth.currentUser;
-
-if (!usuario) {
-    alert("Debe iniciar sesión para registrar una prealerta.");
-    return;
-}
-console.log("Usuario:", usuario);
-console.log("Correo:", usuario.email);
-
-await addDoc(collection(db, "prealertas"), {
-    uid: usuario.uid,
-    correo: usuario.email,
-    tracking: tracking,
-    estado: "Prealertado",
-    fecha: new Date()
-});
-        alert("Prealerta registrada correctamente.");
-
-        document.getElementById("tracking").value = "";
-
-    } catch (error) {
-        alert("Error al registrar la prealerta: " + error.message);
-    }
-
-});
 
 btnIniciarSesion.addEventListener("click", async () => {
 console.log("Botón iniciar sesión presionado");
