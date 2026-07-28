@@ -6,9 +6,10 @@ import {
 
 import {
   collection,
-  getDocs
+  getDocs,
+  doc,
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-
 
 const listaAdmin = document.getElementById("listaAdmin");
 
