@@ -13,8 +13,27 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 const listaAdmin = document.getElementById("listaAdmin");
+async function buscarCliente(uid) {
 
+  const usuarios = await getDocs(
+    collection(db, "usuarios")
+  );
 
+  let cliente = null;
+
+  usuarios.forEach((usuario) => {
+
+    const datos = usuario.data();
+
+    if (datos.uid === uid) {
+      cliente = datos;
+    }
+
+  });
+
+  return cliente;
+
+}
 onAuthStateChanged(auth, async (usuario) => {
 
   if (!usuario) {
