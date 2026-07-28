@@ -111,8 +111,45 @@ import {
   await signOut(auth);
   window.location.href = "index.html";
 };
+document.getElementById("prealerta").addEventListener("click", async () => {
 
-onAuthStateChanged(auth, async (usuario) => {
+  const tracking = document.getElementById("tracking").value.trim();
+
+  if (!tracking) {
+    alert("Ingrese el número de tracking.");
+    return;
+  }
+
+  const usuario = auth.currentUser;
+
+  if (!usuario) {
+    alert("Debe iniciar sesión.");
+    return;
+  }
+
+  try {
+
+    await addDoc(collection(db, "prealertas"), {
+      uid: usuario.uid,
+      correo: usuario.email,
+      tracking: tracking,
+      estado: "Prealertado",
+      fecha: new Date()
+    });
+
+    alert("Prealerta registrada correctamente.");
+
+    location.reload();
+
+  } catch (error) {
+
+    alert("Error: " + error.message);
+
+  }
+
+});
+    
+    onAuthStateChanged(auth, async (usuario) => {
 
   if (!usuario) {
     window.location.href = "index.html";
