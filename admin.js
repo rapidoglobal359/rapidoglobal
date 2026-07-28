@@ -83,10 +83,9 @@ async function cargarPrealertas() {
     <h3>📦 Tracking: ${datos.tracking}</h3>
 
     <p>
-    <strong>Correo:</strong>
-    ${datos.correo}
-    </p>
-
+<strong>Correo:</strong>
+${datos.correo || "Sin correo registrado"}
+</p>
     <p>
     <strong>Estado actual:</strong>
     ${datos.estado || "Prealertado"}
