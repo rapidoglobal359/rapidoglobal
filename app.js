@@ -97,6 +97,7 @@ await addDoc(collection(db, "prealertas"), {
     uid: usuario.uid,
     correo: usuario.email,
     tracking: tracking,
+    estado: "Prealertado",
     fecha: new Date()
 });
         alert("Prealerta registrada correctamente.");
