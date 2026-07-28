@@ -124,3 +124,29 @@ async function cargarPrealertas() {
 
 
 }
+
+window.cambiarEstado = async function(id) {
+
+  const estadoNuevo = document.getElementById("estado-" + id).value;
+
+  try {
+
+    const referencia = doc(db, "prealertas", id);
+
+    await updateDoc(referencia, {
+      estado: estadoNuevo
+    });
+
+    alert("Estado actualizado correctamente.");
+
+    cargarPrealertas();
+
+  } catch(error) {
+
+    console.log(error);
+
+    alert("Error actualizando estado: " + error.message);
+
+  }
+
+};
