@@ -117,6 +117,41 @@ onAuthStateChanged(auth, async (usuario) => {
     document.getElementById("codigoCliente").textContent = datos.codigo;
   }
 
+  // ===== PREALERTAS =====
+
+  const consultaPrealertas = query(
+    collection(db, "prealertas"),
+    where("uid", "==", usuario.uid)
+  );
+
+  const resultadoPrealertas = await getDocs(consultaPrealertas);
+
+  const lista = document.getElementById("listaPrealertas");
+
+  if (resultadoPrealertas.empty) {
+
+    lista.innerHTML = "<p>No tienes prealertas registradas.</p>";
+
+  } else {
+
+    lista.innerHTML = "";
+
+    resultadoPrealertas.forEach((doc) => {
+
+      const datos = doc.data();
+
+      lista.innerHTML += `
+        <div class="tarjeta-prealerta">
+          <h3>📦 Prealerta</h3>
+          <p><strong>Tracking:</strong> ${datos.tracking}</p>
+          <p><strong>Estado:</strong> 🟡 Prealertado</p>
+        </div>
+      `;
+
+    });
+
+  }
+
 });
 
 </script>
