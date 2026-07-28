@@ -188,8 +188,9 @@ document.getElementById("prealerta").addEventListener("click", async () => {
   const resultadoPrealertas = await getDocs(consultaPrealertas);
 let recibidos = 0;
 let transito = 0;
-
-resultadoPrealertas.forEach((doc) => {
+let venezuela = 0;
+let entregados = 0;
+        resultadoPrealertas.forEach((doc) => {
 
   const datos = doc.data();
 
