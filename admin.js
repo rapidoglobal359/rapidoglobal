@@ -182,3 +182,4 @@ window.cambiarEstado = async function(id) {
 
   }
 
+ };
