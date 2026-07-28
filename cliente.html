@@ -199,7 +199,7 @@ document.getElementById("prealerta").addEventListener("click", async () => {
         <div class="tarjeta-prealerta">
           <h3>📦 Prealerta</h3>
           <p><strong>Tracking:</strong> ${datos.tracking}</p>
-          <p><strong>Estado:</strong> ${datos.estado}</p>
+          <p><strong>Estado:</strong> ${datos.estado || "Prealertado"}</p>
           
           </div>
       `;
