@@ -179,6 +179,25 @@ document.getElementById("prealerta").addEventListener("click", async () => {
   );
 
   const resultadoPrealertas = await getDocs(consultaPrealertas);
+let recibidos = 0;
+let transito = 0;
+
+resultadoPrealertas.forEach((doc) => {
+
+  const datos = doc.data();
+
+  if (datos.estado === "recibido en bodega") {
+    recibidos++;
+  }
+
+  if (datos.estado === "En tránsito") {
+    transito++;
+  }
+
+});
+
+document.getElementById("paquetesRecibidos").textContent = recibidos;
+document.getElementById("paquetesTransito").textContent = transito;
 
   const lista = document.getElementById("listaPrealertas");
 
