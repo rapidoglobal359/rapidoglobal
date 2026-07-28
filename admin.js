@@ -22,7 +22,7 @@ onAuthStateChanged(auth, async (usuario) => {
   }
 
 
-  if (usuario.email !== "AlmeidaEdwin81@gmail.com") {
+  if (usuario.email.toLowerCase() !== "almeidaedwin81@gmail.com") {
 
     alert("No tienes permisos para acceder al panel de administrador.");
 
