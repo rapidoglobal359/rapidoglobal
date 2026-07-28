@@ -202,6 +202,14 @@ let entregados = 0;
     transito++;
   }
 
+  if (datos.estado === "Llegó a Venezuela") {
+    venezuela++;
+}
+
+if (datos.estado === "Entregado") {
+    entregados++;
+}
+            
 });
 
 document.getElementById("paquetesRecibidos").textContent = recibidos;
