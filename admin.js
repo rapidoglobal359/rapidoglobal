@@ -34,8 +34,9 @@ onAuthStateChanged(auth, async (usuario) => {
 
 
   cargarPrealertas();
+  console.log("Administrador autorizado, cargando prealertas");
 
-
+  
 });
 
 
