@@ -91,19 +91,32 @@ async function cargarPrealertas() {
     listaAdmin.innerHTML = "";
 
 
-    resultado.forEach((doc) => {
+    for (const doc of resultado.docs) {
 
   const datos = doc.data();
 
-  listaAdmin.innerHTML += `
+  const cliente = await buscarCliente(datos.uid);
+      
+      listaAdmin.innerHTML += `
 
   <div class="tarjeta-prealerta">
 
     <h3>📦 Tracking: ${datos.tracking}</h3>
 
     <p>
+<strong>Nombre:</strong>
+${cliente ? cliente.nombre : "Sin nombre"}
+</p>
+
+<p>
+<strong>Código RG:</strong>
+${cliente ? cliente.codigo : "Sin código"}
+</p>
+
+<p>
 <strong>Correo:</strong>
-${datos.correo || "Sin correo registrado"}
+${cliente ? cliente.correo : "Sin correo"}
+
 </p>
     <p>
     <strong>Estado actual:</strong>
@@ -169,4 +182,3 @@ window.cambiarEstado = async function(id) {
 
   }
 
-};
