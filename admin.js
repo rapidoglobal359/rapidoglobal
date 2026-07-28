@@ -72,38 +72,46 @@ async function cargarPrealertas() {
 
     resultado.forEach((doc) => {
 
+  const datos = doc.data();
 
-      const datos = doc.data();
+  listaAdmin.innerHTML += `
 
+  <div class="tarjeta-prealerta">
 
-      listaAdmin.innerHTML += `
+    <h3>📦 Tracking: ${datos.tracking}</h3>
 
-      <div class="tarjeta-prealerta">
+    <p>
+    <strong>Correo:</strong>
+    ${datos.correo}
+    </p>
 
-        <h3>📦 Tracking: ${datos.tracking}</h3>
+    <p>
+    <strong>Estado actual:</strong>
+    ${datos.estado || "Prealertado"}
+    </p>
 
-        <p>
-        <strong>Correo:</strong>
-        ${datos.correo}
-        </p>
+    <select id="estado-${doc.id}">
+      <option value="Prealertado">Prealertado</option>
+      <option value="Recibido en bodega">Recibido en bodega</option>
+      <option value="En tránsito">En tránsito</option>
+      <option value="Llegó a Venezuela">Llegó a Venezuela</option>
+      <option value="Entregado">Entregado</option>
+    </select>
 
+    <br><br>
 
-        <p>
-        <strong>Estado:</strong>
-        ${datos.estado || "Prealertado"}
-        </p>
+    <button onclick="cambiarEstado('${doc.id}')">
+      Guardar cambio
+    </button>
 
+  </div>
 
-      </div>
+  <hr>
 
-      <hr>
+  `;
 
-      `;
-
-
-    });
-
-
+});
+    
   } catch(error) {
 
 
