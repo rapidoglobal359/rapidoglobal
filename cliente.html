@@ -104,8 +104,9 @@ import {
   query,
   where,
   getDocs,
-  orderBy
+  addDoc
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+    
     window.cerrarSesion = async function () {
   await signOut(auth);
   window.location.href = "index.html";
