@@ -143,7 +143,7 @@ ${cliente ? cliente.correo : "Sin correo"}
 
   `;
 
-});
+}
     
   } catch(error) {
 
