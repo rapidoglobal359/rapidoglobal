@@ -37,20 +37,23 @@ onSnapshot(collection(db, "usuarios"), (snapshot) => {
     cantidadActual > cantidadUsuariosAnterior
   ) {
 
-    const nuevos = cantidadActual - cantidadUsuariosAnterior;
-const contexto = new AudioContext();
-const oscilador = contexto.createOscillator();
-const ganancia = contexto.createGain();
+const nuevos = cantidadActual - cantidadUsuariosAnterior;
 
-oscilador.connect(ganancia);
-ganancia.connect(contexto.destination);
+if (contextoAudio) {
 
-oscilador.frequency.value = 880;
-ganancia.gain.value = 0.3;
+  const oscilador = contextoAudio.createOscillator();
+  const ganancia = contextoAudio.createGain();
 
-oscilador.start();
-oscilador.stop(contexto.currentTime + 0.3);
-    
+  oscilador.connect(ganancia);
+  ganancia.connect(contextoAudio.destination);
+
+  oscilador.frequency.value = 880;
+  ganancia.gain.value = 0.3;
+
+  oscilador.start();
+  oscilador.stop(contextoAudio.currentTime + 0.3);
+
+}    
     alert(
       "🔔 ¡Nuevo cliente registrado!\n\n" +
       "Se registraron " + nuevos + " cliente(s) nuevo(s)."
