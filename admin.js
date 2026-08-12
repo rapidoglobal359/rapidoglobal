@@ -10,7 +10,7 @@ import {
   getDocs,
   doc,
   updateDoc
-} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+  onSnapshot,} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 const listaAdmin = document.getElementById("listaAdmin");
 async function buscarCliente(uid) {
