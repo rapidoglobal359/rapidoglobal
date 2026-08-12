@@ -15,7 +15,19 @@ import {
 
 const listaAdmin = document.getElementById("listaAdmin");
 let cantidadUsuariosAnterior = 0;
+let contextoAudio = null;
 
+document.addEventListener("click", async () => {
+
+  if (!contextoAudio) {
+    contextoAudio = new AudioContext();
+  }
+
+  if (contextoAudio.state === "suspended") {
+    await contextoAudio.resume();
+  }
+
+}, { once: true });
 onSnapshot(collection(db, "usuarios"), (snapshot) => {
 
   const cantidadActual = snapshot.size;
