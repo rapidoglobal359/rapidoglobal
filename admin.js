@@ -25,21 +25,35 @@ document.addEventListener("click", async () => {
 
   if (contextoAudio.state === "suspended") {
     await contextoAudio.resume();
-const osciladorPrueba = contextoAudio.createOscillator();
-const gananciaPrueba = contextoAudio.createGain();
 
-osciladorPrueba.connect(gananciaPrueba);
-gananciaPrueba.connect(contextoAudio.destination);
-
-osciladorPrueba.frequency.value = 880;
-gananciaPrueba.gain.value = 0.3;
-
-osciladorPrueba.start();
-osciladorPrueba.stop(contextoAudio.currentTime + 0.5);
-  
+    
   }
 
 }, { once: true });
+
+async function reproducirSonido() {
+
+  if (!contextoAudio) {
+    return;
+  }
+
+  if (contextoAudio.state === "suspended") {
+    await contextoAudio.resume();
+  }
+
+  const oscilador = contextoAudio.createOscillator();
+  const ganancia = contextoAudio.createGain();
+
+  oscilador.connect(ganancia);
+  ganancia.connect(contextoAudio.destination);
+
+  oscilador.frequency.value = 880;
+  ganancia.gain.value = 0.3;
+
+  oscilador.start();
+  oscilador.stop(contextoAudio.currentTime + 0.3);
+
+}
 onSnapshot(collection(db, "usuarios"), (snapshot) => {
 
   const cantidadActual = snapshot.size;
