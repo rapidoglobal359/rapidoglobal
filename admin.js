@@ -13,6 +13,29 @@ import {
   onSnapshot,} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 const listaAdmin = document.getElementById("listaAdmin");
+let cantidadUsuariosAnterior = 0;
+
+onSnapshot(collection(db, "usuarios"), (snapshot) => {
+
+  const cantidadActual = snapshot.size;
+
+  if (
+    cantidadUsuariosAnterior > 0 &&
+    cantidadActual > cantidadUsuariosAnterior
+  ) {
+
+    const nuevos = cantidadActual - cantidadUsuariosAnterior;
+
+    alert(
+      "🔔 ¡Nuevo cliente registrado!\n\n" +
+      "Se registraron " + nuevos + " cliente(s) nuevo(s)."
+    );
+
+  }
+
+  cantidadUsuariosAnterior = cantidadActual;
+
+});
 async function buscarCliente(uid) {
 
   const usuarios = await getDocs(
