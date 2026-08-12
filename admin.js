@@ -25,6 +25,17 @@ document.addEventListener("click", async () => {
 
   if (contextoAudio.state === "suspended") {
     await contextoAudio.resume();
+const osciladorPrueba = contextoAudio.createOscillator();
+const gananciaPrueba = contextoAudio.createGain();
+
+osciladorPrueba.connect(gananciaPrueba);
+gananciaPrueba.connect(contextoAudio.destination);
+
+osciladorPrueba.frequency.value = 880;
+gananciaPrueba.gain.value = 0.3;
+
+osciladorPrueba.start();
+osciladorPrueba.stop(contextoAudio.currentTime + 0.5);
   }
 
 }, { once: true });
