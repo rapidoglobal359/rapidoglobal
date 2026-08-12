@@ -36,6 +36,7 @@ gananciaPrueba.gain.value = 0.3;
 
 osciladorPrueba.start();
 osciladorPrueba.stop(contextoAudio.currentTime + 0.5);
+  
   }
 
 }, { once: true });
