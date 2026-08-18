@@ -15,14 +15,19 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 
+// =====================================================
+// VARIABLES PRINCIPALES
+// =====================================================
+
 const listaAdmin = document.getElementById("listaAdmin");
 
 let cantidadUsuariosAnterior = 0;
 let contextoAudio = null;
+let cantidadUsuariosActual = 0;
 
 
 // =====================================================
-// SONIDO PARA NUEVO CLIENTE
+// ACTIVAR AUDIO
 // =====================================================
 
 document.addEventListener("click", async () => {
@@ -37,6 +42,10 @@ document.addEventListener("click", async () => {
 
 }, { once: true });
 
+
+// =====================================================
+// REPRODUCIR SONIDO
+// =====================================================
 
 async function reproducirSonido() {
 
@@ -58,61 +67,76 @@ async function reproducirSonido() {
   ganancia.gain.value = 0.3;
 
   oscilador.start();
-  oscilador.stop(contextoAudio.currentTime + 0.3);
+
+  oscilador.stop(
+    contextoAudio.currentTime + 0.3
+  );
 }
 
 
 // =====================================================
-// USUARIOS REGISTRADOS
-// CONTADOR EN TIEMPO REAL
+// CONTADOR DE USUARIOS EN TIEMPO REAL
 // =====================================================
 
-onSnapshot(collection(db, "usuarios"), (snapshot) => {
+onSnapshot(
+  collection(db, "usuarios"),
+  (snapshot) => {
 
-  const cantidadActual = snapshot.size;
+    const cantidadActual = snapshot.size;
 
-  // Actualizar contador en pantalla
-  const contador = document.getElementById("contadorUsuarios");
-
-  if (contador) {
-    contador.textContent = cantidadActual;
-  }
+    cantidadUsuariosActual = cantidadActual;
 
 
-  // Avisar cuando aparezcan nuevos usuarios
-  if (
-    cantidadUsuariosAnterior > 0 &&
-    cantidadActual > cantidadUsuariosAnterior
-  ) {
+    // Actualizar contador si ya existe
+    const contador =
+      document.getElementById("contadorUsuarios");
 
-    const nuevos = cantidadActual - cantidadUsuariosAnterior;
+    if (contador) {
 
-    if (contextoAudio) {
-
-      const oscilador = contextoAudio.createOscillator();
-      const ganancia = contextoAudio.createGain();
-
-      oscilador.connect(ganancia);
-      ganancia.connect(contextoAudio.destination);
-
-      oscilador.frequency.value = 880;
-      ganancia.gain.value = 0.3;
-
-      oscilador.start();
-      oscilador.stop(contextoAudio.currentTime + 0.3);
+      contador.textContent = cantidadActual;
 
     }
 
-    alert(
-      "🔔 ¡Nuevo cliente registrado!\n\n" +
-      "Se registraron " + nuevos + " cliente(s) nuevo(s)."
+
+    // Avisar cuando aparezcan nuevos usuarios
+    if (
+      cantidadUsuariosAnterior > 0 &&
+      cantidadActual > cantidadUsuariosAnterior
+    ) {
+
+      const nuevos =
+        cantidadActual - cantidadUsuariosAnterior;
+
+
+      if (contextoAudio) {
+
+        reproducirSonido();
+
+      }
+
+
+      alert(
+        "🔔 ¡Nuevo cliente registrado!\n\n" +
+        "Se registraron " +
+        nuevos +
+        " cliente(s) nuevo(s)."
+      );
+
+    }
+
+
+    cantidadUsuariosAnterior = cantidadActual;
+
+  },
+  (error) => {
+
+    console.error(
+      "Error escuchando usuarios:",
+      error
     );
 
   }
-
-  cantidadUsuariosAnterior = cantidadActual;
-
-});
+);
 
 
 // =====================================================
@@ -121,14 +145,24 @@ onSnapshot(collection(db, "usuarios"), (snapshot) => {
 
 function crearSeccionUsuarios() {
 
-  // Evitar que se cree dos veces
-  if (document.getElementById("seccionUsuariosAdmin")) {
+  // Evitar duplicados
+  if (
+    document.getElementById(
+      "seccionUsuariosAdmin"
+    )
+  ) {
+
     return;
+
   }
 
-  const seccion = document.createElement("div");
 
-  seccion.id = "seccionUsuariosAdmin";
+  const seccion =
+    document.createElement("div");
+
+  seccion.id =
+    "seccionUsuariosAdmin";
+
 
   seccion.innerHTML = `
 
@@ -149,9 +183,15 @@ function crearSeccionUsuarios() {
       </h2>
 
 
+      <!-- CONTADOR -->
+
       <div style="
         text-align: center;
-        background: linear-gradient(135deg,#003366,#0A84FF);
+        background: linear-gradient(
+          135deg,
+          #003366,
+          #0A84FF
+        );
         color: white;
         padding: 20px;
         border-radius: 15px;
@@ -165,15 +205,21 @@ function crearSeccionUsuarios() {
           Total de clientes registrados
         </div>
 
-        <div id="contadorUsuarios" style="
-          font-size: 42px;
-          font-weight: bold;
-        ">
-          0
+
+        <div
+          id="contadorUsuarios"
+          style="
+            font-size: 42px;
+            font-weight: bold;
+          "
+        >
+          ${cantidadUsuariosActual}
         </div>
 
       </div>
 
+
+      <!-- BOTÓN USUARIOS -->
 
       <button
         id="botonUsuarios"
@@ -194,12 +240,17 @@ function crearSeccionUsuarios() {
       </button>
 
 
-      <div id="panelUsuarios" style="display:none;">
+      <!-- PANEL DE BÚSQUEDA -->
+
+      <div
+        id="panelUsuarios"
+        style="display:none;"
+      >
 
         <input
           type="text"
           id="buscarUsuario"
-          placeholder="🔎 Buscar por nombre, apellido o correo electrónico"
+          placeholder="🔎 Nombre, apellido, correo o código RG"
           style="
             width: 100%;
             box-sizing: border-box;
@@ -251,9 +302,12 @@ function crearSeccionUsuarios() {
 
 
         <div id="resultadoUsuarios">
+
           <p style="text-align:center;">
-            Escribe un nombre, apellido o correo para buscar.
+            Escribe un nombre, apellido,
+            correo o código RG.
           </p>
+
         </div>
 
       </div>
@@ -263,53 +317,127 @@ function crearSeccionUsuarios() {
   `;
 
 
-  // Colocar la sección ANTES de las prealertas
-  listaAdmin.parentNode.insertBefore(seccion, listaAdmin);
+  // Colocar usuarios antes de las prealertas
+  listaAdmin.parentNode.insertBefore(
+    seccion,
+    listaAdmin
+  );
 
 
-  // Botón abrir/cerrar
-  document.getElementById("botonUsuarios").addEventListener("click", () => {
+  // ===================================================
+  // BOTÓN ABRIR / CERRAR
+  // ===================================================
 
-    const panel = document.getElementById("panelUsuarios");
-    const boton = document.getElementById("botonUsuarios");
-
-    if (panel.style.display === "none") {
-
-      panel.style.display = "block";
-      boton.textContent = "⬆️ Ocultar usuarios";
-
-    } else {
-
-      panel.style.display = "none";
-      boton.textContent = "👥 Ver usuarios registrados";
-
-    }
-
-  });
-
-
-  // Buscar
   document
-    .getElementById("botonBuscarUsuario")
-    .addEventListener("click", buscarUsuarios);
+    .getElementById("botonUsuarios")
+    .addEventListener(
+      "click",
+      () => {
+
+        const panel =
+          document.getElementById(
+            "panelUsuarios"
+          );
+
+        const boton =
+          document.getElementById(
+            "botonUsuarios"
+          );
 
 
-  // Buscar presionando ENTER
-  document
-    .getElementById("buscarUsuario")
-    .addEventListener("keydown", (evento) => {
+        if (
+          panel.style.display === "none"
+        ) {
 
-      if (evento.key === "Enter") {
-        buscarUsuarios();
+          panel.style.display = "block";
+
+          boton.textContent =
+            "⬆️ Ocultar usuarios";
+
+        } else {
+
+          panel.style.display = "none";
+
+          boton.textContent =
+            "👥 Ver usuarios registrados";
+
+        }
+
       }
+    );
 
-    });
 
+  // ===================================================
+  // BOTÓN BUSCAR
+  // ===================================================
 
-  // Mostrar todos
   document
-    .getElementById("botonMostrarTodos")
-    .addEventListener("click", mostrarTodosLosUsuarios);
+    .getElementById(
+      "botonBuscarUsuario"
+    )
+    .addEventListener(
+      "click",
+      buscarUsuarios
+    );
+
+
+  // ===================================================
+  // ENTER PARA BUSCAR
+  // ===================================================
+
+  document
+    .getElementById(
+      "buscarUsuario"
+    )
+    .addEventListener(
+      "keydown",
+      (evento) => {
+
+        if (
+          evento.key === "Enter"
+        ) {
+
+          buscarUsuarios();
+
+        }
+
+      }
+    );
+
+
+  // ===================================================
+  // MOSTRAR TODOS
+  // ===================================================
+
+  document
+    .getElementById(
+      "botonMostrarTodos"
+    )
+    .addEventListener(
+      "click",
+      mostrarTodosLosUsuarios
+    );
+
+}
+
+
+// =====================================================
+// NORMALIZAR TEXTO PARA BUSQUEDA
+// =====================================================
+
+function normalizarTexto(texto) {
+
+  return String(texto || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .replace(
+      /[^a-z0-9]/g,
+      ""
+    );
 
 }
 
@@ -320,76 +448,183 @@ function crearSeccionUsuarios() {
 
 async function buscarUsuarios() {
 
-  const texto = document
-    .getElementById("buscarUsuario")
-    .value
-    .trim()
-    .toLowerCase();
+  const textoOriginal =
+    document
+      .getElementById(
+        "buscarUsuario"
+      )
+      .value
+      .trim();
 
-  const resultado = document.getElementById("resultadoUsuarios");
 
-  if (!texto) {
+  const resultado =
+    document.getElementById(
+      "resultadoUsuarios"
+    );
+
+
+  if (!textoOriginal) {
 
     resultado.innerHTML = `
-      <p style="text-align:center;">
-        Escribe un nombre, apellido o correo electrónico.
+
+      <p style="
+        text-align:center;
+      ">
+
+        Escribe un nombre, apellido,
+        correo electrónico o código RG.
+
       </p>
+
     `;
 
     return;
+
   }
 
 
   resultado.innerHTML = `
-    <p style="text-align:center;">
-      🔎 Buscando usuarios...
+
+    <p style="
+      text-align:center;
+    ">
+
+      🔎 Buscando usuario...
+
     </p>
+
   `;
 
 
   try {
 
-    const usuarios = await getDocs(
-      collection(db, "usuarios")
-    );
+    const usuarios =
+      await getDocs(
+        collection(
+          db,
+          "usuarios"
+        )
+      );
+
+
+    const busqueda =
+      normalizarTexto(
+        textoOriginal
+      );
 
 
     const encontrados = [];
 
 
-    usuarios.forEach((usuario) => {
+    usuarios.forEach(
+      (usuario) => {
 
-      const datos = usuario.data();
-
-      const nombre = String(datos.nombre || "").toLowerCase();
-      const correo = String(datos.correo || "").toLowerCase();
+        const datos =
+          usuario.data();
 
 
-      if (
-        nombre.includes(texto) ||
-        correo.includes(texto)
-      ) {
+        // ==========================================
+        // DATOS DEL USUARIO
+        // ==========================================
 
-        encontrados.push({
-          id: usuario.id,
-          ...datos
-        });
+        const nombre =
+          normalizarTexto(
+            datos.nombre
+          );
+
+
+        const apellido =
+          normalizarTexto(
+            datos.apellido
+          );
+
+
+        const correo =
+          normalizarTexto(
+            datos.correo
+          );
+
+
+        const codigo =
+          normalizarTexto(
+            datos.codigo
+          );
+
+
+        const nombreCompleto =
+          normalizarTexto(
+            `${datos.nombre || ""} ${
+              datos.apellido || ""
+            }`
+          );
+
+
+        // ==========================================
+        // COMPARACIÓN
+        // ==========================================
+
+        const coincide =
+          nombre.includes(
+            busqueda
+          ) ||
+
+          apellido.includes(
+            busqueda
+          ) ||
+
+          nombreCompleto.includes(
+            busqueda
+          ) ||
+
+          correo.includes(
+            busqueda
+          ) ||
+
+          codigo.includes(
+            busqueda
+          );
+
+
+        if (coincide) {
+
+          encontrados.push({
+
+            id: usuario.id,
+
+            ...datos
+
+          });
+
+        }
 
       }
+    );
 
-    });
 
+    mostrarResultadosUsuarios(
+      encontrados
+    );
 
-    mostrarResultadosUsuarios(encontrados);
 
   } catch (error) {
 
-    console.log(error);
+    console.error(
+      "Error buscando usuarios:",
+      error
+    );
+
 
     resultado.innerHTML = `
-      <p style="color:red;text-align:center;">
+
+      <p style="
+        color:red;
+        text-align:center;
+      ">
+
         ❌ Error buscando usuarios.
+
       </p>
+
     `;
 
   }
@@ -403,56 +638,102 @@ async function buscarUsuarios() {
 
 async function mostrarTodosLosUsuarios() {
 
-  const resultado = document.getElementById("resultadoUsuarios");
+  const resultado =
+    document.getElementById(
+      "resultadoUsuarios"
+    );
+
 
   resultado.innerHTML = `
-    <p style="text-align:center;">
+
+    <p style="
+      text-align:center;
+    ">
+
       📋 Cargando usuarios...
+
     </p>
+
   `;
 
 
   try {
 
-    const usuarios = await getDocs(
-      collection(db, "usuarios")
-    );
+    const usuarios =
+      await getDocs(
+        collection(
+          db,
+          "usuarios"
+        )
+      );
 
 
     const lista = [];
 
 
-    usuarios.forEach((usuario) => {
+    usuarios.forEach(
+      (usuario) => {
 
-      lista.push({
-        id: usuario.id,
-        ...usuario.data()
-      });
+        lista.push({
 
-    });
+          id: usuario.id,
 
+          ...usuario.data()
 
-    // Ordenar alfabéticamente por nombre
-    lista.sort((a, b) => {
+        });
 
-      const nombreA = String(a.nombre || "").toLowerCase();
-      const nombreB = String(b.nombre || "").toLowerCase();
-
-      return nombreA.localeCompare(nombreB);
-
-    });
+      }
+    );
 
 
-    mostrarResultadosUsuarios(lista);
+    // Orden alfabético
+    lista.sort(
+      (a, b) => {
+
+        const nombreA =
+          String(
+            a.nombre || ""
+          ).toLowerCase();
+
+
+        const nombreB =
+          String(
+            b.nombre || ""
+          ).toLowerCase();
+
+
+        return nombreA.localeCompare(
+          nombreB
+        );
+
+      }
+    );
+
+
+    mostrarResultadosUsuarios(
+      lista
+    );
+
 
   } catch (error) {
 
-    console.log(error);
+    console.error(
+      "Error cargando usuarios:",
+      error
+    );
+
 
     resultado.innerHTML = `
-      <p style="color:red;text-align:center;">
+
+      <p style="
+        color:red;
+        text-align:center;
+      ">
+
         ❌ Error cargando usuarios.
+
       </p>
+
     `;
 
   }
@@ -464,25 +745,37 @@ async function mostrarTodosLosUsuarios() {
 // MOSTRAR RESULTADOS
 // =====================================================
 
-function mostrarResultadosUsuarios(usuarios) {
+function mostrarResultadosUsuarios(
+  usuarios
+) {
 
-  const resultado = document.getElementById("resultadoUsuarios");
+  const resultado =
+    document.getElementById(
+      "resultadoUsuarios"
+    );
 
 
-  if (usuarios.length === 0) {
+  if (
+    usuarios.length === 0
+  ) {
 
     resultado.innerHTML = `
+
       <div style="
         padding:20px;
         text-align:center;
         background:#f8f8f8;
         border-radius:10px;
       ">
+
         ❌ No se encontraron usuarios.
+
       </div>
+
     `;
 
     return;
+
   }
 
 
@@ -494,67 +787,103 @@ function mostrarResultadosUsuarios(usuarios) {
       font-weight:bold;
       color:#003366;
     ">
-      👥 ${usuarios.length} usuario(s) encontrado(s)
+
+      👥 ${
+        usuarios.length
+      }
+      usuario(s) encontrado(s)
+
     </div>
 
   `;
 
 
-  usuarios.forEach((usuario) => {
+  usuarios.forEach(
+    (usuario) => {
 
-    resultado.innerHTML += `
-
-      <div style="
-        background:#f8faff;
-        border-left:5px solid #0A84FF;
-        padding:15px;
-        margin-bottom:12px;
-        border-radius:10px;
-      ">
+      resultado.innerHTML += `
 
         <div style="
-          font-size:18px;
-          font-weight:bold;
-          color:#003366;
-          margin-bottom:8px;
+          background:#f8faff;
+          border-left:5px solid #0A84FF;
+          padding:15px;
+          margin-bottom:12px;
+          border-radius:10px;
         ">
-          👤 ${usuario.nombre || "Sin nombre"}
-        </div>
 
-
-        <div style="margin-bottom:5px;">
-          <strong>📧 Correo:</strong>
-          ${usuario.correo || "Sin correo"}
-        </div>
-
-
-        <div style="margin-bottom:5px;">
-          <strong>📦 Código RG:</strong>
-          ${usuario.codigo || "Sin código"}
-        </div>
-
-
-        ${
-          usuario.uid
-          ?
-          `
           <div style="
-            font-size:12px;
-            color:#777;
-            margin-top:8px;
+            font-size:18px;
+            font-weight:bold;
+            color:#003366;
+            margin-bottom:8px;
           ">
-            UID: ${usuario.uid}
+
+            👤 ${
+              usuario.nombre ||
+              "Sin nombre"
+            }
+
           </div>
-          `
-          :
-          ""
-        }
 
-      </div>
 
-    `;
+          <div style="
+            margin-bottom:5px;
+          ">
 
-  });
+            <strong>
+              📧 Correo:
+            </strong>
+
+            ${
+              usuario.correo ||
+              "Sin correo"
+            }
+
+          </div>
+
+
+          <div style="
+            margin-bottom:5px;
+          ">
+
+            <strong>
+              📦 Código RG:
+            </strong>
+
+            ${
+              usuario.codigo ||
+              "Sin código"
+            }
+
+          </div>
+
+
+          ${
+            usuario.uid
+              ?
+              `
+                <div style="
+                  font-size:12px;
+                  color:#777;
+                  margin-top:8px;
+                  word-break:break-all;
+                ">
+
+                  UID:
+                  ${usuario.uid}
+
+                </div>
+              `
+              :
+              ""
+          }
+
+        </div>
+
+      `;
+
+    }
+  );
 
 }
 
@@ -563,26 +892,39 @@ function mostrarResultadosUsuarios(usuarios) {
 // BUSCAR CLIENTE POR UID
 // =====================================================
 
-async function buscarCliente(uid) {
+async function buscarCliente(
+  uid
+) {
 
-  const usuarios = await getDocs(
-    collection(db, "usuarios")
-  );
+  const usuarios =
+    await getDocs(
+      collection(
+        db,
+        "usuarios"
+      )
+    );
 
 
   let cliente = null;
 
 
-  usuarios.forEach((usuario) => {
+  usuarios.forEach(
+    (usuario) => {
 
-    const datos = usuario.data();
+      const datos =
+        usuario.data();
 
 
-    if (datos.uid === uid) {
-      cliente = datos;
+      if (
+        datos.uid === uid
+      ) {
+
+        cliente = datos;
+
+      }
+
     }
-
-  });
+  );
 
 
   return cliente;
@@ -594,46 +936,54 @@ async function buscarCliente(uid) {
 // AUTENTICACIÓN DEL ADMINISTRADOR
 // =====================================================
 
-onAuthStateChanged(auth, async (usuario) => {
+onAuthStateChanged(
+  auth,
+  async (usuario) => {
 
-  if (!usuario) {
+    if (!usuario) {
 
-    window.location.href = "index.html";
+      window.location.href =
+        "index.html";
 
-    return;
+      return;
 
-  }
+    }
 
 
-  if (
-    usuario.email.toLowerCase() !==
-    "almeidaedwin81@gmail.com"
-  ) {
+    if (
+      !usuario.email ||
+      usuario.email.toLowerCase() !==
+      "almeidaedwin81@gmail.com"
+    ) {
 
-    alert(
-      "No tienes permisos para acceder al panel de administrador."
+      alert(
+        "No tienes permisos para acceder al panel de administrador."
+      );
+
+
+      window.location.href =
+        "cliente.html";
+
+
+      return;
+
+    }
+
+
+    // Crear sección de usuarios
+    crearSeccionUsuarios();
+
+
+    // Cargar prealertas
+    cargarPrealertas();
+
+
+    console.log(
+      "Administrador autorizado, cargando prealertas y usuarios"
     );
 
-    window.location.href = "cliente.html";
-
-    return;
-
   }
-
-
-  // Crear sección de usuarios
-  crearSeccionUsuarios();
-
-
-  // Cargar prealertas
-  cargarPrealertas();
-
-
-  console.log(
-    "Administrador autorizado, cargando prealertas y usuarios"
-  );
-
-});
+);
 
 
 // =====================================================
@@ -648,12 +998,18 @@ async function cargarPrealertas() {
 
   try {
 
-    const resultado = await getDocs(
-      collection(db, "prealertas")
-    );
+    const resultado =
+      await getDocs(
+        collection(
+          db,
+          "prealertas"
+        )
+      );
 
 
-    if (resultado.empty) {
+    if (
+      resultado.empty
+    ) {
 
       listaAdmin.innerHTML =
         "<p>No hay prealertas registradas.</p>";
@@ -663,14 +1019,23 @@ async function cargarPrealertas() {
     }
 
 
-    listaAdmin.innerHTML = "";
+    listaAdmin.innerHTML =
+      "";
 
 
-    for (const doc of resultado.docs) {
+    for (
+      const documento
+      of resultado.docs
+    ) {
 
-      const datos = doc.data();
+      const datos =
+        documento.data();
 
-      const cliente = await buscarCliente(datos.uid);
+
+      const cliente =
+        await buscarCliente(
+          datos.uid
+        );
 
 
       listaAdmin.innerHTML += `
@@ -678,63 +1043,154 @@ async function cargarPrealertas() {
         <div class="tarjeta-prealerta">
 
           <h3>
-            📦 Tracking: ${datos.tracking}
+            📦 Tracking:
+            ${
+              datos.tracking
+            }
           </h3>
 
 
           <p>
-            <strong>Nombre:</strong>
-            ${cliente ? cliente.nombre : "Sin nombre"}
+
+            <strong>
+              Nombre:
+            </strong>
+
+            ${
+              cliente
+                ? cliente.nombre
+                : "Sin nombre"
+            }
+
           </p>
 
 
           <p>
-            <strong>Código RG:</strong>
-            ${cliente ? cliente.codigo : "Sin código"}
+
+            <strong>
+              Código RG:
+            </strong>
+
+            ${
+              cliente
+                ? cliente.codigo
+                : "Sin código"
+            }
+
           </p>
 
 
           <p>
-            <strong>Correo:</strong>
-            ${cliente ? cliente.correo : "Sin correo"}
+
+            <strong>
+              Correo:
+            </strong>
+
+            ${
+              cliente
+                ? cliente.correo
+                : "Sin correo"
+            }
+
           </p>
 
 
           <p>
-            <strong>Estado actual:</strong>
-            ${datos.estado || "Prealertado"}
+
+            <strong>
+              Estado actual:
+            </strong>
+
+            ${
+              datos.estado ||
+              "Prealertado"
+            }
+
           </p>
 
 
-          <select id="estado-${doc.id}">
+          <select
+            id="estado-${documento.id}"
+          >
 
-            <option value="Prealertado">
+            <option
+              value="Prealertado"
+              ${
+                datos.estado ===
+                "Prealertado"
+                  ? "selected"
+                  : ""
+              }
+            >
               Prealertado
             </option>
 
-            <option value="Recibido en bodega">
+
+            <option
+              value="Recibido en bodega"
+              ${
+                datos.estado ===
+                "Recibido en bodega"
+                  ? "selected"
+                  : ""
+              }
+            >
               Recibido en bodega
             </option>
 
-            <option value="En tránsito">
+
+            <option
+              value="En tránsito"
+              ${
+                datos.estado ===
+                "En tránsito"
+                  ? "selected"
+                  : ""
+              }
+            >
               En tránsito
             </option>
 
-            <option value="Llegó a Venezuela">
+
+            <option
+              value="Llegó a Venezuela"
+              ${
+                datos.estado ===
+                "Llegó a Venezuela"
+                  ? "selected"
+                  : ""
+              }
+            >
               Llegó a Venezuela
             </option>
 
-            <option value="Entregado">
+
+            <option
+              value="Entregado"
+              ${
+                datos.estado ===
+                "Entregado"
+                  ? "selected"
+                  : ""
+              }
+            >
               Entregado
             </option>
 
           </select>
 
 
-          <br><br>
+          <br>
+          <br>
 
 
-          <button onclick="cambiarEstado('${doc.id}')">
+          <button
+            onclick="
+              cambiarEstado(
+                '${documento.id}'
+              )
+            "
+          >
             Guardar cambio
           </button>
 
@@ -751,7 +1207,11 @@ async function cargarPrealertas() {
 
   } catch (error) {
 
-    console.log(error);
+    console.error(
+      "Error cargando prealertas:",
+      error
+    );
+
 
     listaAdmin.innerHTML =
       "<p>Error cargando prealertas.</p>";
@@ -765,45 +1225,24 @@ async function cargarPrealertas() {
 // CAMBIAR ESTADO DE PREALERTA
 // =====================================================
 
-window.cambiarEstado = async function(id) {
+window.cambiarEstado =
+  async function(id) {
 
-  const estadoNuevo =
-    document.getElementById(
-      "estado-" + id
-    ).value;
-
-
-  try {
-
-    const referencia =
-      doc(db, "prealertas", id);
+    const elemento =
+      document.getElementById(
+        "estado-" + id
+      );
 
 
-    await updateDoc(referencia, {
+    if (!elemento) {
 
-      estado: estadoNuevo
+      alert(
+        "No se encontró el estado de la prealerta."
+      );
 
-    });
+      return;
 
-
-    alert(
-      "Estado actualizado correctamente."
-    );
-
-
-    cargarPrealertas();
+    }
 
 
-  } catch (error) {
-
-    console.log(error);
-
-
-    alert(
-      "Error actualizando estado: " +
-      error.message
-    );
-
-  }
-
-};
+    const estadoNuevo =
