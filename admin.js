@@ -1529,13 +1529,7 @@ document
   });
   
 
-  alert(
-    "✅ PAQUETE ENCONTRADO\n\n" +
-    "Tracking: " +
-    (paquete.tracking || codigoEscaneado) +
-    "\n\nEstado: " +
-    (paquete.estado || "Prealertado")
-  );
+  
 
 } catch (error) {
 
