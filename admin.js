@@ -1192,7 +1192,7 @@ onAuthStateChanged(
 
 
 // ======================================================
-// ESCÁNER DE PAQUETES
+// ESCÁNER DE CÓDIGOS DE BARRAS - TRACKING
 // ======================================================
 
 let escanerQR = null;
@@ -1221,6 +1221,7 @@ async function abrirEscaner() {
   resultado.textContent =
     "📷 Preparando cámara...";
 
+  // Cerrar escáner anterior
   if (escanerQR) {
     try {
       await escanerQR.stop();
@@ -1237,6 +1238,10 @@ async function abrirEscaner() {
 
   try {
 
+    // ==================================================
+    // CONFIGURACIÓN PARA CÓDIGOS DE BARRAS
+    // ==================================================
+
     await escanerQR.start(
 
       {
@@ -1245,10 +1250,24 @@ async function abrirEscaner() {
 
       {
         fps: 10,
+
         qrbox: {
-          width: 300,
-          height: 300
-        }
+          width: 350,
+          height: 150
+        },
+
+        // Formatos que vamos a aceptar
+        formatsToSupport: [
+          Html5QrcodeSupportedFormats.CODE_128,
+          Html5QrcodeSupportedFormats.CODE_39,
+          Html5QrcodeSupportedFormats.CODE_93,
+          Html5QrcodeSupportedFormats.CODABAR,
+          Html5QrcodeSupportedFormats.EAN_13,
+          Html5QrcodeSupportedFormats.EAN_8,
+          Html5QrcodeSupportedFormats.UPC_A,
+          Html5QrcodeSupportedFormats.UPC_E
+        ]
+
       },
 
       async (codigoEscaneado) => {
@@ -1260,28 +1279,50 @@ async function abrirEscaner() {
         escaneando = false;
 
         console.log(
-          "CÓDIGO ESCANEADO:",
+          "TRACKING ESCANEADO:",
           codigoEscaneado
         );
 
+        // Mostrar tracking
         resultado.textContent =
-          "✅ Código leído: " +
+          "✅ Tracking leído: " +
           codigoEscaneado;
 
-        await reproducirSonido();
+        // Sonido
+        if (typeof reproducirSonido === "function") {
+          await reproducirSonido();
+        }
 
+        // Detener cámara
         await detenerEscaner();
 
+        // Mostrar tracking
         alert(
-          "📦 Código escaneado:\n\n" +
+          "📦 TRACKING ESCANEADO:\n\n" +
           codigoEscaneado
         );
+
+        // ==================================================
+        // AQUÍ DESPUÉS CONECTAREMOS FIREBASE
+        // ==================================================
+        //
+        // El siguiente paso será:
+        //
+        // código de barras
+        //       ↓
+        // tracking
+        //       ↓
+        // buscar paquete en Firestore
+        //       ↓
+        // cargar información del paquete
+        //
+        // ==================================================
 
       },
 
       (errorMessage) => {
 
-        // No mostramos errores mientras busca el código.
+        // No mostramos errores mientras busca.
         // Es normal que aparezcan mientras la cámara está activa.
 
       }
@@ -1289,7 +1330,7 @@ async function abrirEscaner() {
     );
 
     resultado.textContent =
-      "📷 Apunta la cámara al código del paquete.";
+      "📷 Apunta la cámara al código de barras del paquete.";
 
   } catch (error) {
 
@@ -1383,5 +1424,6 @@ if (btnCerrarScanner) {
     detenerEscaner
   );
 
+}
 }
 
