@@ -1257,7 +1257,7 @@ async function abrirEscaner() {
         },
 
         // Formatos que vamos a aceptar
-        formatsToSupport: [
+        
           formatsToSupport: [
   Html5QrcodeSupportedFormats.CODE_128,
   Html5QrcodeSupportedFormats.CODE_39,
