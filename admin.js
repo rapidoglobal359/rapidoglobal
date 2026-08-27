@@ -1249,26 +1249,37 @@ async function abrirEscaner() {
       },
 
       {
-        fps: 10,
+  fps: 15,
 
-        qrbox: {
-          width: 350,
-          height: 150
-        },
+  qrbox: function(viewfinderWidth, viewfinderHeight) {
 
-        // Formatos que vamos a aceptar
-        
-          formatsToSupport: [
-  Html5QrcodeSupportedFormats.CODE_128,
-  Html5QrcodeSupportedFormats.CODE_39,
-  Html5QrcodeSupportedFormats.CODE_93,
-  Html5QrcodeSupportedFormats.EAN_13,
-  Html5QrcodeSupportedFormats.EAN_8,
-  Html5QrcodeSupportedFormats.UPC_A,
-  Html5QrcodeSupportedFormats.UPC_E
-]
-      },
+    return {
+      width: Math.floor(viewfinderWidth * 0.90),
+      height: Math.min(
+        220,
+        Math.floor(viewfinderHeight * 0.35)
+      )
+    };
 
+  },
+
+  formatsToSupport: [
+
+    Html5QrcodeSupportedFormats.CODE_128,
+    Html5QrcodeSupportedFormats.CODE_39,
+    Html5QrcodeSupportedFormats.CODE_93,
+    Html5QrcodeSupportedFormats.CODABAR,
+    Html5QrcodeSupportedFormats.ITF,
+
+    Html5QrcodeSupportedFormats.EAN_13,
+    Html5QrcodeSupportedFormats.EAN_8,
+    Html5QrcodeSupportedFormats.UPC_A,
+    Html5QrcodeSupportedFormats.UPC_E
+
+  ]
+
+},
+      
       async (codigoEscaneado) => {
 
         if (!escaneando) {
