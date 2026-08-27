@@ -1615,7 +1615,7 @@ async function detenerEscaner() {
     );
 
   if (contenedor) {
-    contenedor.style.display = "none";
+    contenedor.style.display = "block";
   }
 
 }
