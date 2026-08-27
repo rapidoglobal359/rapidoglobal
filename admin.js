@@ -1354,6 +1354,37 @@ try {
   const paquete =
     documento.data();
 
+  let nombreCliente = "No disponible";
+let codigoCliente = "No disponible";
+let correoCliente = paquete.correo || "No disponible";
+
+if (paquete.uid) {
+
+  const consultaCliente = query(
+    collection(db, "usuarios"),
+    where("uid", "==", paquete.uid)
+  );
+
+  const snapshotCliente =
+    await getDocs(consultaCliente);
+
+  if (!snapshotCliente.empty) {
+
+    const datosCliente =
+      snapshotCliente.docs[0].data();
+
+    nombreCliente =
+      datosCliente.nombre || "No disponible";
+
+    codigoCliente =
+      datosCliente.codigo || "No disponible";
+
+    correoCliente =
+      datosCliente.correo ||
+      paquete.correo ||
+      "No disponible";
+  }
+}  
   console.log(
     "📦 PAQUETE ENCONTRADO:",
     paquete
