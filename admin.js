@@ -1425,5 +1425,5 @@ if (btnCerrarScanner) {
   );
 
 }
-}
+
 
