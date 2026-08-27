@@ -1313,21 +1313,105 @@ async function abrirEscaner() {
           codigoEscaneado
         );
 
-        // ==================================================
-        // AQUÍ DESPUÉS CONECTAREMOS FIREBASE
-        // ==================================================
-        //
-        // El siguiente paso será:
-        //
-        // código de barras
-        //       ↓
-        // tracking
-        //       ↓
-        // buscar paquete en Firestore
-        //       ↓
-        // cargar información del paquete
-        //
-        // ==================================================
+       // ==================================================
+// BUSCAR TRACKING EN FIRESTORE
+// ==================================================
+
+try {
+
+  resultado.textContent =
+    "🔎 Buscando paquete...";
+
+  const consultaTracking = query(
+    collection(db, "prealertas"),
+    where("tracking", "==", codigoEscaneado)
+  );
+
+  const snapshotTracking =
+    await getDocs(consultaTracking);
+
+  if (snapshotTracking.empty) {
+
+    resultado.innerHTML =
+      "❌ No se encontró ningún paquete con el tracking:<br><br>" +
+      "<strong>" +
+      codigoEscaneado +
+      "</strong>";
+
+    alert(
+      "❌ PAQUETE NO ENCONTRADO\n\n" +
+      "Tracking: " +
+      codigoEscaneado
+    );
+
+    return;
+
+  }
+
+  const documento =
+    snapshotTracking.docs[0];
+
+  const paquete =
+    documento.data();
+
+  console.log(
+    "📦 PAQUETE ENCONTRADO:",
+    paquete
+  );
+
+  resultado.innerHTML = `
+
+    <div style="
+      background:#f8faff;
+      padding:20px;
+      border-radius:15px;
+      border:2px solid #003366;
+    ">
+
+      <h3 style="color:#003366;">
+        📦 Paquete encontrado
+      </h3>
+
+      <p>
+        <strong>Tracking:</strong><br>
+        ${paquete.tracking || codigoEscaneado}
+      </p>
+
+      <p>
+        <strong>Estado:</strong><br>
+        ${paquete.estado || "Prealertado"}
+      </p>
+
+    </div>
+
+  `;
+
+  alert(
+    "✅ PAQUETE ENCONTRADO\n\n" +
+    "Tracking: " +
+    (paquete.tracking || codigoEscaneado) +
+    "\n\nEstado: " +
+    (paquete.estado || "Prealertado")
+  );
+
+} catch (error) {
+
+  console.error(
+    "ERROR BUSCANDO TRACKING:",
+    error
+  );
+
+  resultado.innerHTML =
+    "❌ Error buscando el paquete.<br><br>" +
+    error.message;
+
+  alert(
+    "❌ ERROR BUSCANDO PAQUETE\n\n" +
+    error.message
+  );
+
+}
+        
 
       },
 
