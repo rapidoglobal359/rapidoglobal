@@ -1250,7 +1250,7 @@ async function abrirEscaner() {
       },
 
       {
-  fps: 15,
+  fps: 30,
 
   qrbox: function(viewfinderWidth, viewfinderHeight) {
 
