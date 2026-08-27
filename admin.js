@@ -11,9 +11,10 @@ import {
   getDocs,
   doc,
   updateDoc,
-  onSnapshot
+  onSnapshot,
+  query,
+  where
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-
 
 // ======================================================
 // VARIABLES
