@@ -1404,14 +1404,29 @@ if (paquete.uid) {
     </h3>
 
     <p>
-      <strong>Tracking:</strong><br>
-      ${paquete.tracking || codigoEscaneado}
-    </p>
+  <strong>📦 Tracking:</strong><br>
+  ${paquete.tracking || codigoEscaneado}
+</p>
 
-    <p>
-      <strong>Estado actual:</strong><br>
-      ${paquete.estado || "Prealertado"}
-    </p>
+<p>
+  <strong>👤 Cliente:</strong><br>
+  ${nombreCliente}
+</p>
+
+<p>
+  <strong>🆔 Código del cliente:</strong><br>
+  ${codigoCliente}
+</p>
+
+<p>
+  <strong>📧 Correo:</strong><br>
+  ${correoCliente}
+</p>
+
+<p>
+  <strong>📋 Estado actual:</strong><br>
+  ${paquete.estado || "Prealertado"}
+</p>    
 
     <label>
       <strong>🔄 Cambiar estado:</strong>
