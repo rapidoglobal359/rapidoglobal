@@ -1189,3 +1189,199 @@ onAuthStateChanged(
 
   }
 );
+
+
+// ======================================================
+// ESCÁNER DE PAQUETES
+// ======================================================
+
+let escanerQR = null;
+let escaneando = false;
+
+
+// ======================================================
+// ABRIR ESCÁNER
+// ======================================================
+
+async function abrirEscaner() {
+
+  const contenedor =
+    document.getElementById("scannerContainer");
+
+  const resultado =
+    document.getElementById("resultadoEscaneo");
+
+  if (!contenedor) {
+    console.error("No existe scannerContainer");
+    return;
+  }
+
+  contenedor.style.display = "block";
+
+  resultado.textContent =
+    "📷 Preparando cámara...";
+
+  if (escanerQR) {
+    try {
+      await escanerQR.stop();
+      await escanerQR.clear();
+    } catch (error) {
+      console.log("Escáner anterior cerrado.");
+    }
+  }
+
+  escanerQR =
+    new Html5Qrcode("reader");
+
+  escaneando = true;
+
+  try {
+
+    await escanerQR.start(
+
+      {
+        facingMode: "environment"
+      },
+
+      {
+        fps: 10,
+        qrbox: {
+          width: 250,
+          height: 250
+        }
+      },
+
+      async (codigoEscaneado) => {
+
+        if (!escaneando) {
+          return;
+        }
+
+        escaneando = false;
+
+        console.log(
+          "CÓDIGO ESCANEADO:",
+          codigoEscaneado
+        );
+
+        resultado.textContent =
+          "✅ Código leído: " +
+          codigoEscaneado;
+
+        await reproducirSonido();
+
+        await detenerEscaner();
+
+        alert(
+          "📦 Código escaneado:\n\n" +
+          codigoEscaneado
+        );
+
+      },
+
+      (errorMessage) => {
+
+        // No mostramos errores mientras busca el código.
+        // Es normal que aparezcan mientras la cámara está activa.
+
+      }
+
+    );
+
+    resultado.textContent =
+      "📷 Apunta la cámara al código del paquete.";
+
+  } catch (error) {
+
+    console.error(
+      "ERROR ABRIENDO CÁMARA:",
+      error
+    );
+
+    resultado.innerHTML =
+      "❌ No se pudo abrir la cámara.<br><br>" +
+      error.message;
+
+    escaneando = false;
+
+  }
+
+}
+
+
+// ======================================================
+// CERRAR ESCÁNER
+// ======================================================
+
+async function detenerEscaner() {
+
+  escaneando = false;
+
+  if (escanerQR) {
+
+    try {
+
+      await escanerQR.stop();
+
+      await escanerQR.clear();
+
+    } catch (error) {
+
+      console.log(
+        "Error cerrando escáner:",
+        error
+      );
+
+    }
+
+  }
+
+  const contenedor =
+    document.getElementById(
+      "scannerContainer"
+    );
+
+  if (contenedor) {
+    contenedor.style.display = "none";
+  }
+
+}
+
+
+// ======================================================
+// BOTÓN ESCANEAR
+// ======================================================
+
+const btnEscanear =
+  document.getElementById(
+    "btnEscanear"
+  );
+
+if (btnEscanear) {
+
+  btnEscanear.addEventListener(
+    "click",
+    abrirEscaner
+  );
+
+}
+
+
+// ======================================================
+// BOTÓN CERRAR ESCÁNER
+// ======================================================
+
+const btnCerrarScanner =
+  document.getElementById(
+    "btnCerrarScanner"
+  );
+
+if (btnCerrarScanner) {
+
+  btnCerrarScanner.addEventListener(
+    "click",
+    detenerEscaner
+  );
+
+}
+
