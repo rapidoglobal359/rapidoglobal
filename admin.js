@@ -1361,30 +1361,173 @@ try {
 
   resultado.innerHTML = `
 
-    <div style="
-      background:#f8faff;
-      padding:20px;
-      border-radius:15px;
-      border:2px solid #003366;
-    ">
+  <div style="
+    background:#f8faff;
+    padding:20px;
+    border-radius:15px;
+    border:2px solid #003366;
+  ">
 
-      <h3 style="color:#003366;">
-        📦 Paquete encontrado
-      </h3>
+    <h3 style="color:#003366;">
+      📦 Paquete encontrado
+    </h3>
 
-      <p>
-        <strong>Tracking:</strong><br>
-        ${paquete.tracking || codigoEscaneado}
-      </p>
+    <p>
+      <strong>Tracking:</strong><br>
+      ${paquete.tracking || codigoEscaneado}
+    </p>
 
-      <p>
-        <strong>Estado:</strong><br>
-        ${paquete.estado || "Prealertado"}
-      </p>
+    <p>
+      <strong>Estado actual:</strong><br>
+      ${paquete.estado || "Prealertado"}
+    </p>
 
-    </div>
+    <label>
+      <strong>🔄 Cambiar estado:</strong>
+    </label>
 
-  `;
+    <select
+      id="estadoEscaneado-${documento.id}"
+      style="
+        width:100%;
+        padding:12px;
+        margin-top:8px;
+        border-radius:10px;
+        border:1px solid #ccc;
+        font-size:16px;
+      "
+    >
+
+      <option value="Prealertado"
+        ${paquete.estado === "Prealertado" ? "selected" : ""}>
+        Prealertado
+      </option>
+
+      <option value="Recibido en bodega"
+        ${paquete.estado === "Recibido en bodega" ? "selected" : ""}>
+        Recibido en bodega
+      </option>
+
+      <option value="En tránsito"
+        ${paquete.estado === "En tránsito" ? "selected" : ""}>
+        En tránsito
+      </option>
+
+      <option value="Llegó a Venezuela"
+        ${paquete.estado === "Llegó a Venezuela" ? "selected" : ""}>
+        Llegó a Venezuela
+      </option>
+
+      <option value="Entregado"
+        ${paquete.estado === "Entregado" ? "selected" : ""}>
+        Entregado
+      </option>
+
+    </select>
+
+    <button
+      type="button"
+      id="btnGuardarEstadoEscaneado"
+      style="
+        width:100%;
+        padding:14px;
+        margin-top:15px;
+        border:0;
+        border-radius:10px;
+        background:#003366;
+        color:white;
+        font-size:16px;
+        font-weight:bold;
+        cursor:pointer;
+      "
+    >
+      💾 Guardar cambio
+    </button>
+
+  </div>
+
+`;
+
+document
+  .getElementById("btnGuardarEstadoEscaneado")
+  .addEventListener("click", async () => {
+
+    const selector =
+      document.getElementById(
+        "estadoEscaneado-" + documento.id
+      );
+
+    const nuevoEstado =
+      selector.value;
+
+    try {
+
+      const referencia =
+        doc(
+          db,
+          "prealertas",
+          documento.id
+        );
+
+      await updateDoc(
+        referencia,
+        {
+          estado: nuevoEstado
+        }
+      );
+
+      alert(
+        "✅ ESTADO ACTUALIZADO\n\n" +
+        "Tracking: " +
+        (paquete.tracking || codigoEscaneado) +
+        "\n\nNuevo estado: " +
+        nuevoEstado
+      );
+
+      resultado.innerHTML = `
+
+        <div style="
+          background:#f0fff4;
+          padding:20px;
+          border-radius:15px;
+          border:2px solid #28a745;
+          text-align:center;
+        ">
+
+          <h3>
+            ✅ Estado actualizado
+          </h3>
+
+          <p>
+            <strong>Tracking:</strong><br>
+            ${paquete.tracking || codigoEscaneado}
+          </p>
+
+          <p>
+            <strong>Nuevo estado:</strong><br>
+            ${nuevoEstado}
+          </p>
+
+        </div>
+
+      `;
+
+    } catch (error) {
+
+      console.error(
+        "ERROR ACTUALIZANDO ESTADO:",
+        error
+      );
+
+      alert(
+        "❌ ERROR ACTUALIZANDO ESTADO\n\n" +
+        error.message
+      );
+
+    }
+
+  });
+  
 
   alert(
     "✅ PAQUETE ENCONTRADO\n\n" +
