@@ -1565,14 +1565,16 @@ if (
       errorCorreo
     );
 
-    alert(
-      "⚠️ El estado se actualizó correctamente,\n" +
-      "pero no se pudo enviar el correo al cliente.\n\n" +
-      errorCorreo.text ||
-      errorCorreo.message ||
-      "Error desconocido"
-    );
-
+   alert(
+  "⚠️ El estado se actualizó correctamente,\n" +
+  "pero no se pudo enviar el correo al cliente.\n\n" +
+  (
+    errorCorreo.text ||
+    errorCorreo.message ||
+    "Error desconocido"
+  )
+);
+    
   }
 
 }
