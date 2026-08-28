@@ -1,75 +1,24 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
+<!DOCTYPE html><html lang="es"><head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Panel de Administrador | Rápido Global</title>
-
-<link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<div class="contenedor">
-
-<img src="ChatGPT Image 27 de jul. de 2026 16_26_44.png"
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Panel de Administrador | Rápido Global</title><link rel="stylesheet" href="style.css">
+</head><body><div class="contenedor"><img src="ChatGPT Image 27 de jul. de 2026 16_26_44.png"
 alt="Rápido Global"
 style="display:block; margin:20px auto; width:180px;">
 
-<h1>🛠 Panel de Administrador</h1>
-
-<p style="text-align:center;">
+<h1>🛠 Panel de Administrador</h1><p style="text-align:center;">
 Administra clientes, prealertas y estados de los paquetes.
-</p>
-
-<hr>
-
-<h2>🔎 Buscar</h2>
-
-<input
+</p><hr><h2>🔎 Buscar</h2><input
 type="text"
 id="buscar"
 placeholder="Código, correo o tracking">
 
 <button id="btnBuscar">
 Buscar
-</button>
-
-<hr>
-
-<h2>📷 Escanear paquete</h2>
-
-<button id="btnEscanear">
+</button><hr><h2>📷 Escanear paquete</h2><button id="btnEscanear">
 📷 Escanear paquete
-</button>
-
-<div id="scannerContainer" style="display:none; margin-top:20px;">
-
-  <div id="reader" style="width:100%; max-width:500px; margin:auto;"></div>
-
-  <button id="btnCerrarScanner" style="margin-top:15px;">
+</button><div id="scannerContainer" style="display:none; margin-top:20px;">  <div id="reader" style="width:100%; max-width:500px; margin:auto;"></div>  <button id="btnCerrarScanner" style="margin-top:15px;">
     ❌ Cerrar escáner
-  </button>
-
-  <p id="resultadoEscaneo" style="text-align:center; font-weight:bold;"></p>
-
-</div>
-
-<hr>
-
-<h2>📦 Prealertas</h2>
-
-<div id="listaAdmin">
+  </button>  <p id="resultadoEscaneo" style="text-align:center; font-weight:bold;"></p></div><hr><h2>📦 Prealertas</h2><div id="listaAdmin">
 <p>Cargando información...</p>
-</div>
-
-</div>
-
-<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-
-<script type="module" src="admin.js"></script>
-
-</body>
+</div></div><script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script><!-- EmailJS --><script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script><script type="module" src="admin.js"></script></body>
 </html>
