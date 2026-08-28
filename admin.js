@@ -24,6 +24,8 @@ emailjs.init({
   publicKey: "OidIPytrvyMhoNBMi"
 });
 
+console.log("✅ EmailJS cargado correctamente");
+
 // ======================================================
 // VARIABLES
 // ======================================================
