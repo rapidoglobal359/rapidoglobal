@@ -1530,6 +1530,53 @@ document
         }
       );
 
+      // ==================================================
+// ENVIAR CORREO AL CLIENTE
+// ==================================================
+
+if (
+  nuevoEstado === "Recibido en bodega" ||
+  nuevoEstado === "En tránsito"
+) {
+
+  try {
+
+    await emailjs.send(
+      "service_PBVCRQ",
+      "template_1R3AQF9",
+      {
+        to_email: correoCliente,
+        email: correoCliente,
+        nombre: nombreCliente,
+        tracking: paquete.tracking || codigoEscaneado,
+        estado: nuevoEstado
+      }
+    );
+
+    console.log(
+      "📧 CORREO ENVIADO A:",
+      correoCliente
+    );
+
+  } catch (errorCorreo) {
+
+    console.error(
+      "❌ ERROR ENVIANDO CORREO:",
+      errorCorreo
+    );
+
+    alert(
+      "⚠️ El estado se actualizó correctamente,\n" +
+      "pero no se pudo enviar el correo al cliente.\n\n" +
+      errorCorreo.text ||
+      errorCorreo.message ||
+      "Error desconocido"
+    );
+
+  }
+
+}
+      
       alert(
         "✅ ESTADO ACTUALIZADO\n\n" +
         "Tracking: " +
