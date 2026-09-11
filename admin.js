@@ -1008,37 +1008,49 @@ function crearTableroPrealertas() {
   // RESPONSIVE
   // ============================================
 
-  const estiloResponsive =
-    document.createElement("style");
+const estiloResponsive =
+  document.createElement("style");
 
-  estiloResponsive.id =
-    "estiloTableroPrealertas";
+estiloResponsive.id =
+  "estiloTableroPrealertas";
 
-  estiloResponsive.textContent = `
+estiloResponsive.textContent = `
 
-    @media (max-width: 1000px) {
+  /* ==========================================
+     LAPTOP Y COMPUTADORAS
+     3 columnas una al lado de la otra
+     ========================================== */
 
-      #tableroPrealertasAdmin {
-        grid-template-columns:
-          1fr !important;
-      }
+  #tableroPrealertasAdmin {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr)) !important;
+  }
 
+
+  /* ==========================================
+     TELÉFONO
+     Mantener las 3 columnas lado a lado
+     ========================================== */
+
+  @media (max-width: 600px) {
+
+    #tableroPrealertasAdmin {
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr)) !important;
+
+      gap: 6px !important;
     }
 
-    @media (max-width: 600px) {
-
-      #tableroPrealertasAdmin {
-        gap:12px !important;
-      }
-
-      #tableroPrealertasAdmin > div {
-        padding:10px !important;
-      }
-
+    #tableroPrealertasAdmin > div {
+      padding: 7px !important;
+      min-width: 0 !important;
     }
 
-  `;
+  }
 
+`;
+
+  
   document.head.appendChild(
     estiloResponsive
   );
