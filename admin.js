@@ -473,6 +473,106 @@ function mostrarTodosLosUsuarios() {
 }
 
 // ======================================================
+// BUSCADOR PRINCIPAL - CÓDIGO, CORREO O TRACKING
+// ======================================================
+
+function buscarPrincipal() {
+
+  const input =
+    document.getElementById("buscar");
+
+  const textoOriginal =
+    input.value.trim();
+
+  if (!textoOriginal) {
+
+    alert(
+      "✏️ Escribe un código RG, correo o tracking."
+    );
+
+    return;
+
+  }
+
+  const busqueda =
+    normalizarTexto(textoOriginal);
+
+  const paquetesEncontrados =
+    Object.values(datosPrealertas).filter(
+      (paquete) => {
+
+        const tracking =
+          normalizarTexto(
+            paquete.tracking
+          );
+
+        const correo =
+          normalizarTexto(
+            paquete.correo ||
+            (paquete.cliente &&
+             (
+               paquete.cliente.correo ||
+               paquete.cliente.email
+             ))
+          );
+
+        const codigo =
+          normalizarTexto(
+            paquete.cliente &&
+            paquete.cliente.codigo
+          );
+
+        return (
+          tracking.includes(busqueda) ||
+          correo.includes(busqueda) ||
+          codigo.includes(busqueda)
+        );
+
+      }
+    );
+
+  if (paquetesEncontrados.length === 0) {
+
+    alert(
+      "❌ No se encontró ningún paquete con:\n\n" +
+      textoOriginal
+    );
+
+    return;
+
+  }
+
+  const paquete =
+    paquetesEncontrados[0];
+
+  const id =
+    paquete.id;
+
+  const tarjeta =
+    document.getElementById(
+      "tarjetaPaquete-" + id
+    );
+
+  if (tarjeta) {
+
+    tarjeta.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+    tarjeta.style.outline =
+      "4px solid #0A84FF";
+
+    setTimeout(() => {
+
+      tarjeta.style.outline = "";
+
+    }, 3000);
+
+  }
+
+}
+// ======================================================
 // BUSCAR USUARIO
 // ======================================================
 
