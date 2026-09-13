@@ -1774,6 +1774,46 @@ async function cargarPrealertas() {
 
 }
 
+// ======================================================
+// ELIMINAR PREALERTA
+// ======================================================
+
+async function eliminarPrealerta(id) {
+
+  if (!confirm("¿Seguro que quieres eliminar esta prealerta?")) {
+    return;
+  }
+
+  try {
+
+    await deleteDoc(
+      doc(
+        db,
+        "prealertas",
+        id
+      )
+    );
+
+    console.log(
+      "🗑️ PREALERTA ELIMINADA:",
+      id
+    );
+
+  } catch (error) {
+
+    console.error(
+      "ERROR ELIMINANDO PREALERTA:",
+      error
+    );
+
+    alert(
+      "❌ Error eliminando la prealerta:\n\n" +
+      error.message
+    );
+
+  }
+
+}
 
 // ======================================================
 // CAMBIAR ESTADO DESDE TARJETA
