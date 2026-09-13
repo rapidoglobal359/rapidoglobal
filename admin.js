@@ -1316,10 +1316,29 @@ function crearTarjetaPrealerta(
 
   }
 
+  const botonEliminar =
+    tarjeta.querySelector(
+      "#btnEliminar-" + id
+    );
+
+  if (botonEliminar) {
+
+    botonEliminar.addEventListener(
+      "click",
+      async () => {
+
+        await eliminarPrealerta(
+          id
+        );
+
+      }
+    );
+
+  }
+
   return tarjeta;
 
 }
-
 
 // ======================================================
 // OBTENER COLUMNA SEGÚN ESTADO
