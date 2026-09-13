@@ -1290,11 +1290,32 @@ function crearTarjetaPrealerta(
       "
     >
 
-      💾 Guardar cambio
+    💾 Guardar cambio
 
     </button>
 
-  `;
+    <button
+      type="button"
+      id="btnEliminar-${id}"
+      style="
+        width:100%;
+        padding:12px;
+        margin-top:10px;
+        border:0;
+        border-radius:10px;
+        background:#dc3545;
+        color:white;
+        font-size:15px;
+        font-weight:bold;
+        cursor:pointer;
+      "
+    >
+
+      🗑️ Eliminar prealerta
+
+    </button>
+
+  `;     
 
   const boton =
     tarjeta.querySelector(
