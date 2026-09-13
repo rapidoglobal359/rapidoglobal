@@ -3112,6 +3112,21 @@ if (btnCerrarScanner) {
 
 }
 
+// ======================================================
+// BOTÓN BUSCAR PRINCIPAL
+// ======================================================
+
+const btnBuscarPrincipal =
+  document.getElementById("btnBuscar");
+
+if (btnBuscarPrincipal) {
+
+  btnBuscarPrincipal.addEventListener(
+    "click",
+    buscarPrincipal
+  );
+
+}
 
 // ======================================================
 // FIN DE ADMIN.JS
