@@ -24,9 +24,21 @@
     <a href="#contacto">Contacto</a>
   </nav>
 
-  <a href="https://wa.me/584228440410" class="btn-whatsapp">
-    WhatsApp
-  </a>
+  <div class="acciones-header">
+
+    <a href="https://wa.me/584228440410" class="btn-whatsapp">
+      WhatsApp
+    </a>
+
+    <button
+      type="button"
+      class="btn-crear-header"
+      onclick="mostrarRegistro()"
+    >
+      CREAR MI CASILLERO
+    </button>
+
+  </div>
 
 </header>
 
@@ -47,7 +59,9 @@
   </p>
 
 
+  <!-- ============================= -->
   <!-- ACCESO DE CLIENTE -->
+  <!-- ============================= -->
 
   <section class="acceso-cliente">
 
@@ -74,14 +88,6 @@
     </button>
 
     <button
-      type="button"
-      class="btn-crear-casillero"
-      onclick="mostrarRegistro()"
-    >
-      📦 CREAR MI CASILLERO
-    </button>
-
-    <button
       id="cerrarSesion"
       type="button"
     >
@@ -93,7 +99,9 @@
   </section>
 
 
-  <!-- REGISTRO / CREAR CASILLERO -->
+  <!-- ============================= -->
+  <!-- CREAR CASILLERO -->
+  <!-- ============================= -->
 
   <section
     id="registroCasillero"
@@ -152,7 +160,9 @@
   </section>
 
 
+  <!-- ============================= -->
   <!-- TARIFAS -->
+  <!-- ============================= -->
 
   <section id="tarifas">
 
@@ -180,7 +190,9 @@
   </section>
 
 
+  <!-- ============================= -->
   <!-- RASTREO -->
+  <!-- ============================= -->
 
   <section id="rastreo">
 
@@ -207,7 +219,9 @@
   </section>
 
 
+  <!-- ============================= -->
   <!-- CONTACTO -->
+  <!-- ============================= -->
 
   <section id="contacto">
 
@@ -238,14 +252,10 @@
 </main>
 
 
-<!-- FIREBASE -->
-
 <script type="module" src="firebase.js"></script>
 
 <script type="module" src="app.js"></script>
 
-
-<!-- CAMBIO ENTRE ACCESO Y REGISTRO -->
 
 <script>
 
@@ -278,8 +288,6 @@ function mostrarAcceso() {
 
 </script>
 
-
-<!-- CHATBASE -->
 
 <script>
 
