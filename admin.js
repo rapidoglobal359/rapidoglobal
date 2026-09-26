@@ -1458,6 +1458,39 @@ function crearTarjetaPrealerta(
 
   }
 
+  const botonVerEntrega =
+    tarjeta.querySelector(
+      "#btnVerEntrega-" + id
+    );
+
+  if (botonVerEntrega) {
+
+    botonVerEntrega.addEventListener(
+      "click",
+      async () => {
+
+        const prealerta =
+          datosPrealertas[id];
+
+        if (!prealerta) {
+
+          alert(
+            "❌ No se encontraron los datos de esta prealerta."
+          );
+
+          return;
+
+        }
+
+        await verDatosEntrega(
+          prealerta.uid
+        );
+
+      }
+    );
+
+  }
+  
   const botonEliminar =
     tarjeta.querySelector(
       "#btnEliminar-" + id
