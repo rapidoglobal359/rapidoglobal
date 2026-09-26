@@ -12,14 +12,13 @@
 <body>
 
 <header class="header">
+
   <div class="logo">
-    <img src="ChatGPT Image 27 de jul. de 2026 16_26_44.png" alt="Rápido Global" height="60">
-  
+    <img src="ChatGPT Image 27 de jul. de 2026 16_26_44.png" alt="Rápido Global">
   </div>
 
   <nav>
     <a href="#inicio">Inicio</a>
-    <a href="#casillero">Casillero</a>
     <a href="#tarifas">Tarifas</a>
     <a href="#rastreo">Rastrear</a>
     <a href="#contacto">Contacto</a>
@@ -28,123 +27,327 @@
   <a href="https://wa.me/584228440410" class="btn-whatsapp">
     WhatsApp
   </a>
+
 </header>
 
-<!-- Aquí continúa el resto de tu código actual -->
-<div class="contenedor" id="inicio">
-  
-<img src="ChatGPT Image 27 de jul. de 2026 16_26_44.png" alt="Rápido Global" style="display:block; margin:20px auto; width:220px;">
-  
+
+<main class="contenedor" id="inicio">
+
+  <img
+    src="ChatGPT Image 27 de jul. de 2026 16_26_44.png"
+    alt="Rápido Global"
+    class="logo-principal"
+  >
+
   <h1>🚚 RÁPIDO GLOBAL</h1>
 
-<p style="text-align:center; color:#555; margin-bottom:20px;">
-Tu casillero internacional desde Colombia para Venezuela.
-Compra online y recibe tus paquetes de forma segura.
-</p>
-
-<section id="casillero">
-  
-  <h2>Registro de Cliente</h2>
-
-<input type="text" id="nombre" placeholder="Nombre completo">
-
-<input type="text" id="cedula" placeholder="Número de cédula">
-
-<input type="email" id="correo" placeholder="Correo electrónico">
-
-<input type="tel" id="telefono" placeholder="Teléfono">
-
-<input type="password" id="password" placeholder="Contraseña">
+  <p class="descripcion">
+    Tu casillero internacional desde Colombia para Venezuela.<br>
+    Compra online y recibe tus paquetes de forma segura.
+  </p>
 
 
-<button id="registrar">
-Crear mi cuenta
-</button>
+  <!-- ACCESO DE CLIENTE -->
+
+  <section class="acceso-cliente">
+
+    <h2>🔐 Acceso de Cliente</h2>
+
+    <p>
+      Ingresa a tu cuenta para consultar la información de tu casillero.
+    </p>
+
+    <input
+      id="loginCorreo"
+      type="email"
+      placeholder="Correo electrónico"
+    >
+
+    <input
+      id="loginPassword"
+      type="password"
+      placeholder="Contraseña"
+    >
+
+    <button id="iniciarSesion">
+      Ingresar a mi casillero
+    </button>
+
+    <button
+      type="button"
+      class="btn-crear-casillero"
+      onclick="mostrarRegistro()"
+    >
+      📦 CREAR MI CASILLERO
+    </button>
+
+    <button
+      id="cerrarSesion"
+      type="button"
+    >
+      Cerrar sesión
+    </button>
+
+    <div id="cuentaUsuario"></div>
+
+  </section>
 
 
-<hr>
+  <!-- REGISTRO / CREAR CASILLERO -->
+
+  <section
+    id="registroCasillero"
+    class="registro-casillero"
+    style="display:none;"
+  >
+
+    <h2>📦 Crear mi casillero</h2>
+
+    <p>
+      Regístrate gratis y obtén tu código de cliente Rápido Global.
+    </p>
+
+    <input
+      type="text"
+      id="nombre"
+      placeholder="Nombre completo"
+    >
+
+    <input
+      type="text"
+      id="cedula"
+      placeholder="Número de cédula"
+    >
+
+    <input
+      type="email"
+      id="correo"
+      placeholder="Correo electrónico"
+    >
+
+    <input
+      type="tel"
+      id="telefono"
+      placeholder="Número de teléfono"
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Crear contraseña"
+    >
+
+    <button id="registrar">
+      Crear mi cuenta
+    </button>
+
+    <button
+      type="button"
+      class="btn-volver"
+      onclick="mostrarAcceso()"
+    >
+      ← Volver al acceso
+    </button>
+
+  </section>
 
 
-<h2>Acceso de Cliente</h2>
+  <!-- TARIFAS -->
 
-<input id="loginCorreo" type="email" placeholder="Correo electrónico">
+  <section id="tarifas">
 
-<input id="loginPassword" type="password" placeholder="Contraseña">
+    <h2>💰 Tarifas</h2>
+
+    <p>
+      <strong>Hasta 1 kg:</strong> USD $10.00 (tarifa mínima).
+    </p>
+
+    <p>
+      Si el paquete supera 1 kg, el costo se calcula según el peso exacto.
+    </p>
+
+    <ul>
+      <li>0.300 kg = USD $10.00</li>
+      <li>0.600 kg = USD $10.00</li>
+      <li>0.900 kg = USD $10.00</li>
+      <li>1.000 kg = USD $10.00</li>
+      <li>1.200 kg = USD $12.00</li>
+      <li>1.300 kg = USD $13.00</li>
+      <li>1.550 kg = USD $15.50</li>
+      <li>1.680 kg = USD $16.80</li>
+    </ul>
+
+  </section>
 
 
-<button id="iniciarSesion">
-Ingresar
-</button>
+  <!-- RASTREO -->
+
+  <section id="rastreo">
+
+    <h2>📦 Rastreo de Envíos</h2>
+
+    <p>
+      Escribe tu número de guía y contáctanos por WhatsApp
+      para conocer el estado de tu envío.
+    </p>
+
+    <input
+      type="text"
+      id="guia"
+      placeholder="Número de guía"
+    >
+
+    <a
+      href="https://wa.me/584228440410"
+      class="btn-whatsapp"
+    >
+      Consultar por WhatsApp
+    </a>
+
+  </section>
 
 
-<button id="cerrarSesion">
-Cerrar sesión
-</button>
+  <!-- CONTACTO -->
+
+  <section id="contacto">
+
+    <h2>📞 Contacto</h2>
+
+    <p>
+      <strong>WhatsApp:</strong> +58 422 844 0410
+    </p>
+
+    <p>
+      <strong>Correo:</strong> rapidoglobal359@gmail.com
+    </p>
+
+    <p>
+      <strong>Horario:</strong>
+      Lunes a Sábado de 8:00 a.m. a 6:00 p.m.
+    </p>
+
+    <a
+      href="https://wa.me/584228440410"
+      class="btn-whatsapp"
+    >
+      Escribir por WhatsApp
+    </a>
+
+  </section>
+
+</main>
 
 
-<div id="cuentaUsuario"></div>
-  
-</section>
-<section id="tarifas">
-
-<h2>💰 Tarifas</h2>
-
-<p><strong>Hasta 1 kg:</strong> USD $10.00 (tarifa mínima).</p>
-
-<p>Si el paquete supera 1 kg, el costo se calcula según el peso exacto.</p>
-
-<ul>
-    <li>0.300 kg = USD $10.00</li>
-    <li>0.600 kg = USD $10.00</li>
-    <li>0.900 kg = USD $10.00</li>
-    <li>1.000 kg = USD $10.00</li>
-    <li>1.200 kg = USD $12.00</li>
-    <li>1.300 kg = USD $13.00</li>
-    <li>1.550 kg = USD $15.50</li>
-    <li>1.680 kg = USD $16.80</li>
-</ul>
-
-</section>
-<section id="rastreo">
-
-<h2>📦 Rastreo de Envíos</h2>
-
-<p>
-Escribe tu número de guía y contáctanos por WhatsApp para conocer el estado de tu envío.
-</p>
-
-<input type="text" id="guia" placeholder="Número de guía">
-
-<a href="https://wa.me/584228440410" class="btn-whatsapp">
-Consultar por WhatsApp
-</a>
-
-</section>
-<section id="contacto">
-
-<h2>📞 Contacto</h2>
-
-<p><strong>WhatsApp:</strong> +58 422 844 0410</p>
-
-<p><strong>Correo:</strong> rapidoglobal359@gmail.com</p>
-
-<p><strong>Horario:</strong> Lunes a Sábado de 8:00 a.m. a 6:00 p.m.</p>
-
-<a href="https://wa.me/584228440410" class="btn-whatsapp">
-Escribir por WhatsApp
-</a>
-
-</section>
-
-</div>
-
+<!-- FIREBASE -->
 
 <script type="module" src="firebase.js"></script>
 
 <script type="module" src="app.js"></script>
 
+
+<!-- CAMBIO ENTRE ACCESO Y REGISTRO -->
+
 <script>
-(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="IOoTakuPMYMU003b-JgMK";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+
+function mostrarRegistro() {
+
+  document.querySelector(".acceso-cliente").style.display = "none";
+
+  document.getElementById("registroCasillero").style.display = "block";
+
+  document.getElementById("registroCasillero").scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+
+}
+
+
+function mostrarAcceso() {
+
+  document.getElementById("registroCasillero").style.display = "none";
+
+  document.querySelector(".acceso-cliente").style.display = "block";
+
+  document.querySelector(".acceso-cliente").scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+
+}
+
+</script>
+
+
+<!-- CHATBASE -->
+
+<script>
+
+(function(){
+
+  if(
+    !window.chatbase ||
+    window.chatbase("getState") !== "initialized"
+  ){
+
+    window.chatbase = (...arguments) => {
+
+      if(!window.chatbase.q){
+        window.chatbase.q = [];
+      }
+
+      window.chatbase.q.push(arguments);
+
+    };
+
+    window.chatbase = new Proxy(
+      window.chatbase,
+      {
+        get(target, prop){
+
+          if(prop === "q"){
+            return target.q;
+          }
+
+          return (...args) => target(prop, ...args);
+
+        }
+      }
+    );
+
+  }
+
+
+  const onLoad = function(){
+
+    const script = document.createElement("script");
+
+    script.src =
+      "https://www.chatbase.co/embed.min.js";
+
+    script.id =
+      "IOoTakuPMYMU003b-JgMK";
+
+    script.domain =
+      "www.chatbase.co";
+
+    document.body.appendChild(script);
+
+  };
+
+
+  if(document.readyState === "complete"){
+
+    onLoad();
+
+  }else{
+
+    window.addEventListener("load", onLoad);
+
+  }
+
+})();
+
 </script>
 
 </body>
