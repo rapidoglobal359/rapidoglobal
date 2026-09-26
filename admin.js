@@ -1397,6 +1397,26 @@ function crearTarjetaPrealerta(
 
     <button
       type="button"
+      id="btnVerEntrega-${id}"
+      style="
+        width:100%;
+        padding:12px;
+        margin-top:10px;
+        border:0;
+        border-radius:10px;
+        background:#198754;
+        color:white;
+        font-size:15px;
+        font-weight:bold;
+        cursor:pointer;
+      "
+    >
+
+      📍 Ver datos de entrega
+
+    </button>
+    <button
+      type="button"
       id="btnEliminar-${id}"
       style="
         width:100%;
