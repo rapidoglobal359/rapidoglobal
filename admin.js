@@ -1563,22 +1563,9 @@ async function verDatosEntrega(uid) {
       datosEntrega.empresaEnvio ||
       "No especificada";
 
-    const estado =
-      datosEntrega.estado ||
+    const tipoEntrega =
+      datosEntrega.tipoEntrega ||
       "No especificado";
-
-    const ciudad =
-      datosEntrega.ciudad ||
-      datosEntrega.municipio ||
-      "No especificada";
-
-    const oficina =
-      datosEntrega.oficina ||
-      "No especificada";
-
-    const direccion =
-      datosEntrega.direccion ||
-      "No especificada";
 
     const telefono =
       datosEntrega.telefono ||
@@ -1592,33 +1579,89 @@ async function verDatosEntrega(uid) {
       datosEntrega.observaciones ||
       "Ninguna";
 
-    alert(
+    let mensaje =
       "📍 DATOS DE ENTREGA\n\n" +
 
       "🚚 Empresa de envío: " +
       empresa + "\n\n" +
 
-      "📍 Estado: " +
-      estado + "\n\n" +
+      "📦 Tipo de entrega: " +
+      tipoEntrega + "\n\n";
 
-      "🏙️ Ciudad/Municipio: " +
-      ciudad + "\n\n" +
+    if (
+      tipoEntrega.toLowerCase() === "domicilio"
+    ) {
 
-      "🏢 Oficina: " +
-      oficina + "\n\n" +
+      mensaje +=
 
-      "🏠 Dirección: " +
-      direccion + "\n\n" +
+        "📍 Estado: " +
+        (datosEntrega.estadoDomicilio || "No especificado") +
+        "\n\n" +
+
+        "🏙️ Ciudad/Municipio: " +
+        (datosEntrega.ciudadDomicilio || "No especificada") +
+        "\n\n" +
+
+        "🏘️ Barrio/Urbanización: " +
+        (datosEntrega.barrioUrbanizacion || "No especificado") +
+        "\n\n" +
+
+        "🛣️ Calle/Avenida: " +
+        (datosEntrega.calleAvenida || "No especificada") +
+        "\n\n" +
+
+        "🏠 Número de casa: " +
+        (datosEntrega.numeroCasa || "No especificado") +
+        "\n\n" +
+
+        "🏠 Dirección: " +
+        (datosEntrega.direccionDomicilio || "No especificada") +
+        "\n\n" +
+
+        "📮 Código postal: " +
+        (datosEntrega.codigoPostal || "No especificado") +
+        "\n\n" +
+
+        "📌 Punto de referencia: " +
+        (datosEntrega.puntoReferencia || "No especificado") +
+        "\n\n";
+
+    } else {
+
+      mensaje +=
+
+        "📍 Estado: " +
+        (datosEntrega.estado || "No especificado") +
+        "\n\n" +
+
+        "🏙️ Ciudad: " +
+        (datosEntrega.ciudad || "No especificada") +
+        "\n\n" +
+
+        "🏢 Oficina: " +
+        (datosEntrega.oficina || "No especificada") +
+        "\n\n" +
+
+        "🏠 Dirección de oficina: " +
+        (datosEntrega.direccionOficina || "No especificada") +
+        "\n\n";
+
+    }
+
+    mensaje +=
 
       "📱 Teléfono: " +
-      telefono + "\n\n" +
+      telefono +
+      "\n\n" +
 
       "👤 Persona que recibe: " +
-      personaRecibe + "\n\n" +
+      personaRecibe +
+      "\n\n" +
 
       "📝 Observaciones: " +
-      observaciones
-    );
+      observaciones;
+
+    alert(mensaje);
 
   } catch (error) {
 
