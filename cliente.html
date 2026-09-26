@@ -23,6 +23,7 @@ style="display:block; margin:20px auto; width:180px;">
 <p style="text-align:center;">
 Aquí puedes consultar tus paquetes y prealertas.
 </p>
+
 <hr>
 
 <h2>👤 Mi Información</h2>
@@ -32,6 +33,7 @@ Aquí puedes consultar tus paquetes y prealertas.
 <p><strong>Código:</strong> <span id="codigoCliente">Cargando...</span></p>
 
 <p><strong>Correo:</strong> <span id="correoCliente">Cargando...</span></p>
+
 <hr>
 
 <h2>📦 Mis Paquetes</h2>
@@ -43,6 +45,7 @@ Paquetes recibidos: <strong id="paquetesRecibidos">0</strong>
 <p>
 Paquetes en tránsito: <strong id="paquetesTransito">0</strong>
 </p>
+
 <p>
 Paquetes llegados a Venezuela: <strong id="paquetesVenezuela">0</strong>
 </p>
@@ -75,7 +78,7 @@ Registrar Prealerta
 <div id="listaPrealertas">
     <p>Cargando prealertas...</p>
 </div>
-    
+
 <hr>
 
 <h2>📍 Mi Casillero</h2>
@@ -91,11 +94,210 @@ Registrar Prealerta
 <strong>Dirección:</strong> Barrio Primero de Mayo, Carrera 15 #17-19<br>
 <strong>Apartamento / Suite / Unidad:</strong> Casillero Rápido Global <span id="codigoCasillero">Cargando...</span>
 </p>
-    
+
+<hr>
+
+<h2>📍 Datos de entrega en Venezuela</h2>
+
+<p>
+Aquí puedes indicar dónde deseas recibir tus paquetes.
+Puedes modificar estos datos cuando lo necesites.
+</p>
+
+<label for="empresaEnvio">
+<strong>Empresa de envío</strong>
+</label>
+
+<select
+id="empresaEnvio"
+style="width:100%; padding:10px; margin:8px 0 15px;"
+>
+<option value="">Selecciona una empresa</option>
+<option value="MRW">MRW</option>
+<option value="Zoom">Zoom</option>
+<option value="Tealca">Tealca</option>
+<option value="Domesa">Domesa</option>
+</select>
+
+<div id="contenedorTipoEntrega" style="display:none;">
+
+<label for="tipoEntrega">
+<strong>Tipo de entrega</strong>
+</label>
+
+<select
+id="tipoEntrega"
+style="width:100%; padding:10px; margin:8px 0 15px;"
+>
+<option value="oficina">🏢 Retiro en oficina</option>
+<option value="domicilio">🏠 Puerta a puerta</option>
+</select>
+
+</div>
+
+<div id="datosOficina">
+
+<label for="estadoEntrega">
+<strong>Estado</strong>
+</label>
+
+<input
+type="text"
+id="estadoEntrega"
+placeholder="Ejemplo: Zulia">
+
+<label for="ciudadEntrega">
+<strong>Ciudad / Municipio</strong>
+</label>
+
+<input
+type="text"
+id="ciudadEntrega"
+placeholder="Ejemplo: Maracaibo">
+
+<label for="oficinaEntrega">
+<strong>Nombre de la oficina</strong>
+</label>
+
+<input
+type="text"
+id="oficinaEntrega"
+placeholder="Nombre de la oficina">
+
+<label for="direccionOficina">
+<strong>Dirección completa de la oficina</strong>
+</label>
+
+<input
+type="text"
+id="direccionOficina"
+placeholder="Dirección completa de la oficina">
+
+</div>
+
+<div id="datosDomicilio" style="display:none;">
+
+<h3>🏠 Dirección de domicilio</h3>
+
+<label for="estadoDomicilio">
+<strong>Estado</strong>
+</label>
+
+<input
+type="text"
+id="estadoDomicilio"
+placeholder="Ejemplo: Zulia">
+
+<label for="ciudadDomicilio">
+<strong>Ciudad / Municipio</strong>
+</label>
+
+<input
+type="text"
+id="ciudadDomicilio"
+placeholder="Ejemplo: Maracaibo">
+
+<label for="codigoPostal">
+<strong>Código postal</strong>
+</label>
+
+<input
+type="text"
+id="codigoPostal"
+placeholder="Código postal">
+
+<label for="barrioUrbanizacion">
+<strong>Barrio / Urbanización</strong>
+</label>
+
+<input
+type="text"
+id="barrioUrbanizacion"
+placeholder="Barrio o urbanización">
+
+<label for="calleAvenida">
+<strong>Calle / Carrera / Avenida</strong>
+</label>
+
+<input
+type="text"
+id="calleAvenida"
+placeholder="Ejemplo: Avenida 5, Calle 10, Carrera 20">
+
+<label for="numeroCasa">
+<strong>Número de casa / apartamento</strong>
+</label>
+
+<input
+type="text"
+id="numeroCasa"
+placeholder="Ejemplo: Casa 15, Apartamento 3">
+
+<label for="direccionDomicilio">
+<strong>Dirección completa</strong>
+</label>
+
+<input
+type="text"
+id="direccionDomicilio"
+placeholder="Escribe la dirección completa">
+
+<label for="puntoReferencia">
+<strong>Punto de referencia</strong>
+</label>
+
+<input
+type="text"
+id="puntoReferencia"
+placeholder="Ejemplo: Cerca de...">
+
+</div>
+
+<label for="telefonoEntrega">
+<strong>Teléfono de contacto</strong>
+</label>
+
+<input
+type="text"
+id="telefonoEntrega"
+placeholder="Número de teléfono">
+
+<label for="personaRecibe">
+<strong>Persona que recibe</strong>
+</label>
+
+<input
+type="text"
+id="personaRecibe"
+placeholder="Nombre de la persona que recibirá">
+
+<label for="observacionesEntrega">
+<strong>Observaciones</strong>
+</label>
+
+<textarea
+id="observacionesEntrega"
+placeholder="Información adicional para la entrega"
+style="width:100%; min-height:90px; padding:10px; margin:8px 0 15px; box-sizing:border-box;"
+></textarea>
+
+<button
+id="guardarDatosEntrega"
+type="button"
+>
+💾 Guardar datos de entrega
+</button>
+
+<p
+id="mensajeDatosEntrega"
+style="text-align:center; font-weight:bold;"
+></p>
+
+<hr>
+
 <button onclick="cerrarSesion()">
 Cerrar sesión
 </button>
-
 
 </div>
 
@@ -114,145 +316,725 @@ import {
   query,
   where,
   getDocs,
-  addDoc
+  addDoc,
+  doc,
+  setDoc,
+  getDoc
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-    
-    window.cerrarSesion = async function () {
+
+
+let usuarioActual = null;
+
+
+// ===============================
+// CERRAR SESIÓN
+// ===============================
+
+window.cerrarSesion = async function () {
+
   await signOut(auth);
+
   window.location.href = "index.html";
+
 };
-document.getElementById("prealerta").addEventListener("click", async () => {
 
-  const tracking = document.getElementById("tracking").value.trim();
 
-  if (!tracking) {
-    alert("Ingrese el número de tracking.");
-    return;
+// ===============================
+// CAMBIO DE EMPRESA
+// ===============================
+
+document
+.getElementById("empresaEnvio")
+.addEventListener("change", () => {
+
+  const empresa =
+    document.getElementById("empresaEnvio").value;
+
+  const contenedorTipo =
+    document.getElementById("contenedorTipoEntrega");
+
+  const tipoEntrega =
+    document.getElementById("tipoEntrega");
+
+  const datosOficina =
+    document.getElementById("datosOficina");
+
+  const datosDomicilio =
+    document.getElementById("datosDomicilio");
+
+
+  // ===============================
+  // DOMESA
+  // ===============================
+
+  if (empresa === "Domesa") {
+
+    contenedorTipo.style.display = "block";
+
+    actualizarTipoEntrega();
+
   }
 
-  const usuario = auth.currentUser;
+  // ===============================
+  // MRW / ZOOM / TEALCA
+  // ===============================
 
-  if (!usuario) {
-    alert("Debe iniciar sesión.");
-    return;
-  }
+  else {
 
-  try {
+    contenedorTipo.style.display = "none";
 
-    await addDoc(collection(db, "prealertas"), {
-      uid: usuario.uid,
-      correo: usuario.email,
-      tracking: tracking,
-      estado: "Prealertado",
-      fecha: new Date()
-    });
+    tipoEntrega.value = "oficina";
 
-    alert("Prealerta registrada correctamente.");
+    datosOficina.style.display = "block";
 
-    location.reload();
-
-  } catch (error) {
-
-    alert("Error: " + error.message);
+    datosDomicilio.style.display = "none";
 
   }
 
 });
-    
-    onAuthStateChanged(auth, async (usuario) => {
 
-  if (!usuario) {
-    window.location.href = "index.html";
-    return;
-  }
 
-  document.getElementById("correoCliente").textContent = usuario.email;
+// ===============================
+// CAMBIO TIPO DE ENTREGA DOMESA
+// ===============================
 
-  const consulta = query(
-    collection(db, "usuarios"),
-    where("uid", "==", usuario.uid)
-  );
+document
+.getElementById("tipoEntrega")
+.addEventListener("change", actualizarTipoEntrega);
 
-  const resultado = await getDocs(consulta);
 
-  if (!resultado.empty) {
-    const datos = resultado.docs[0].data();
+function actualizarTipoEntrega() {
 
-    document.getElementById("nombreCliente").textContent = datos.nombre;
-    document.getElementById("codigoCliente").textContent = datos.codigo;
-    document.getElementById("nombreCasillero").textContent = datos.nombre;
-    document.getElementById("codigoCasillero").textContent = datos.codigo;      
-  }
+  const tipo =
+    document.getElementById("tipoEntrega").value;
 
-  // ===== PREALERTAS =====
+  const datosOficina =
+    document.getElementById("datosOficina");
 
-  const consultaPrealertas = query(
-    collection(db, "prealertas"),
-    where("uid", "==", usuario.uid)
-  );
+  const datosDomicilio =
+    document.getElementById("datosDomicilio");
 
-  const resultadoPrealertas = await getDocs(consultaPrealertas);
-let recibidos = 0;
-let transito = 0;
-let venezuela = 0;
-let entregados = 0;
-        resultadoPrealertas.forEach((doc) => {
 
-  const datos = doc.data();
+  if (tipo === "domicilio") {
 
-  if (datos.estado === "Recibido en bodega") {
-    recibidos++;
-  }
+    datosOficina.style.display = "none";
 
-  if (datos.estado === "En tránsito") {
-    transito++;
-  }
-
-  if (datos.estado === "Llegó a Venezuela") {
-    venezuela++;
-}
-
-if (datos.estado === "Entregado") {
-    entregados++;
-}
-            
-});
-
-document.getElementById("paquetesRecibidos").textContent = recibidos;
-document.getElementById("paquetesTransito").textContent = transito;
-document.getElementById("paquetesVenezuela").textContent = venezuela;
-document.getElementById("paquetesEntregados").textContent = entregados;
-        const lista = document.getElementById("listaPrealertas");
-
-  if (resultadoPrealertas.empty) {
-
-    lista.innerHTML = "<p>No tienes prealertas registradas.</p>";
+    datosDomicilio.style.display = "block";
 
   } else {
 
-    lista.innerHTML = "";
+    datosOficina.style.display = "block";
 
-    resultadoPrealertas.forEach((doc) => {
+    datosDomicilio.style.display = "none";
 
-      const datos = doc.data();
+  }
 
-      lista.innerHTML += `
-        <div class="tarjeta-prealerta">
-          <h3>📦 Prealerta</h3>
-          <p><strong>Tracking:</strong> ${datos.tracking}</p>
-          <p><strong>Estado:</strong> ${datos.estado || "Prealertado"}</p>
-          
-          </div>
-      `;
+}
 
-    });
+
+// ===============================
+// GUARDAR DATOS DE ENTREGA
+// ===============================
+
+document
+.getElementById("guardarDatosEntrega")
+.addEventListener("click", async () => {
+
+  if (!usuarioActual) {
+
+    alert("Debe iniciar sesión.");
+
+    return;
+
+  }
+
+
+  const empresa =
+    document.getElementById("empresaEnvio").value;
+
+  if (!empresa) {
+
+    alert("Seleccione una empresa de envío.");
+
+    return;
+
+  }
+
+
+  const tipoEntrega =
+    empresa === "Domesa"
+      ? document.getElementById("tipoEntrega").value
+      : "oficina";
+
+
+  const datos = {
+
+    uid: usuarioActual.uid,
+
+    correo: usuarioActual.email,
+
+    empresaEnvio: empresa,
+
+    tipoEntrega: tipoEntrega,
+
+    // DATOS GENERALES
+    telefono:
+      document.getElementById("telefonoEntrega").value.trim(),
+
+    personaRecibe:
+      document.getElementById("personaRecibe").value.trim(),
+
+    observaciones:
+      document.getElementById("observacionesEntrega").value.trim(),
+
+    // DATOS DE OFICINA
+    estado:
+      document.getElementById("estadoEntrega").value.trim(),
+
+    ciudad:
+      document.getElementById("ciudadEntrega").value.trim(),
+
+    oficina:
+      document.getElementById("oficinaEntrega").value.trim(),
+
+    direccionOficina:
+      document.getElementById("direccionOficina").value.trim(),
+
+    // DATOS DE DOMICILIO
+    estadoDomicilio:
+      document.getElementById("estadoDomicilio").value.trim(),
+
+    ciudadDomicilio:
+      document.getElementById("ciudadDomicilio").value.trim(),
+
+    codigoPostal:
+      document.getElementById("codigoPostal").value.trim(),
+
+    barrioUrbanizacion:
+      document.getElementById("barrioUrbanizacion").value.trim(),
+
+    calleAvenida:
+      document.getElementById("calleAvenida").value.trim(),
+
+    numeroCasa:
+      document.getElementById("numeroCasa").value.trim(),
+
+    direccionDomicilio:
+      document.getElementById("direccionDomicilio").value.trim(),
+
+    puntoReferencia:
+      document.getElementById("puntoReferencia").value.trim(),
+
+    fechaActualizacion: new Date()
+
+  };
+
+
+  try {
+
+    await setDoc(
+      doc(
+        db,
+        "datosEntrega",
+        usuarioActual.uid
+      ),
+      datos,
+      {
+        merge: true
+      }
+    );
+
+
+    const mensaje =
+      document.getElementById("mensajeDatosEntrega");
+
+    mensaje.textContent =
+      "✅ Datos de entrega guardados correctamente.";
+
+    setTimeout(() => {
+
+      mensaje.textContent = "";
+
+    }, 4000);
+
+
+  } catch (error) {
+
+    alert(
+      "No fue posible guardar los datos de entrega.\n\n" +
+      error.message
+    );
 
   }
 
 });
 
-</script>
 
+// ===============================
+// PREALERTA
+// ===============================
+
+document
+.getElementById("prealerta")
+.addEventListener("click", async () => {
+
+  const tracking =
+    document.getElementById("tracking").value.trim();
+
+
+  if (!tracking) {
+
+    alert("Ingrese el número de tracking.");
+
+    return;
+
+  }
+
+
+  const usuario = auth.currentUser;
+
+
+  if (!usuario) {
+
+    alert("Debe iniciar sesión.");
+
+    return;
+
+  }
+
+
+  try {
+
+    await addDoc(
+      collection(db, "prealertas"),
+      {
+
+        uid: usuario.uid,
+
+        correo: usuario.email,
+
+        tracking: tracking,
+
+        estado: "Prealertado",
+
+        fecha: new Date()
+
+      }
+    );
+
+
+    alert(
+      "Prealerta registrada correctamente."
+    );
+
+
+    location.reload();
+
+
+  } catch (error) {
+
+    alert(
+      "Error: " + error.message
+    );
+
+  }
+
+});
+
+
+// ===============================
+// CARGAR CUENTA
+// ===============================
+
+onAuthStateChanged(
+  auth,
+  async (usuario) => {
+
+    if (!usuario) {
+
+      window.location.href = "index.html";
+
+      return;
+
+    }
+
+
+    usuarioActual = usuario;
+
+
+    document
+    .getElementById("correoCliente")
+    .textContent = usuario.email;
+
+
+    // ===============================
+    // DATOS DEL CLIENTE
+    // ===============================
+
+    const consulta =
+      query(
+        collection(db, "usuarios"),
+        where(
+          "uid",
+          "==",
+          usuario.uid
+        )
+      );
+
+
+    const resultado =
+      await getDocs(consulta);
+
+
+    if (!resultado.empty) {
+
+      const datos =
+        resultado.docs[0].data();
+
+
+      document
+      .getElementById("nombreCliente")
+      .textContent =
+        datos.nombre;
+
+
+      document
+      .getElementById("codigoCliente")
+      .textContent =
+        datos.codigo;
+
+
+      document
+      .getElementById("nombreCasillero")
+      .textContent =
+        datos.nombre;
+
+
+      document
+      .getElementById("codigoCasillero")
+      .textContent =
+        datos.codigo;
+
+    }
+
+
+    // ===============================
+    // CARGAR DATOS DE ENTREGA
+    // ===============================
+
+    const referenciaEntrega =
+      doc(
+        db,
+        "datosEntrega",
+        usuario.uid
+      );
+
+
+    const resultadoEntrega =
+      await getDoc(
+        referenciaEntrega
+      );
+
+
+    if (!resultadoEntrega.exists()) {
+
+      return;
+
+    }
+
+
+    const entrega =
+      resultadoEntrega.data();
+
+
+    // EMPRESA
+
+    document
+    .getElementById("empresaEnvio")
+    .value =
+      entrega.empresaEnvio || "";
+
+
+    // TIPO
+
+    if (
+      entrega.empresaEnvio === "Domesa"
+    ) {
+
+      document
+      .getElementById("contenedorTipoEntrega")
+      .style.display = "block";
+
+
+      document
+      .getElementById("tipoEntrega")
+      .value =
+        entrega.tipoEntrega || "oficina";
+
+
+    } else {
+
+      document
+      .getElementById("contenedorTipoEntrega")
+      .style.display = "none";
+
+    }
+
+
+    actualizarTipoEntrega();
+
+
+    // OFICINA
+
+    document
+    .getElementById("estadoEntrega")
+    .value =
+      entrega.estado || "";
+
+
+    document
+    .getElementById("ciudadEntrega")
+    .value =
+      entrega.ciudad || "";
+
+
+    document
+    .getElementById("oficinaEntrega")
+    .value =
+      entrega.oficina || "";
+
+
+    document
+    .getElementById("direccionOficina")
+    .value =
+      entrega.direccionOficina || "";
+
+
+    // DOMICILIO
+
+    document
+    .getElementById("estadoDomicilio")
+    .value =
+      entrega.estadoDomicilio || "";
+
+
+    document
+    .getElementById("ciudadDomicilio")
+    .value =
+      entrega.ciudadDomicilio || "";
+
+
+    document
+    .getElementById("codigoPostal")
+    .value =
+      entrega.codigoPostal || "";
+
+
+    document
+    .getElementById("barrioUrbanizacion")
+    .value =
+      entrega.barrioUrbanizacion || "";
+
+
+    document
+    .getElementById("calleAvenida")
+    .value =
+      entrega.calleAvenida || "";
+
+
+    document
+    .getElementById("numeroCasa")
+    .value =
+      entrega.numeroCasa || "";
+
+
+    document
+    .getElementById("direccionDomicilio")
+    .value =
+      entrega.direccionDomicilio || "";
+
+
+    document
+    .getElementById("puntoReferencia")
+    .value =
+      entrega.puntoReferencia || "";
+
+
+    // GENERALES
+
+    document
+    .getElementById("telefonoEntrega")
+    .value =
+      entrega.telefono || "";
+
+
+    document
+    .getElementById("personaRecibe")
+    .value =
+      entrega.personaRecibe || "";
+
+
+    document
+    .getElementById("observacionesEntrega")
+    .value =
+      entrega.observaciones || "";
+
+
+    // ===============================
+    // PREALERTAS
+    // ===============================
+
+    const consultaPrealertas =
+      query(
+        collection(db, "prealertas"),
+        where(
+          "uid",
+          "==",
+          usuario.uid
+        )
+      );
+
+
+    const resultadoPrealertas =
+      await getDocs(
+        consultaPrealertas
+      );
+
+
+    let recibidos = 0;
+    let transito = 0;
+    let venezuela = 0;
+    let entregados = 0;
+
+
+    resultadoPrealertas.forEach(
+      (doc) => {
+
+        const datos =
+          doc.data();
+
+
+        if (
+          datos.estado ===
+          "Recibido en bodega"
+        ) {
+
+          recibidos++;
+
+        }
+
+
+        if (
+          datos.estado ===
+          "En tránsito"
+        ) {
+
+          transito++;
+
+        }
+
+
+        if (
+          datos.estado ===
+          "Llegó a Venezuela"
+        ) {
+
+          venezuela++;
+
+        }
+
+
+        if (
+          datos.estado ===
+          "Entregado"
+        ) {
+
+          entregados++;
+
+        }
+
+      }
+    );
+
+
+    document
+    .getElementById("paquetesRecibidos")
+    .textContent =
+      recibidos;
+
+
+    document
+    .getElementById("paquetesTransito")
+    .textContent =
+      transito;
+
+
+    document
+    .getElementById("paquetesVenezuela")
+    .textContent =
+      venezuela;
+
+
+    document
+    .getElementById("paquetesEntregados")
+    .textContent =
+      entregados;
+
+
+    const lista =
+      document.getElementById(
+        "listaPrealertas"
+      );
+
+
+    if (
+      resultadoPrealertas.empty
+    ) {
+
+      lista.innerHTML =
+        "<p>No tienes prealertas registradas.</p>";
+
+    } else {
+
+      lista.innerHTML = "";
+
+
+      resultadoPrealertas.forEach(
+        (doc) => {
+
+          const datos =
+            doc.data();
+
+
+          lista.innerHTML += `
+
+            <div class="tarjeta-prealerta">
+
+              <h3>📦 Prealerta</h3>
+
+              <p>
+                <strong>Tracking:</strong>
+                ${datos.tracking}
+              </p>
+
+              <p>
+                <strong>Estado:</strong>
+                ${datos.estado || "Prealertado"}
+              </p>
+
+            </div>
+
+          `;
+
+        }
+      );
+
+    }
+
+  }
+);
+
+</script>
 
 </body>
 </html>
