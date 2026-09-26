@@ -292,6 +292,50 @@ button:hover{
     background:#495057;
 }
 
+
+/* ============================= */
+/* RECUPERAR CONTRASEÑA */
+/* ============================= */
+
+.btn-recuperar{
+    width:auto;
+
+    display:block;
+
+    margin:14px auto 5px;
+
+    padding:5px 10px;
+
+    background:transparent;
+
+    color:#0055A5;
+
+    border:none;
+
+    border-radius:0;
+
+    font-size:14px;
+
+    font-weight:normal;
+
+    cursor:pointer;
+
+    box-shadow:none;
+
+    transition:.3s;
+}
+
+.btn-recuperar:hover{
+    background:transparent;
+
+    color:#ff9900;
+
+    transform:none;
+
+    text-decoration:underline;
+}
+
+
 #cerrarSesion{
     background:#d32f2f;
 }
@@ -468,5 +512,13 @@ section{
         width:100%;
 
         text-align:center;
+    }
+
+    .btn-recuperar{
+        width:auto;
+
+        font-size:14px;
+
+        padding:5px 10px;
     }
 }
