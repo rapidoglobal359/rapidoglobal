@@ -9,14 +9,17 @@ import {
 import {
   collection,
   getDocs,
-  getDocs
   doc,
+  getDoc,
   updateDoc,
   deleteDoc,
   onSnapshot,
   query,
   where
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+
+
 
 // ======================================================
 // EMAILJS
