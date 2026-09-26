@@ -1463,6 +1463,68 @@ function crearTarjetaPrealerta(
 }
 
 // ======================================================
+// CONSULTAR DATOS DE ENTREGA DEL CLIENTE
+// ======================================================
+
+async function verDatosEntrega(uid) {
+
+  try {
+
+    if (!uid) {
+
+      alert("❌ No se encontró el UID del cliente.");
+
+      return;
+
+    }
+
+    const referencia =
+      doc(
+        db,
+        "datosEntrega",
+        uid
+      );
+
+    const resultado =
+      await getDoc(
+        referencia
+      );
+
+    if (!resultado.exists()) {
+
+      alert(
+        "📍 Este cliente todavía no tiene datos de entrega guardados."
+      );
+
+      return;
+
+    }
+
+    const datosEntrega =
+      resultado.data();
+
+    console.log(
+      "📍 Datos de entrega:",
+      datosEntrega
+    );
+
+  } catch (error) {
+
+    console.error(
+      "❌ Error al consultar los datos de entrega:",
+      error
+    );
+
+    alert(
+      "❌ No se pudieron consultar los datos de entrega."
+    );
+
+  }
+
+}
+
+
+// ======================================================
 // OBTENER COLUMNA SEGÚN ESTADO
 // ======================================================
 
