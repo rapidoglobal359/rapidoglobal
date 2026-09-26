@@ -11,12 +11,14 @@ html{
 
 body{
     min-height:100vh;
+    padding:0;
+    color:#333;
+
     background:
         linear-gradient(rgba(0,40,90,.82), rgba(0,40,90,.82)),
         url("fondo-logistica.png") center center/cover fixed no-repeat;
-    padding:0;
-    color:#333;
 }
+
 
 /* ============================= */
 /* ENCABEZADO */
@@ -25,15 +27,19 @@ body{
 .header{
     width:100%;
     background:#003366;
-    padding:10px 30px;
+    padding:12px 30px;
+
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
+
     gap:25px;
+
     position:sticky;
     top:0;
     z-index:100;
-    box-shadow:0 3px 15px rgba(0,0,0,.25);
+
+    box-shadow:0 3px 15px rgba(0,0,0,.30);
 }
 
 .logo img{
@@ -42,10 +48,17 @@ body{
     display:block;
 }
 
+
+/* ============================= */
+/* MENÚ */
+/* ============================= */
+
 nav{
     display:flex;
-    gap:25px;
     align-items:center;
+    justify-content:center;
+    gap:25px;
+    flex:1;
 }
 
 nav a{
@@ -60,14 +73,30 @@ nav a:hover{
     color:#ff9900;
 }
 
+
+/* ============================= */
+/* BOTONES SUPERIORES */
+/* ============================= */
+
+.acciones-header{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
 .btn-whatsapp{
     display:inline-block;
+
     background:#25D366;
     color:#ffffff;
+
     padding:11px 18px;
+
     border-radius:8px;
+
     text-decoration:none;
     font-weight:bold;
+
     transition:.3s;
 }
 
@@ -77,46 +106,92 @@ nav a:hover{
 }
 
 
+/* BOTÓN CREAR MI CASILLERO */
+
+.btn-crear-header{
+    width:auto;
+
+    margin:0;
+    padding:11px 18px;
+
+    border:none;
+    border-radius:8px;
+
+    background:#ff9900;
+    color:#ffffff;
+
+    font-size:15px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    white-space:nowrap;
+
+    transition:.3s;
+}
+
+.btn-crear-header:hover{
+    background:#e68a00;
+    transform:translateY(-2px);
+}
+
+
 /* ============================= */
-/* CONTENEDOR PRINCIPAL */
+/* CONTENEDOR */
 /* ============================= */
 
 .contenedor{
     width:calc(100% - 30px);
     max-width:1200px;
+
     margin:30px auto;
+
     background:#ffffff;
+
     border-radius:20px;
+
     padding:40px;
+
     box-shadow:0 15px 40px rgba(0,0,0,.30);
 }
 
 .logo-principal{
     display:block;
+
     margin:0 auto 15px;
+
     width:220px;
     max-width:80%;
 }
 
 h1{
     text-align:center;
+
     color:#003366;
+
     font-size:36px;
     font-weight:bold;
+
     margin-bottom:10px;
 }
 
 h2{
     color:#003366;
+
     margin:25px 0 12px;
+
     font-size:24px;
+
     text-align:center;
 }
 
 p{
     text-align:center;
+
     color:#555;
+
     margin-bottom:20px;
+
     line-height:1.5;
 }
 
@@ -127,18 +202,24 @@ p{
 
 
 /* ============================= */
-/* ACCESO Y REGISTRO */
+/* ACCESO / REGISTRO */
 /* ============================= */
 
 .acceso-cliente,
 .registro-casillero{
     width:100%;
     max-width:600px;
+
     margin:0 auto 40px;
+
     padding:30px;
+
     background:#f8fbff;
+
     border:1px solid #dcecff;
+
     border-radius:18px;
+
     box-shadow:0 8px 25px rgba(0,51,102,.10);
 }
 
@@ -149,47 +230,58 @@ p{
 
 input{
     width:100%;
+
     padding:14px;
+
     margin:8px 0;
+
     border:1px solid #d5d5d5;
+
     border-radius:10px;
+
     font-size:16px;
+
     background:#ffffff;
+
     transition:.3s;
 }
 
 input:focus{
     outline:none;
+
     border-color:#0055A5;
+
     box-shadow:0 0 8px rgba(0,85,165,.25);
 }
 
 button{
     width:100%;
+
     padding:15px;
+
     margin-top:12px;
+
     border:none;
+
     border-radius:10px;
+
     background:#0055A5;
+
     color:#fff;
+
     font-size:17px;
+
     font-weight:bold;
+
     cursor:pointer;
+
     transition:all .3s ease;
 }
 
 button:hover{
     background:#ff9900;
+
     transform:translateY(-2px);
-}
-
-.btn-crear-casillero{
-    background:#ff9900;
-    margin-top:18px;
-}
-
-.btn-crear-casillero:hover{
-    background:#e68a00;
 }
 
 .btn-volver{
@@ -210,11 +302,17 @@ button:hover{
 
 #cuentaUsuario{
     margin-top:18px;
+
     padding:12px;
+
     background:#eef6ff;
+
     border-radius:10px;
+
     text-align:center;
+
     color:#003366;
+
     font-weight:bold;
 }
 
@@ -231,47 +329,43 @@ section{
 #rastreo,
 #contacto{
     margin-top:45px;
+
     padding:30px;
+
     border-top:1px solid #e2e2e2;
 }
 
 #tarifas ul{
     max-width:500px;
+
     margin:20px auto;
+
     padding-left:25px;
 }
 
 #tarifas li{
     margin:8px 0;
+
     color:#444;
 }
 
 
 /* ============================= */
-/* BOTONES WHATSAPP DENTRO */
+/* WHATSAPP EN SECCIONES */
 /* ============================= */
 
 #rastreo .btn-whatsapp,
 #contacto .btn-whatsapp{
     display:block;
+
     width:max-content;
+
     margin:15px auto 0;
 }
 
 
 /* ============================= */
-/* LÍNEAS */
-/* ============================= */
-
-hr{
-    margin:30px 0;
-    border:none;
-    border-top:1px solid #dddddd;
-}
-
-
-/* ============================= */
-/* CELULARES */
+/* MÓVILES */
 /* ============================= */
 
 @media (max-width:768px){
@@ -284,8 +378,12 @@ hr{
 
     .header{
         padding:10px 15px;
+
         flex-wrap:wrap;
+
         justify-content:center;
+
+        gap:12px;
     }
 
     .logo img{
@@ -294,8 +392,11 @@ hr{
 
     nav{
         width:100%;
-        justify-content:center;
+
+        order:3;
+
         gap:14px;
+
         flex-wrap:wrap;
     }
 
@@ -303,14 +404,28 @@ hr{
         font-size:13px;
     }
 
-    .header > .btn-whatsapp{
-        display:none;
+    .acciones-header{
+        display:flex;
+
+        order:2;
+
+        gap:8px;
+    }
+
+    .btn-whatsapp,
+    .btn-crear-header{
+        padding:10px 12px;
+
+        font-size:13px;
     }
 
     .contenedor{
         width:calc(100% - 20px);
+
         margin:15px auto;
+
         padding:25px 18px;
+
         border-radius:16px;
     }
 
@@ -333,6 +448,7 @@ hr{
     .acceso-cliente,
     .registro-casillero{
         padding:22px 16px;
+
         border-radius:15px;
     }
 
@@ -350,6 +466,7 @@ hr{
     #rastreo .btn-whatsapp,
     #contacto .btn-whatsapp{
         width:100%;
+
         text-align:center;
     }
 }
