@@ -1556,9 +1556,65 @@ async function verDatosEntrega(uid) {
     const datosEntrega =
       resultado.data();
 
-    console.log(
-      "📍 Datos de entrega:",
-      datosEntrega
+    const empresa =
+      datosEntrega.empresaEnvio ||
+      "No especificada";
+
+    const estado =
+      datosEntrega.estado ||
+      "No especificado";
+
+    const ciudad =
+      datosEntrega.ciudad ||
+      datosEntrega.municipio ||
+      "No especificada";
+
+    const oficina =
+      datosEntrega.oficina ||
+      "No especificada";
+
+    const direccion =
+      datosEntrega.direccion ||
+      "No especificada";
+
+    const telefono =
+      datosEntrega.telefono ||
+      "No especificado";
+
+    const personaRecibe =
+      datosEntrega.personaRecibe ||
+      "No especificada";
+
+    const observaciones =
+      datosEntrega.observaciones ||
+      "Ninguna";
+
+    alert(
+      "📍 DATOS DE ENTREGA\n\n" +
+
+      "🚚 Empresa de envío: " +
+      empresa + "\n\n" +
+
+      "📍 Estado: " +
+      estado + "\n\n" +
+
+      "🏙️ Ciudad/Municipio: " +
+      ciudad + "\n\n" +
+
+      "🏢 Oficina: " +
+      oficina + "\n\n" +
+
+      "🏠 Dirección: " +
+      direccion + "\n\n" +
+
+      "📱 Teléfono: " +
+      telefono + "\n\n" +
+
+      "👤 Persona que recibe: " +
+      personaRecibe + "\n\n" +
+
+      "📝 Observaciones: " +
+      observaciones
     );
 
   } catch (error) {
@@ -1575,7 +1631,6 @@ async function verDatosEntrega(uid) {
   }
 
 }
-
 
 // ======================================================
 // OBTENER COLUMNA SEGÚN ESTADO
