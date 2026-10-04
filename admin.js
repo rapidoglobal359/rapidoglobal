@@ -1981,71 +1981,122 @@ async function cargarPrealertas() {
       escuchaPrealertasActiva =
         true;
 
+
       onSnapshot(
-        collection(
-          db,
-          "prealertas"
-        ),
+  collection(
+    db,
+    "prealertas"
+  ),
 
-        (snapshot) => {
+  (snapshot) => {
 
-          snapshot.docChanges()
-            .forEach((cambio) => {
+    snapshot.docChanges()
+      .forEach((cambio) => {
 
-              const id =
-                cambio.doc.id;
+        const id =
+          cambio.doc.id;
+
+        // ------------------------------------------
+        // TRACKING ELIMINADO
+        // ------------------------------------------
+
+        if (
+          cambio.type === "removed"
+        ) {
+
+          delete datosPrealertas[
+            id
+          ];
+
+          const tarjeta =
+            document.getElementById(
+              "tarjetaPaquete-" +
+              id
+            );
+
+          if (tarjeta) {
+
+            const tarjetaCliente =
+              tarjeta.closest(
+                ".tarjeta-cliente-admin"
+              );
+
+            tarjeta.remove();
+
+            // ----------------------------------------
+            // Si era el último tracking del cliente
+            // en ese estado, eliminar su tarjeta
+            // ----------------------------------------
+
+            if (
+              tarjetaCliente
+            ) {
+
+              const listaTrackings =
+                tarjetaCliente.querySelector(
+                  ".lista-trackings-cliente"
+                );
 
               if (
-                cambio.type === "removed"
+                listaTrackings &&
+                listaTrackings.children.length === 0
               ) {
 
-                delete datosPrealertas[
-                  id
-                ];
-
-                const tarjeta =
-                  document.getElementById(
-                    "tarjetaPaquete-" +
-                    id
-                  );
-
-                if (tarjeta) {
-                  tarjeta.remove();
-                }
-
-                return;
+                tarjetaCliente.remove();
 
               }
 
-              const datos =
-                cambio.doc.data();
+            }
 
-              const datosAnteriores =
-                datosPrealertas[id] || {};
+          }
 
-              const cliente =
-                datosAnteriores.cliente ||
-                null;
+          return;
 
-              datosPrealertas[id] = {
+        }
 
-                id: id,
+        // ------------------------------------------
+        // TRACKING NUEVO O MODIFICADO
+        // ------------------------------------------
 
-                ...datos,
+        const datos =
+          cambio.doc.data();
 
-                cliente: cliente
+        // ------------------------------------------
+        // Buscar nuevamente al cliente
+        // usando el UID del tracking
+        // ------------------------------------------
 
-              };
+        const cliente =
+          usuariosPorUid[
+            datos.uid
+          ] || null;
 
-              colocarTarjetaEnColumna(
-                id
-              );
+        datosPrealertas[id] = {
 
-            });
+          id: id,
 
-          actualizarContadoresTablero();
+          ...datos,
 
-        },
+          cliente: cliente
+
+        };
+
+        // ------------------------------------------
+        // Colocar únicamente este tracking
+        // en su grupo correspondiente
+        // ------------------------------------------
+
+        colocarTarjetaEnColumna(
+          id
+        );
+
+      });
+
+    actualizarContadoresTablero();
+
+  },
+
+        
 
         (error) => {
 
