@@ -1934,25 +1934,32 @@ async function cargarPrealertas() {
         collection(db, "usuarios")
       );
 
-    const usuariosPorUid = {};
+     const usuariosPorUid = {};
 
-    usuariosSnapshot.forEach(
-      (documento) => {
+usuariosSnapshot.forEach(
+  (documento) => {
 
-        const datos =
-          documento.data();
+    const datos =
+      documento.data();
 
-        if (datos.uid) {
+    // Guardar por el UID que está dentro del usuario
+    if (datos.uid) {
 
-          usuariosPorUid[
-            datos.uid
-          ] = datos;
+      usuariosPorUid[
+        datos.uid
+      ] = datos;
 
-        }
+    }
 
-      }
-    );
+    // Guardar también por el ID del documento
+    usuariosPorUid[
+      documento.id
+    ] = datos;
 
+  }
+);
+    
+    
     const prealertasSnapshot =
       await getDocs(
         collection(db, "prealertas")
