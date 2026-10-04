@@ -1700,8 +1700,7 @@ function colocarTarjetaEnColumna(
   }
 
   // ------------------------------------------
-  // Eliminar el tracking de cualquier
-  // grupo anterior
+  // Eliminar el tracking de su ubicación actual
   // ------------------------------------------
 
   const tarjetaActual =
@@ -1710,13 +1709,44 @@ function colocarTarjetaEnColumna(
     );
 
   if (tarjetaActual) {
+
+    const tarjetaClienteAnterior =
+      tarjetaActual.closest(
+        ".tarjeta-cliente-admin"
+      );
+
     tarjetaActual.remove();
+
+    // ----------------------------------------
+    // Si la tarjeta del cliente quedó sin
+    // trackings, eliminarla también
+    // ----------------------------------------
+
+    if (
+      tarjetaClienteAnterior
+    ) {
+
+      const listaTrackings =
+        tarjetaClienteAnterior.querySelector(
+          ".lista-trackings-cliente"
+        );
+
+      if (
+        listaTrackings &&
+        listaTrackings.children.length === 0
+      ) {
+
+        tarjetaClienteAnterior.remove();
+
+      }
+
+    }
+
   }
 
   // ------------------------------------------
   // Crear nuevamente el tracking dentro
-  // de la tarjeta correspondiente al cliente
-  // y al estado
+  // de la tarjeta correspondiente
   // ------------------------------------------
 
   crearTarjetaPrealerta(
