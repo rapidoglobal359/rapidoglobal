@@ -1685,7 +1685,7 @@ function crearTarjetaPrealerta(
 }
 
 // ======================================================
-// PINTAR UNA TARJETA EN SU COLUMNA
+// COLOCAR TRACKING EN SU TARJETA AGRUPADA
 // ======================================================
 
 function colocarTarjetaEnColumna(
@@ -1699,6 +1699,11 @@ function colocarTarjetaEnColumna(
     return;
   }
 
+  // ------------------------------------------
+  // Eliminar el tracking de cualquier
+  // grupo anterior
+  // ------------------------------------------
+
   const tarjetaActual =
     document.getElementById(
       "tarjetaPaquete-" + id
@@ -1708,25 +1713,16 @@ function colocarTarjetaEnColumna(
     tarjetaActual.remove();
   }
 
-  const contenedor =
-    obtenerContenedorEstado(
-      datos.estado ||
-      "Prealertado"
-    );
+  // ------------------------------------------
+  // Crear nuevamente el tracking dentro
+  // de la tarjeta correspondiente al cliente
+  // y al estado
+  // ------------------------------------------
 
-  if (!contenedor) {
-    return;
-  }
-
-  const tarjeta =
-    crearTarjetaPrealerta(
-      id,
-      datos,
-      datos.cliente || null
-    );
-
-  contenedor.appendChild(
-    tarjeta
+  crearTarjetaPrealerta(
+    id,
+    datos,
+    datos.cliente || null
   );
 
 }
