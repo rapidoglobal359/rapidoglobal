@@ -1162,6 +1162,51 @@ estiloResponsive.textContent = `
 
 }
 
+// ======================================================
+// OBTENER CONTENEDOR SEGÚN EL ESTADO
+// ======================================================
+
+function obtenerContenedorEstado(
+  estado
+) {
+
+  if (
+    estado === "Prealertado"
+  ) {
+
+    return document.getElementById(
+      "listaPrealertados"
+    );
+
+  }
+
+  if (
+    estado === "Recibido en bodega" ||
+    estado === "En tránsito"
+  ) {
+
+    return document.getElementById(
+      "listaBodega"
+    );
+
+  }
+
+  if (
+    estado === "Llegó a Venezuela" ||
+    estado === "Entregado"
+  ) {
+
+    return document.getElementById(
+      "listaVenezuela"
+    );
+
+  }
+
+  return document.getElementById(
+    "listaPrealertados"
+  );
+
+}
 
 // ======================================================
 // CREAR TARJETA AGRUPADA POR CLIENTE
