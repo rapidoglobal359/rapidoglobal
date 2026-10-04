@@ -1164,7 +1164,7 @@ estiloResponsive.textContent = `
 
 
 // ======================================================
-// CREAR TARJETA DE PAQUETE
+// CREAR TARJETA AGRUPADA POR CLIENTE
 // ======================================================
 
 function crearTarjetaPrealerta(
@@ -1172,39 +1172,6 @@ function crearTarjetaPrealerta(
   datos,
   cliente
 ) {
-
-  const tarjeta =
-    document.createElement("div");
-
-  tarjeta.id =
-    "tarjetaPaquete-" + id;
-
-  tarjeta.className =
-    "tarjeta-paquete-admin";
-
-  tarjeta.style.background =
-    "#ffffff";
-
-  tarjeta.style.border =
-    "1px solid #ddd";
-
-  tarjeta.style.borderRadius =
-    "15px";
-
-  tarjeta.style.padding =
-    "16px";
-
-  tarjeta.style.marginBottom =
-    "15px";
-
-  tarjeta.style.boxShadow =
-    "0 4px 12px rgba(0,0,0,.08)";
-
-  tarjeta.style.boxSizing =
-    "border-box";
-
-  tarjeta.dataset.id =
-    id;
 
   const nombre =
     cliente
@@ -1242,16 +1209,233 @@ function crearTarjetaPrealerta(
     datos.tracking ||
     "Sin tracking";
 
-  const estado =
+  const estadoReal =
     datos.estado ||
     "Prealertado";
 
-  tarjeta.innerHTML = `
+  // ------------------------------------------
+  // Estados antiguos → categoría visual nueva
+  // ------------------------------------------
+
+  let estadoVisual = estadoReal;
+
+  if (estadoReal === "En tránsito") {
+    estadoVisual = "Recibido en bodega";
+  }
+
+  if (estadoReal === "Entregado") {
+    estadoVisual = "Llegó a Venezuela";
+  }
+
+  // ------------------------------------------
+  // Identificador del cliente
+  // ------------------------------------------
+
+  const identificadorCliente =
+    (
+      datos.uid ||
+      (cliente && cliente.uid) ||
+      correo ||
+      codigo ||
+      nombre + apellido
+    ).toString();
+
+  const claveCliente =
+    normalizarTexto(
+      identificadorCliente
+    ).replace(/[^a-z0-9]/g, "");
+
+  const claveEstado =
+    normalizarTexto(
+      estadoVisual
+    ).replace(/[^a-z0-9]/g, "");
+
+  const idTarjetaCliente =
+    "tarjetaCliente-" +
+    claveCliente +
+    "-" +
+    claveEstado;
+
+  // ------------------------------------------
+  // Buscar si ya existe la tarjeta del cliente
+  // ------------------------------------------
+
+  let tarjetaCliente =
+    document.getElementById(
+      idTarjetaCliente
+    );
+
+  // ------------------------------------------
+  // Si no existe, crearla
+  // ------------------------------------------
+
+  if (!tarjetaCliente) {
+
+    tarjetaCliente =
+      document.createElement("div");
+
+    tarjetaCliente.id =
+      idTarjetaCliente;
+
+    tarjetaCliente.className =
+      "tarjeta-cliente-admin";
+
+    tarjetaCliente.style.background =
+      "#ffffff";
+
+    tarjetaCliente.style.border =
+      "1px solid #ddd";
+
+    tarjetaCliente.style.borderRadius =
+      "15px";
+
+    tarjetaCliente.style.padding =
+      "16px";
+
+    tarjetaCliente.style.marginBottom =
+      "15px";
+
+    tarjetaCliente.style.boxShadow =
+      "0 4px 12px rgba(0,0,0,.08)";
+
+    tarjetaCliente.style.boxSizing =
+      "border-box";
+
+    tarjetaCliente.dataset.cliente =
+      identificadorCliente;
+
+    tarjetaCliente.dataset.estado =
+      estadoVisual;
+
+    tarjetaCliente.innerHTML = `
+
+      <div style="
+        border-bottom:1px solid #ddd;
+        padding-bottom:12px;
+        margin-bottom:14px;
+      ">
+
+        <div style="
+          color:#003366;
+          font-size:18px;
+          font-weight:bold;
+          word-break:break-word;
+        ">
+
+          👤 ${nombre} ${apellido}
+
+        </div>
+
+        <div style="
+          margin-top:5px;
+          font-size:14px;
+          color:#555;
+        ">
+
+          🆔 Código RG: ${codigo}
+
+        </div>
+
+        <div style="
+          margin-top:4px;
+          font-size:14px;
+          color:#555;
+          word-break:break-word;
+        ">
+
+          📧 ${correo}
+
+        </div>
+
+        <div style="
+          margin-top:4px;
+          font-size:14px;
+          color:#555;
+        ">
+
+          📱 ${telefono}
+
+        </div>
+
+      </div>
+
+      <div
+        class="lista-trackings-cliente"
+        id="listaTrackings-${claveCliente}-${claveEstado}"
+      ></div>
+
+    `;
+
+    // ------------------------------------------
+    // Agregar tarjeta al contenedor del estado
+    // ------------------------------------------
+
+    const contenedor =
+      obtenerContenedorEstado(
+        estadoReal
+      );
+
+    if (contenedor) {
+
+      contenedor.appendChild(
+        tarjetaCliente
+      );
+
+    }
+
+  }
+
+  // ------------------------------------------
+  // Crear fila individual del tracking
+  // ------------------------------------------
+
+  const filaExistente =
+    document.getElementById(
+      "tarjetaPaquete-" + id
+    );
+
+  if (filaExistente) {
+
+    filaExistente.remove();
+
+  }
+
+  const fila =
+    document.createElement("div");
+
+  fila.id =
+    "tarjetaPaquete-" + id;
+
+  fila.className =
+    "tarjeta-paquete-admin";
+
+  fila.dataset.id =
+    id;
+
+  fila.style.background =
+    "#f8f9fa";
+
+  fila.style.border =
+    "1px solid #e1e1e1";
+
+  fila.style.borderRadius =
+    "12px";
+
+  fila.style.padding =
+    "14px";
+
+  fila.style.marginBottom =
+    "12px";
+
+  fila.style.boxSizing =
+    "border-box";
+
+  fila.innerHTML = `
 
     <div style="
-      border-bottom:1px solid #eee;
-      padding-bottom:10px;
-      margin-bottom:12px;
+      border-bottom:1px solid #ddd;
+      padding-bottom:9px;
+      margin-bottom:10px;
     ">
 
       <div style="
@@ -1270,46 +1454,6 @@ function crearTarjetaPrealerta(
 
     <p style="margin:8px 0;">
 
-      <strong>👤 Cliente:</strong><br>
-
-      ${nombre} ${apellido}
-
-    </p>
-
-
-    <p style="margin:8px 0;">
-
-      <strong>🆔 Código RG:</strong><br>
-
-      ${codigo}
-
-    </p>
-
-
-    <p style="margin:8px 0;">
-
-      <strong>📧 Correo:</strong><br>
-
-      <span style="
-        word-break:break-word;
-      ">
-        ${correo}
-      </span>
-
-    </p>
-
-
-    <p style="margin:8px 0;">
-
-      <strong>📱 Teléfono:</strong><br>
-
-      ${telefono}
-
-    </p>
-
-
-    <p style="margin:8px 0;">
-
       <strong>📋 Estado:</strong><br>
 
       <span
@@ -1319,7 +1463,7 @@ function crearTarjetaPrealerta(
           color:#003366;
         "
       >
-        ${estado}
+        ${estadoVisual}
       </span>
 
     </p>
@@ -1350,28 +1494,18 @@ function crearTarjetaPrealerta(
     >
 
       <option value="Prealertado"
-        ${estado === "Prealertado" ? "selected" : ""}>
+        ${estadoVisual === "Prealertado" ? "selected" : ""}>
         Prealertado
       </option>
 
       <option value="Recibido en bodega"
-        ${estado === "Recibido en bodega" ? "selected" : ""}>
+        ${estadoVisual === "Recibido en bodega" ? "selected" : ""}>
         Recibido en bodega
       </option>
 
-      <option value="En tránsito"
-        ${estado === "En tránsito" ? "selected" : ""}>
-        En tránsito
-      </option>
-
       <option value="Llegó a Venezuela"
-        ${estado === "Llegó a Venezuela" ? "selected" : ""}>
+        ${estadoVisual === "Llegó a Venezuela" ? "selected" : ""}>
         Llegó a Venezuela
-      </option>
-
-      <option value="Entregado"
-        ${estado === "Entregado" ? "selected" : ""}>
-        Entregado
       </option>
 
     </select>
@@ -1394,9 +1528,10 @@ function crearTarjetaPrealerta(
       "
     >
 
-    💾 Guardar cambio
+      💾 Guardar cambio
 
     </button>
+
 
     <button
       type="button"
@@ -1418,6 +1553,8 @@ function crearTarjetaPrealerta(
       📍 Ver datos de entrega
 
     </button>
+
+
     <button
       type="button"
       id="btnEliminar-${id}"
@@ -1439,10 +1576,31 @@ function crearTarjetaPrealerta(
 
     </button>
 
-  `;     
+  `;
+
+  // ------------------------------------------
+  // Agregar fila al cliente
+  // ------------------------------------------
+
+  const listaTrackings =
+    tarjetaCliente.querySelector(
+      ".lista-trackings-cliente"
+    );
+
+  if (listaTrackings) {
+
+    listaTrackings.appendChild(
+      fila
+    );
+
+  }
+
+  // ------------------------------------------
+  // Botón cambiar estado
+  // ------------------------------------------
 
   const boton =
-    tarjeta.querySelector(
+    fila.querySelector(
       "#btnEstado-" + id
     );
 
@@ -1461,8 +1619,12 @@ function crearTarjetaPrealerta(
 
   }
 
+  // ------------------------------------------
+  // Botón datos de entrega
+  // ------------------------------------------
+
   const botonVerEntrega =
-    tarjeta.querySelector(
+    fila.querySelector(
       "#btnVerEntrega-" + id
     );
 
@@ -1493,9 +1655,13 @@ function crearTarjetaPrealerta(
     );
 
   }
-  
+
+  // ------------------------------------------
+  // Botón eliminar
+  // ------------------------------------------
+
   const botonEliminar =
-    tarjeta.querySelector(
+    fila.querySelector(
       "#btnEliminar-" + id
     );
 
@@ -1514,247 +1680,9 @@ function crearTarjetaPrealerta(
 
   }
 
-  return tarjeta;
+  return fila;
 
 }
-
-// ======================================================
-// CONSULTAR DATOS DE ENTREGA DEL CLIENTE
-// ======================================================
-
-async function verDatosEntrega(uid) {
-
-  try {
-
-    if (!uid) {
-
-      alert("❌ No se encontró el UID del cliente.");
-
-      return;
-
-    }
-
-    const referencia =
-      doc(
-        db,
-        "datosEntrega",
-        uid
-      );
-
-    const resultado =
-      await getDoc(
-        referencia
-      );
-
-    if (!resultado.exists()) {
-
-      alert(
-        "📍 Este cliente todavía no tiene datos de entrega guardados."
-      );
-
-      return;
-
-    }
-
-    const datosEntrega =
-      resultado.data();
-
-    const empresa =
-      datosEntrega.empresaEnvio ||
-      "No especificada";
-
-    const tipoEntrega =
-      datosEntrega.tipoEntrega ||
-      "No especificado";
-
-    const telefono =
-      datosEntrega.telefono ||
-      "No especificado";
-
-    const personaRecibe =
-      datosEntrega.personaRecibe ||
-      "No especificada";
-
-    const observaciones =
-      datosEntrega.observaciones ||
-      "Ninguna";
-
-    let mensaje =
-      "📍 DATOS DE ENTREGA\n\n" +
-
-      "🚚 Empresa de envío: " +
-      empresa + "\n\n" +
-
-      "📦 Tipo de entrega: " +
-      tipoEntrega + "\n\n";
-
-    if (
-      tipoEntrega.toLowerCase() === "domicilio"
-    ) {
-
-      mensaje +=
-
-        "📍 Estado: " +
-        (datosEntrega.estadoDomicilio || "No especificado") +
-        "\n\n" +
-
-        "🏙️ Ciudad/Municipio: " +
-        (datosEntrega.ciudadDomicilio || "No especificada") +
-        "\n\n" +
-
-        "🏘️ Barrio/Urbanización: " +
-        (datosEntrega.barrioUrbanizacion || "No especificado") +
-        "\n\n" +
-
-        "🛣️ Calle/Avenida: " +
-        (datosEntrega.calleAvenida || "No especificada") +
-        "\n\n" +
-
-        "🏠 Número de casa: " +
-        (datosEntrega.numeroCasa || "No especificado") +
-        "\n\n" +
-
-        "🏠 Dirección: " +
-        (datosEntrega.direccionDomicilio || "No especificada") +
-        "\n\n" +
-
-        "📮 Código postal: " +
-        (datosEntrega.codigoPostal || "No especificado") +
-        "\n\n" +
-
-        "📌 Punto de referencia: " +
-        (datosEntrega.puntoReferencia || "No especificado") +
-        "\n\n";
-
-    } else {
-
-      mensaje +=
-
-        "📍 Estado: " +
-        (datosEntrega.estado || "No especificado") +
-        "\n\n" +
-
-        "🏙️ Ciudad: " +
-        (datosEntrega.ciudad || "No especificada") +
-        "\n\n" +
-
-        "🏢 Oficina: " +
-        (datosEntrega.oficina || "No especificada") +
-        "\n\n" +
-
-        "🏠 Dirección de oficina: " +
-        (datosEntrega.direccionOficina || "No especificada") +
-        "\n\n";
-
-    }
-
-    mensaje +=
-
-      "📱 Teléfono: " +
-      telefono +
-      "\n\n" +
-
-      "👤 Persona que recibe: " +
-      personaRecibe +
-      "\n\n" +
-
-      "📝 Observaciones: " +
-      observaciones;
-
-    alert(mensaje);
-
-  } catch (error) {
-
-    console.error(
-      "❌ Error al consultar los datos de entrega:",
-      error
-    );
-
-    alert(
-      "❌ No se pudieron consultar los datos de entrega."
-    );
-
-  }
-
-}
-
-// ======================================================
-// OBTENER COLUMNA SEGÚN ESTADO
-// ======================================================
-
-function obtenerContenedorEstado(
-  estado
-) {
-
-  if (
-    estado === "Prealertado"
-  ) {
-
-    return document.getElementById(
-      "listaPrealertados"
-    );
-
-  }
-
-  if (
-    estado === "Recibido en bodega"
-  ) {
-
-    return document.getElementById(
-      "listaBodega"
-    );
-
-  }
-
-  if (
-    estado === "Llegó a Venezuela"
-  ) {
-
-    return document.getElementById(
-      "listaVenezuela"
-    );
-
-  }
-
-  /*
-   * Los estados "En tránsito" y "Entregado"
-   * se mantienen en el sistema.
-   *
-   * Para el tablero principal:
-   *
-   * - En tránsito permanece junto a los
-   *   paquetes recibidos en bodega.
-   *
-   * - Entregado permanece junto a los
-   *   paquetes que llegaron a Venezuela.
-   */
-
-  if (
-    estado === "En tránsito"
-  ) {
-
-    return document.getElementById(
-      "listaBodega"
-    );
-
-  }
-
-  if (
-    estado === "Entregado"
-  ) {
-
-    return document.getElementById(
-      "listaVenezuela"
-    );
-
-  }
-
-  return document.getElementById(
-    "listaPrealertados"
-  );
-
-}
-
 
 // ======================================================
 // PINTAR UNA TARJETA EN SU COLUMNA
