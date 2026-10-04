@@ -1,5 +1,10 @@
 console.log("ADMIN.JS CARGADO");
 
+// ======================================================
+// SECCIÓN 1/16
+// IMPORTACIONES Y CONFIGURACIÓN INICIAL
+// ======================================================
+
 import { auth, db } from "./firebase.js";
 
 import {
@@ -19,8 +24,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 
-
-
 // ======================================================
 // EMAILJS
 // ======================================================
@@ -31,16 +34,42 @@ emailjs.init({
 
 console.log("✅ EmailJS cargado correctamente");
 
+
 // ======================================================
-// VARIABLES
+// VARIABLES GENERALES
 // ======================================================
 
-const listaAdmin = document.getElementById("listaAdmin");
+const listaAdmin =
+  document.getElementById("listaAdmin");
 
 let todosLosUsuarios = [];
+
 let cantidadUsuariosAnterior = 0;
 
 let contextoAudio = null;
+
+
+// ======================================================
+// VARIABLES DEL TABLERO
+// ======================================================
+
+let datosPrealertas = {};
+
+let escuchaPrealertasActiva = false;
+
+
+// ======================================================
+// MAPA DE USUARIOS
+// ======================================================
+
+let usuariosPorUid = {};
+
+
+// ======================================================
+// SECCIÓN 2/16
+// FUNCIONES GENERALES
+// ======================================================
+
 
 // ======================================================
 // NORMALIZAR TEXTO
@@ -56,56 +85,96 @@ function normalizarTexto(texto) {
 
 }
 
+
 // ======================================================
-// SONIDO
+// ESCUCHAR PRIMER CLICK PARA ACTIVAR AUDIO
 // ======================================================
 
-document.addEventListener("click", async () => {
+document.addEventListener(
+  "click",
+  async () => {
 
-  try {
+    try {
 
-    if (!contextoAudio) {
-      contextoAudio = new AudioContext();
+      if (!contextoAudio) {
+
+        contextoAudio =
+          new AudioContext();
+
+      }
+
+      if (
+        contextoAudio.state ===
+        "suspended"
+      ) {
+
+        await contextoAudio.resume();
+
+      }
+
+    } catch (error) {
+
+      console.log(
+        "Audio no disponible:",
+        error
+      );
+
     }
 
-    if (contextoAudio.state === "suspended") {
-      await contextoAudio.resume();
-    }
+  },
+  { once: true }
+);
 
-  } catch (error) {
 
-    console.log("Audio no disponible:", error);
-
-  }
-
-}, { once: true });
-
+// ======================================================
+// REPRODUCIR SONIDO
+// ======================================================
 
 async function reproducirSonido() {
 
   try {
 
     if (!contextoAudio) {
-      contextoAudio = new AudioContext();
+
+      contextoAudio =
+        new AudioContext();
+
     }
 
-    if (contextoAudio.state === "suspended") {
+    if (
+      contextoAudio.state ===
+      "suspended"
+    ) {
+
       await contextoAudio.resume();
+
     }
 
-    const oscilador = contextoAudio.createOscillator();
-    const ganancia = contextoAudio.createGain();
+    const oscilador =
+      contextoAudio.createOscillator();
 
-    oscilador.connect(ganancia);
-    ganancia.connect(contextoAudio.destination);
+    const ganancia =
+      contextoAudio.createGain();
 
-    oscilador.frequency.value = 880;
-    ganancia.gain.value = 0.3;
+    oscilador.connect(
+      ganancia
+    );
+
+    ganancia.connect(
+      contextoAudio.destination
+    );
+
+    oscilador.frequency.value =
+      880;
+
+    ganancia.gain.value =
+      0.3;
 
     oscilador.start();
 
     oscilador.stop(
-      contextoAudio.currentTime + 0.3
+      contextoAudio.currentTime +
+      0.3
     );
 
   } catch (error) {
@@ -119,25 +188,240 @@ async function reproducirSonido() {
 
 }
 
+
+// ======================================================
+// OBTENER DATOS DEL CLIENTE
+// ======================================================
+
+function obtenerClienteDePaquete(
+  paquete
+) {
+
+  if (!paquete) {
+    return null;
+  }
+
+  if (
+    paquete.uid &&
+    usuariosPorUid[paquete.uid]
+  ) {
+
+    return usuariosPorUid[
+      paquete.uid
+    ];
+
+  }
+
+  if (
+    paquete.cliente
+  ) {
+
+    return paquete.cliente;
+
+  }
+
+  return null;
+
+}
+
+
+// ======================================================
+// OBTENER IDENTIFICADOR DEL CLIENTE
+// ======================================================
+
+function obtenerIdentificadorCliente(
+  paquete
+) {
+
+  const cliente =
+    obtenerClienteDePaquete(
+      paquete
+    );
+
+  if (cliente) {
+
+    if (cliente.uid) {
+      return "uid:" + cliente.uid;
+    }
+
+    if (cliente.id) {
+      return "doc:" + cliente.id;
+    }
+
+    const correo =
+      cliente.correo ||
+      cliente.email;
+
+    if (correo) {
+      return "correo:" +
+        normalizarTexto(correo);
+    }
+
+    const codigo =
+      cliente.codigo;
+
+    if (codigo) {
+      return "codigo:" +
+        normalizarTexto(codigo);
+    }
+
+  }
+
+  if (paquete.uid) {
+
+    return "uid:" +
+      paquete.uid;
+
+  }
+
+  const correo =
+    paquete.correo;
+
+  if (correo) {
+
+    return "correo:" +
+      normalizarTexto(correo);
+
+  }
+
+  return "sin-cliente";
+
+}
+
+
+// ======================================================
+// NOMBRE PARA AGRUPACIÓN
+// ======================================================
+
+function obtenerNombreCliente(
+  paquete
+) {
+
+  const cliente =
+    obtenerClienteDePaquete(
+      paquete
+    );
+
+  if (cliente) {
+
+    const nombre =
+      cliente.nombre ||
+      "";
+
+    const apellido =
+      cliente.apellido ||
+      "";
+
+    const nombreCompleto =
+      `${nombre} ${apellido}`.trim();
+
+    if (nombreCompleto) {
+
+      return nombreCompleto;
+
+    }
+
+  }
+
+  return (
+    paquete.nombre ||
+    "Cliente sin nombre"
+  );
+
+}
+
+
+// ======================================================
+// OBTENER ESTADO VISUAL
+// ======================================================
+
+function obtenerEstadoVisual(
+  estado
+) {
+
+  if (
+    estado ===
+    "En tránsito"
+  ) {
+
+    return "Recibido en bodega";
+
+  }
+
+  if (
+    estado ===
+    "Entregado"
+  ) {
+
+    return "Llegó a Venezuela";
+
+  }
+
+  if (
+    estado ===
+    "Recibido en bodega"
+  ) {
+
+    return "Recibido en bodega";
+
+  }
+
+  if (
+    estado ===
+    "Llegó a Venezuela"
+  ) {
+
+    return "Llegó a Venezuela";
+
+  }
+
+  return "Prealertado";
+
+}
+
+
+// ======================================================
+// SECCIÓN 3/16
+// PANEL DE USUARIOS
+// ======================================================
+
+
 // ======================================================
 // CREAR PANEL DE USUARIOS
 // ======================================================
 
 function crearPanelUsuarios() {
 
-  if (document.getElementById("panelUsuariosAdmin")) {
+  if (
+    document.getElementById(
+      "panelUsuariosAdmin"
+    )
+  ) {
+
     return;
+
   }
 
-  const panel = document.createElement("div");
+  const panel =
+    document.createElement("div");
 
-  panel.id = "panelUsuariosAdmin";
+  panel.id =
+    "panelUsuariosAdmin";
 
-  panel.style.margin = "30px 0";
-  panel.style.padding = "25px";
-  panel.style.background = "#f8faff";
-  panel.style.borderRadius = "20px";
-  panel.style.boxShadow = "0 10px 30px rgba(0,0,0,.12)";
+  panel.style.margin =
+    "30px 0";
+
+  panel.style.padding =
+    "25px";
+
+  panel.style.background =
+    "#f8faff";
+
+  panel.style.borderRadius =
+    "20px";
+
+  panel.style.boxShadow =
+    "0 10px 30px rgba(0,0,0,.12)";
 
   panel.innerHTML = `
 
@@ -150,7 +434,11 @@ function crearPanelUsuarios() {
     </h2>
 
     <div style="
-      background:linear-gradient(135deg,#003366,#0A84FF);
+      background:linear-gradient(
+        135deg,
+        #003366,
+        #0A84FF
+      );
       color:white;
       border-radius:18px;
       padding:25px;
@@ -233,7 +521,9 @@ function crearPanelUsuarios() {
 
     <div
       id="resultadoUsuariosAdmin"
-      style="margin-top:20px;"
+      style="
+        margin-top:20px;
+      "
     >
 
       <p style="
@@ -247,25 +537,38 @@ function crearPanelUsuarios() {
 
   `;
 
+
   const encabezados =
     document.querySelectorAll("h2");
 
-  let tituloPrealertas = null;
+  let tituloPrealertas =
+    null;
 
-  encabezados.forEach((titulo) => {
 
-    if (
-      titulo.textContent.includes("Prealertas") ||
-      titulo.textContent.includes("📦")
-    ) {
+  encabezados.forEach(
+    (titulo) => {
 
-      tituloPrealertas = titulo;
+      if (
+        titulo.textContent.includes(
+          "Prealertas"
+        ) ||
+        titulo.textContent.includes(
+          "📦"
+        )
+      ) {
+
+        tituloPrealertas =
+          titulo;
+
+      }
 
     }
+  );
 
-  });
 
-  if (tituloPrealertas) {
+  if (
+    tituloPrealertas
+  ) {
 
     tituloPrealertas.parentNode.insertBefore(
       panel,
@@ -281,34 +584,49 @@ function crearPanelUsuarios() {
 
   }
 
+
   document
-    .getElementById("btnMostrarUsuarios")
+    .getElementById(
+      "btnMostrarUsuarios"
+    )
     .addEventListener(
       "click",
       mostrarTodosLosUsuarios
     );
 
+
   document
-    .getElementById("btnBuscarUsuarioAdmin")
+    .getElementById(
+      "btnBuscarUsuarioAdmin"
+    )
     .addEventListener(
       "click",
       buscarUsuarios
     );
 
+
   document
-    .getElementById("buscarUsuarioAdmin")
+    .getElementById(
+      "buscarUsuarioAdmin"
+    )
     .addEventListener(
       "keydown",
       (evento) => {
 
-        if (evento.key === "Enter") {
+        if (
+          evento.key ===
+          "Enter"
+        ) {
+
           buscarUsuarios();
+
         }
 
       }
     );
 
 }
+
 
 // ======================================================
 // CARGAR TODOS LOS USUARIOS
@@ -321,46 +639,98 @@ async function cargarUsuarios() {
       "resultadoUsuariosAdmin"
     );
 
+
   if (resultado) {
 
     resultado.innerHTML = `
-      <p style="text-align:center;">
+
+      <p style="
+        text-align:center;
+      ">
         ⏳ Cargando usuarios...
       </p>
+
     `;
 
   }
+
 
   try {
 
     const snapshot =
       await getDocs(
-        collection(db, "usuarios")
+        collection(
+          db,
+          "usuarios"
+        )
       );
+
 
     todosLosUsuarios = [];
 
-    snapshot.forEach((documento) => {
+    usuariosPorUid = {};
 
-      const datos =
-        documento.data();
 
-      todosLosUsuarios.push({
+    snapshot.forEach(
+      (documento) => {
 
-        id: documento.id,
+        const datos =
+          documento.data();
 
-        ...datos
 
-      });
+        const usuario = {
 
-    });
+          id:
+            documento.id,
+
+          ...datos
+
+        };
+
+
+        todosLosUsuarios.push(
+          usuario
+        );
+
+
+        /*
+         * Guardamos el usuario por el UID
+         * que tenga el documento.
+         */
+
+        if (datos.uid) {
+
+          usuariosPorUid[
+            datos.uid
+          ] = usuario;
+
+        }
+
+
+        /*
+         * También guardamos por el ID
+         * del documento.
+         *
+         * Esto permite encontrar al cliente
+         * aunque no tenga un campo uid.
+         */
+
+        usuariosPorUid[
+          documento.id
+        ] = usuario;
+
+      }
+    );
+
 
     actualizarContador();
+
 
     console.log(
       "TOTAL USUARIOS:",
       todosLosUsuarios.length
     );
+
 
     if (resultado) {
 
@@ -388,12 +758,14 @@ async function cargarUsuarios() {
 
     }
 
+
   } catch (error) {
 
     console.error(
       "ERROR CARGANDO USUARIOS:",
       error
     );
+
 
     if (resultado) {
 
@@ -420,8 +792,9 @@ async function cargarUsuarios() {
 
 }
 
+
 // ======================================================
-// ACTUALIZAR CONTADOR
+// ACTUALIZAR CONTADOR DE USUARIOS
 // ======================================================
 
 function actualizarContador() {
@@ -430,6 +803,7 @@ function actualizarContador() {
     document.getElementById(
       "numeroUsuariosAdmin"
     );
+
 
   if (contador) {
 
@@ -440,18 +814,23 @@ function actualizarContador() {
 
 }
 
+
 // ======================================================
 // MOSTRAR TODOS LOS USUARIOS
 // ======================================================
 
 function mostrarTodosLosUsuarios() {
 
-  if (todosLosUsuarios.length === 0) {
+  if (
+    todosLosUsuarios.length ===
+    0
+  ) {
 
     const resultado =
       document.getElementById(
         "resultadoUsuariosAdmin"
       );
+
 
     resultado.innerHTML = `
 
@@ -470,112 +849,14 @@ function mostrarTodosLosUsuarios() {
 
   }
 
+
   pintarUsuarios(
     todosLosUsuarios
   );
 
 }
 
-// ======================================================
-// BUSCADOR PRINCIPAL - CÓDIGO, CORREO O TRACKING
-// ======================================================
 
-function buscarPrincipal() {
-
-  const input =
-    document.getElementById("buscar");
-
-  const textoOriginal =
-    input.value.trim();
-
-  if (!textoOriginal) {
-
-    alert(
-      "✏️ Escribe un código RG, correo o tracking."
-    );
-
-    return;
-
-  }
-
-  const busqueda =
-    normalizarTexto(textoOriginal);
-
-  const paquetesEncontrados =
-    Object.values(datosPrealertas).filter(
-      (paquete) => {
-
-        const tracking =
-          normalizarTexto(
-            paquete.tracking
-          );
-
-        const correo =
-          normalizarTexto(
-            paquete.correo ||
-            (paquete.cliente &&
-             (
-               paquete.cliente.correo ||
-               paquete.cliente.email
-             ))
-          );
-
-        const codigo =
-          normalizarTexto(
-            paquete.cliente &&
-            paquete.cliente.codigo
-          );
-
-        return (
-          tracking.includes(busqueda) ||
-          correo.includes(busqueda) ||
-          codigo.includes(busqueda)
-        );
-
-      }
-    );
-
-  if (paquetesEncontrados.length === 0) {
-
-    alert(
-      "❌ No se encontró ningún paquete con:\n\n" +
-      textoOriginal
-    );
-
-    return;
-
-  }
-
-  const paquete =
-    paquetesEncontrados[0];
-
-  const id =
-    paquete.id;
-
-  const tarjeta =
-    document.getElementById(
-      "tarjetaPaquete-" + id
-    );
-
-  if (tarjeta) {
-
-    tarjeta.scrollIntoView({
-      behavior: "smooth",
-      block: "center"
-    });
-
-    tarjeta.style.outline =
-      "4px solid #0A84FF";
-
-    setTimeout(() => {
-
-      tarjeta.style.outline = "";
-
-    }, 3000);
-
-  }
-
-}
 // ======================================================
 // BUSCAR USUARIO
 // ======================================================
@@ -587,13 +868,16 @@ function buscarUsuarios() {
       "buscarUsuarioAdmin"
     );
 
+
   const resultado =
     document.getElementById(
       "resultadoUsuariosAdmin"
     );
 
+
   const textoOriginal =
     input.value.trim();
+
 
   if (!textoOriginal) {
 
@@ -615,10 +899,12 @@ function buscarUsuarios() {
 
   }
 
+
   const busqueda =
     normalizarTexto(
       textoOriginal
     );
+
 
   const encontrados =
     todosLosUsuarios.filter(
@@ -629,15 +915,18 @@ function buscarUsuarios() {
             usuario.nombre
           );
 
+
         const apellido =
           normalizarTexto(
             usuario.apellido
           );
 
+
         const nombreCompleto =
           normalizarTexto(
             `${usuario.nombre || ""} ${usuario.apellido || ""}`
           );
+
 
         const correo =
           normalizarTexto(
@@ -645,29 +934,45 @@ function buscarUsuarios() {
             usuario.email
           );
 
+
         const codigo =
           normalizarTexto(
             usuario.codigo
           );
 
+
         return (
 
-          nombre.includes(busqueda) ||
+          nombre.includes(
+            busqueda
+          ) ||
 
-          apellido.includes(busqueda) ||
+          apellido.includes(
+            busqueda
+          ) ||
 
-          nombreCompleto.includes(busqueda) ||
+          nombreCompleto.includes(
+            busqueda
+          ) ||
 
-          correo.includes(busqueda) ||
+          correo.includes(
+            busqueda
+          ) ||
 
-          codigo.includes(busqueda)
+          codigo.includes(
+            busqueda
+          )
 
         );
 
       }
     );
 
-  if (encontrados.length === 0) {
+
+  if (
+    encontrados.length ===
+    0
+  ) {
 
     resultado.innerHTML = `
 
@@ -686,9 +991,13 @@ function buscarUsuarios() {
           No se encontraron usuarios
         </strong>
 
-        <p style="color:#777;">
+        <p style="
+          color:#777;
+        ">
+
           Búsqueda:
           ${textoOriginal}
+
         </p>
 
       </div>
@@ -699,22 +1008,27 @@ function buscarUsuarios() {
 
   }
 
+
   pintarUsuarios(
     encontrados
   );
 
 }
 
+
 // ======================================================
 // PINTAR USUARIOS
 // ======================================================
 
-function pintarUsuarios(usuarios) {
+function pintarUsuarios(
+  usuarios
+) {
 
   const resultado =
     document.getElementById(
       "resultadoUsuariosAdmin"
     );
+
 
   resultado.innerHTML = `
 
@@ -733,102 +1047,138 @@ function pintarUsuarios(usuarios) {
 
   `;
 
-  usuarios.forEach((usuario) => {
 
-    const tarjeta =
-      document.createElement("div");
+  usuarios.forEach(
+    (usuario) => {
 
-    tarjeta.style.background =
-      "#ffffff";
+      const tarjeta =
+        document.createElement(
+          "div"
+        );
 
-    tarjeta.style.border =
-      "1px solid #ddd";
 
-    tarjeta.style.borderRadius =
-      "15px";
+      tarjeta.style.background =
+        "#ffffff";
 
-    tarjeta.style.padding =
-      "18px";
 
-    tarjeta.style.marginBottom =
-      "15px";
+      tarjeta.style.border =
+        "1px solid #ddd";
 
-    tarjeta.style.boxShadow =
-      "0 5px 15px rgba(0,0,0,.08)";
 
-    const nombre =
-      usuario.nombre ||
-      "Sin nombre";
+      tarjeta.style.borderRadius =
+        "15px";
 
-    const apellido =
-      usuario.apellido ||
-      "";
 
-    const correo =
-      usuario.correo ||
-      usuario.email ||
-      "Sin correo";
+      tarjeta.style.padding =
+        "18px";
 
-    const codigo =
-      usuario.codigo ||
-      "Sin código";
 
-    const telefono =
-      usuario.telefono ||
-      "Sin teléfono";
+      tarjeta.style.marginBottom =
+        "15px";
 
-    tarjeta.innerHTML = `
 
-      <h3 style="
-        color:#003366;
-        margin-top:0;
-      ">
+      tarjeta.style.boxShadow =
+        "0 5px 15px rgba(0,0,0,.08)";
 
-        👤
-        ${nombre}
-        ${apellido}
 
-      </h3>
+      const nombre =
+        usuario.nombre ||
+        "Sin nombre";
 
-      <p>
-        <strong>📦 Código RG:</strong>
-        ${codigo}
-      </p>
 
-      <p>
-        <strong>📧 Correo:</strong>
-        ${correo}
-      </p>
+      const apellido =
+        usuario.apellido ||
+        "";
 
-      <p>
-        <strong>📱 Teléfono:</strong>
-        ${telefono}
-      </p>
 
-    `;
+      const correo =
+        usuario.correo ||
+        usuario.email ||
+        "Sin correo";
 
-    resultado.appendChild(
-      tarjeta
-    );
 
-  });
+      const codigo =
+        usuario.codigo ||
+        "Sin código";
+
+
+      const telefono =
+        usuario.telefono ||
+        "Sin teléfono";
+
+
+      tarjeta.innerHTML = `
+
+        <h3 style="
+          color:#003366;
+          margin-top:0;
+        ">
+
+          👤
+          ${nombre}
+          ${apellido}
+
+        </h3>
+
+        <p>
+          <strong>
+            📦 Código RG:
+          </strong>
+          ${codigo}
+        </p>
+
+        <p>
+          <strong>
+            📧 Correo:
+          </strong>
+          ${correo}
+        </p>
+
+        <p>
+          <strong>
+            📱 Teléfono:
+          </strong>
+          ${telefono}
+        </p>
+
+      `;
+
+
+      resultado.appendChild(
+        tarjeta
+      );
+
+    }
+  );
 
 }
+
+
+// ======================================================
+// SECCIÓN 4/16
+// USUARIOS EN TIEMPO REAL Y BUSCADOR PRINCIPAL
+// ======================================================
+
 
 // ======================================================
 // ESCUCHAR NUEVOS USUARIOS EN TIEMPO REAL
 // ======================================================
 
 onSnapshot(
-  collection(db, "usuarios"),
+  collection(
+    db,
+    "usuarios"
+  ),
 
   async (snapshot) => {
 
     const cantidadActual =
       snapshot.size;
 
+
     if (
-      cantidadUsuariosAnterior > 0 &&
+      cantidadUsuariosAnterior >
+        0 &&
       cantidadActual >
         cantidadUsuariosAnterior
     ) {
@@ -837,7 +1187,9 @@ onSnapshot(
         cantidadActual -
         cantidadUsuariosAnterior;
 
+
       await reproducirSonido();
+
 
       alert(
         "🔔 ¡Nuevo cliente registrado!\n\n" +
@@ -848,24 +1200,62 @@ onSnapshot(
 
     }
 
+
     cantidadUsuariosAnterior =
       cantidadActual;
 
+
     todosLosUsuarios = [];
 
-    snapshot.forEach((documento) => {
+    usuariosPorUid = {};
 
-      todosLosUsuarios.push({
 
-        id: documento.id,
+    snapshot.forEach(
+      (documento) => {
 
-        ...documento.data()
+        const datos =
+          documento.data();
 
-      });
 
-    });
+        const usuario = {
+
+          id:
+            documento.id,
+
+          ...datos
+
+        };
+
+
+        todosLosUsuarios.push(
+          usuario
+        );
+
+
+        if (datos.uid) {
+
+          usuariosPorUid[
+            datos.uid
+          ] = usuario;
+
+        }
+
+
+        /*
+         * También usamos el ID del documento
+         * como posible UID.
+         */
+
+        usuariosPorUid[
+          documento.id
+        ] = usuario;
+
+      }
+    );
+
 
     actualizarContador();
+
 
   },
 
@@ -880,17 +1270,272 @@ onSnapshot(
 
 );
 
-// ======================================================
-// VARIABLES DEL TABLERO DE PREALERTAS
-// ======================================================
-
-let datosPrealertas = {};
-
-let escuchaPrealertasActiva = false;
-
 
 // ======================================================
-// CREAR TABLERO DE 3 COLUMNAS
+// BUSCADOR PRINCIPAL
+// CÓDIGO, CORREO O TRACKING
+// ======================================================
+
+function buscarPrincipal() {
+
+  const input =
+    document.getElementById(
+      "buscar"
+    );
+
+
+  const textoOriginal =
+    input.value.trim();
+
+
+  if (!textoOriginal) {
+
+    alert(
+      "✏️ Escribe un código RG, correo o tracking."
+    );
+
+    return;
+
+  }
+
+
+  const busqueda =
+    normalizarTexto(
+      textoOriginal
+    );
+
+
+  const paquetesEncontrados =
+    Object.values(
+      datosPrealertas
+    ).filter(
+      (paquete) => {
+
+        const tracking =
+          normalizarTexto(
+            paquete.tracking
+          );
+
+
+        const correo =
+          normalizarTexto(
+            paquete.correo ||
+            (
+              paquete.cliente &&
+              (
+                paquete.cliente.correo ||
+                paquete.cliente.email
+              )
+            )
+          );
+
+
+        const cliente =
+          obtenerClienteDePaquete(
+            paquete
+          );
+
+
+        const codigo =
+          normalizarTexto(
+            cliente &&
+            cliente.codigo
+          );
+
+
+        const nombre =
+          normalizarTexto(
+            obtenerNombreCliente(
+              paquete
+            )
+          );
+
+
+        return (
+
+          tracking.includes(
+            busqueda
+          ) ||
+
+          correo.includes(
+            busqueda
+          ) ||
+
+          codigo.includes(
+            busqueda
+          ) ||
+
+          nombre.includes(
+            busqueda
+          )
+
+        );
+
+      }
+    );
+
+
+  if (
+    paquetesEncontrados.length ===
+    0
+  ) {
+
+    alert(
+      "❌ No se encontró ningún paquete con:\n\n" +
+      textoOriginal
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * La tarjeta ahora es una tarjeta agrupada
+   * por cliente y estado.
+   *
+   * Por eso primero intentamos encontrar
+   * específicamente la fila del tracking.
+   */
+
+  const paquete =
+    paquetesEncontrados[0];
+
+
+  const tracking =
+    paquete.tracking ||
+    "";
+
+
+  const fila =
+    document.querySelector(
+      `[data-tracking="${CSS.escape(tracking)}"]`
+    );
+
+
+  if (fila) {
+
+    fila.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+
+    fila.style.outline =
+      "4px solid #0A84FF";
+
+
+    fila.style.borderRadius =
+      "10px";
+
+
+    setTimeout(
+      () => {
+
+        fila.style.outline =
+          "";
+
+      },
+      3000
+    );
+
+
+    return;
+
+  }
+
+
+  /*
+   * Respaldo:
+   * si todavía no existe la fila en pantalla,
+   * buscamos la tarjeta agrupada.
+   */
+
+  const identificador =
+    obtenerIdentificadorCliente(
+      paquete
+    );
+
+
+  const estadoVisual =
+    obtenerEstadoVisual(
+      paquete.estado
+    );
+
+
+  const idTarjeta =
+    "tarjetaCliente-" +
+    normalizarTexto(
+      identificador
+    ) +
+    "-" +
+    normalizarTexto(
+      estadoVisual
+    );
+
+
+  const tarjeta =
+    document.getElementById(
+      idTarjeta
+    );
+
+
+  if (tarjeta) {
+
+    tarjeta.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+
+    tarjeta.style.outline =
+      "4px solid #0A84FF";
+
+
+    setTimeout(
+      () => {
+
+        tarjeta.style.outline =
+          "";
+
+      },
+      3000
+    );
+
+  }
+
+}
+
+
+// ======================================================
+// BOTÓN BUSCAR PRINCIPAL
+// ======================================================
+
+const btnBuscarPrincipal =
+  document.getElementById(
+    "btnBuscar"
+  );
+
+
+if (btnBuscarPrincipal) {
+
+  btnBuscarPrincipal.addEventListener(
+    "click",
+    buscarPrincipal
+  );
+
+}
+
+
+// ======================================================
+// FIN DE PARTE 1/4
+// ======================================================
+// CONTINUAR DIRECTAMENTE CON LA PARTE 2/4
+// ======================================================
+
+// ======================================================
+// SECCIÓN 5/16
+// CREAR TABLERO DE PREALERTAS
 // ======================================================
 
 function crearTableroPrealertas() {
@@ -904,36 +1549,49 @@ function crearTableroPrealertas() {
     return;
   }
 
+
   if (!listaAdmin) {
+
     console.error(
       "No existe listaAdmin."
     );
+
     return;
+
   }
+
 
   const tablero =
     document.createElement("div");
 
+
   tablero.id =
     "tableroPrealertasAdmin";
+
 
   tablero.style.width =
     "100%";
 
+
   tablero.style.boxSizing =
     "border-box";
+
 
   tablero.style.marginTop =
     "20px";
 
+
   tablero.style.display =
     "grid";
+
 
   tablero.style.gridTemplateColumns =
     "repeat(3, minmax(280px, 1fr))";
 
+
   tablero.style.gap =
     "20px";
+
 
   tablero.innerHTML = `
 
@@ -1103,75 +1761,118 @@ function crearTableroPrealertas() {
 
   `;
 
+
   listaAdmin.innerHTML = "";
+
 
   listaAdmin.appendChild(
     tablero
   );
 
-  // ============================================
+
+  // ====================================================
   // RESPONSIVE
-  // ============================================
+  // ====================================================
 
-const estiloResponsive =
-  document.createElement("style");
-
-estiloResponsive.id =
-  "estiloTableroPrealertas";
-
-estiloResponsive.textContent = `
-
-  /* ==========================================
-     LAPTOP Y COMPUTADORAS
-     3 columnas una al lado de la otra
-     ========================================== */
-
-  #tableroPrealertasAdmin {
-    grid-template-columns:
-      repeat(3, minmax(0, 1fr)) !important;
-  }
+  const estiloResponsive =
+    document.createElement(
+      "style"
+    );
 
 
-  /* ==========================================
-     TELÉFONO
-     Mantener las 3 columnas lado a lado
-     ========================================== */
+  estiloResponsive.id =
+    "estiloTableroPrealertas";
 
-  @media (max-width: 600px) {
+
+  estiloResponsive.textContent = `
 
     #tableroPrealertasAdmin {
       grid-template-columns:
         repeat(3, minmax(0, 1fr)) !important;
-
-      gap: 6px !important;
     }
 
-    #tableroPrealertasAdmin > div {
-      padding: 7px !important;
-      min-width: 0 !important;
+
+    @media (max-width: 600px) {
+
+      #tableroPrealertasAdmin {
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr)) !important;
+
+        gap:6px !important;
+      }
+
+
+      #tableroPrealertasAdmin > div {
+        padding:7px !important;
+        min-width:0 !important;
+      }
+
+
+      #tableroPrealertasAdmin
+      > div > div:first-child {
+
+        padding:10px 5px !important;
+
+      }
+
+
+      #tableroPrealertasAdmin
+      > div > div:first-child
+      div {
+
+        font-size:11px !important;
+
+      }
+
+
+      #tableroPrealertasAdmin
+      > div > div:first-child
+      div:first-child {
+
+        font-size:18px !important;
+
+      }
+
     }
+
+  `;
+
+
+  const estiloExistente =
+    document.getElementById(
+      "estiloTableroPrealertas"
+    );
+
+
+  if (!estiloExistente) {
+
+    document.head.appendChild(
+      estiloResponsive
+    );
 
   }
 
-`;
-
-  
-  document.head.appendChild(
-    estiloResponsive
-  );
-
 }
 
+
 // ======================================================
-// OBTENER CONTENEDOR SEGÚN EL ESTADO
+// SECCIÓN 6/16
+// OBTENER COLUMNA SEGÚN ESTADO
 // ======================================================
 
 function obtenerContenedorEstado(
   estado
 ) {
 
+  const estadoVisual =
+    obtenerEstadoVisual(
+      estado
+    );
+
+
   if (
-    estado === "Prealertado"
+    estadoVisual ===
+    "Prealertado"
   ) {
 
     return document.getElementById(
@@ -1180,9 +1881,10 @@ function obtenerContenedorEstado(
 
   }
 
+
   if (
-    estado === "Recibido en bodega" ||
-    estado === "En tránsito"
+    estadoVisual ===
+    "Recibido en bodega"
   ) {
 
     return document.getElementById(
@@ -1191,9 +1893,10 @@ function obtenerContenedorEstado(
 
   }
 
+
   if (
-    estado === "Llegó a Venezuela" ||
-    estado === "Entregado"
+    estadoVisual ===
+    "Llegó a Venezuela"
   ) {
 
     return document.getElementById(
@@ -1202,42 +1905,177 @@ function obtenerContenedorEstado(
 
   }
 
+
   return document.getElementById(
     "listaPrealertados"
   );
 
 }
 
+
 // ======================================================
-// CREAR TARJETA AGRUPADA POR CLIENTE
+// OBTENER CONTENEDOR POR ESTADO VISUAL
 // ======================================================
 
-function crearTarjetaPrealerta(
+function obtenerContenedorEstadoVisual(
+  estadoVisual
+) {
+
+  if (
+    estadoVisual ===
+    "Prealertado"
+  ) {
+
+    return document.getElementById(
+      "listaPrealertados"
+    );
+
+  }
+
+
+  if (
+    estadoVisual ===
+    "Recibido en bodega"
+  ) {
+
+    return document.getElementById(
+      "listaBodega"
+    );
+
+  }
+
+
+  if (
+    estadoVisual ===
+    "Llegó a Venezuela"
+  ) {
+
+    return document.getElementById(
+      "listaVenezuela"
+    );
+
+  }
+
+
+  return document.getElementById(
+    "listaPrealertados"
+  );
+
+}
+
+
+// ======================================================
+// GENERAR ID SEGURO PARA TARJETA DE CLIENTE
+// ======================================================
+
+function generarIdTarjetaCliente(
+  paquete
+) {
+
+  const identificador =
+    obtenerIdentificadorCliente(
+      paquete
+    );
+
+
+  const estadoVisual =
+    obtenerEstadoVisual(
+      paquete.estado
+    );
+
+
+  return (
+    "tarjetaCliente-" +
+    normalizarTexto(
+      identificador
+    ) +
+    "-" +
+    normalizarTexto(
+      estadoVisual
+    )
+  );
+
+}
+
+
+// ======================================================
+// SECCIÓN 7/16
+// CREAR FILA INDIVIDUAL DE TRACKING
+// ======================================================
+
+function crearFilaTracking(
   id,
   datos,
   cliente
 ) {
 
-  const nombre =
-    cliente
-      ? cliente.nombre || "Sin nombre"
-      : "Sin nombre";
+  const fila =
+    document.createElement("div");
 
-  const apellido =
-    cliente
-      ? cliente.apellido || ""
-      : "";
 
-  const codigo =
-    cliente
-      ? cliente.codigo || "Sin código"
-      : "Sin código";
+  fila.id =
+    "filaTracking-" + id;
+
+
+  fila.className =
+    "fila-tracking-admin";
+
+
+  fila.dataset.id =
+    id;
+
+
+  fila.dataset.tracking =
+    datos.tracking ||
+    "";
+
+
+  fila.style.background =
+    "#ffffff";
+
+
+  fila.style.border =
+    "1px solid #ddd";
+
+
+  fila.style.borderRadius =
+    "12px";
+
+
+  fila.style.padding =
+    "12px";
+
+
+  fila.style.marginTop =
+    "10px";
+
+
+  fila.style.boxSizing =
+    "border-box";
+
+
+  const tracking =
+    datos.tracking ||
+    "Sin tracking";
+
+
+  const estadoOriginal =
+    datos.estado ||
+    "Prealertado";
+
+
+  const estadoVisual =
+    obtenerEstadoVisual(
+      estadoOriginal
+    );
+
 
   const correo =
     cliente
       ? (
           cliente.correo ||
           cliente.email ||
+          datos.correo ||
           "Sin correo"
         )
       : (
@@ -1245,284 +2083,84 @@ function crearTarjetaPrealerta(
           "Sin correo"
         );
 
+
   const telefono =
     cliente
-      ? cliente.telefono || "Sin teléfono"
-      : "Sin teléfono";
+      ? (
+          cliente.telefono ||
+          "Sin teléfono"
+        )
+      : (
+          datos.telefono ||
+          "Sin teléfono"
+        );
 
-  const tracking =
-    datos.tracking ||
-    "Sin tracking";
-
-  const estadoReal =
-    datos.estado ||
-    "Prealertado";
-
-  // ------------------------------------------
-  // Estados antiguos → categoría visual nueva
-  // ------------------------------------------
-
-  let estadoVisual = estadoReal;
-
-  if (estadoReal === "En tránsito") {
-    estadoVisual = "Recibido en bodega";
-  }
-
-  if (estadoReal === "Entregado") {
-    estadoVisual = "Llegó a Venezuela";
-  }
-
-  // ------------------------------------------
-  // Identificador del cliente
-  // ------------------------------------------
-
-  const identificadorCliente =
-    (
-      datos.uid ||
-      (cliente && cliente.uid) ||
-      correo ||
-      codigo ||
-      nombre + apellido
-    ).toString();
-
-  const claveCliente =
-    normalizarTexto(
-      identificadorCliente
-    ).replace(/[^a-z0-9]/g, "");
-
-  const claveEstado =
-    normalizarTexto(
-      estadoVisual
-    ).replace(/[^a-z0-9]/g, "");
-
-  const idTarjetaCliente =
-    "tarjetaCliente-" +
-    claveCliente +
-    "-" +
-    claveEstado;
-
-  // ------------------------------------------
-  // Buscar si ya existe la tarjeta del cliente
-  // ------------------------------------------
-
-  let tarjetaCliente =
-    document.getElementById(
-      idTarjetaCliente
-    );
-
-  // ------------------------------------------
-  // Si no existe, crearla
-  // ------------------------------------------
-
-  if (!tarjetaCliente) {
-
-    tarjetaCliente =
-      document.createElement("div");
-
-    tarjetaCliente.id =
-      idTarjetaCliente;
-
-    tarjetaCliente.className =
-      "tarjeta-cliente-admin";
-
-    tarjetaCliente.style.background =
-      "#ffffff";
-
-    tarjetaCliente.style.border =
-      "1px solid #ddd";
-
-    tarjetaCliente.style.borderRadius =
-      "15px";
-
-    tarjetaCliente.style.padding =
-      "16px";
-
-    tarjetaCliente.style.marginBottom =
-      "15px";
-
-    tarjetaCliente.style.boxShadow =
-      "0 4px 12px rgba(0,0,0,.08)";
-
-    tarjetaCliente.style.boxSizing =
-      "border-box";
-
-    tarjetaCliente.dataset.cliente =
-      identificadorCliente;
-
-    tarjetaCliente.dataset.estado =
-      estadoVisual;
-
-    tarjetaCliente.innerHTML = `
-
-      <div style="
-        border-bottom:1px solid #ddd;
-        padding-bottom:12px;
-        margin-bottom:14px;
-      ">
-
-        <div style="
-          color:#003366;
-          font-size:18px;
-          font-weight:bold;
-          word-break:break-word;
-        ">
-
-          👤 ${nombre} ${apellido}
-
-        </div>
-
-        <div style="
-          margin-top:5px;
-          font-size:14px;
-          color:#555;
-        ">
-
-          🆔 Código RG: ${codigo}
-
-        </div>
-
-        <div style="
-          margin-top:4px;
-          font-size:14px;
-          color:#555;
-          word-break:break-word;
-        ">
-
-          📧 ${correo}
-
-        </div>
-
-        <div style="
-          margin-top:4px;
-          font-size:14px;
-          color:#555;
-        ">
-
-          📱 ${telefono}
-
-        </div>
-
-      </div>
-
-      <div
-        class="lista-trackings-cliente"
-        id="listaTrackings-${claveCliente}-${claveEstado}"
-      ></div>
-
-    `;
-
-    // ------------------------------------------
-    // Agregar tarjeta al contenedor del estado
-    // ------------------------------------------
-
-    const contenedor =
-      obtenerContenedorEstado(
-        estadoReal
-      );
-
-    if (contenedor) {
-
-      contenedor.appendChild(
-        tarjetaCliente
-      );
-
-    }
-
-  }
-
-  // ------------------------------------------
-  // Crear fila individual del tracking
-  // ------------------------------------------
-
-  const filaExistente =
-    document.getElementById(
-      "tarjetaPaquete-" + id
-    );
-
-  if (filaExistente) {
-
-    filaExistente.remove();
-
-  }
-
-  const fila =
-    document.createElement("div");
-
-  fila.id =
-    "tarjetaPaquete-" + id;
-
-  fila.className =
-    "tarjeta-paquete-admin";
-
-  fila.dataset.id =
-    id;
-
-  fila.style.background =
-    "#f8f9fa";
-
-  fila.style.border =
-    "1px solid #e1e1e1";
-
-  fila.style.borderRadius =
-    "12px";
-
-  fila.style.padding =
-    "14px";
-
-  fila.style.marginBottom =
-    "12px";
-
-  fila.style.boxSizing =
-    "border-box";
 
   fila.innerHTML = `
 
     <div style="
-      border-bottom:1px solid #ddd;
-      padding-bottom:9px;
-      margin-bottom:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:8px;
     ">
 
       <div style="
         color:#003366;
-        font-size:17px;
+        font-size:16px;
         font-weight:bold;
-        word-break:break-word;
+        word-break:break-all;
       ">
 
         📦 ${tracking}
 
       </div>
 
+      <div style="
+        background:#eef4ff;
+        color:#003366;
+        border-radius:8px;
+        padding:5px 8px;
+        font-size:11px;
+        font-weight:bold;
+      ">
+
+        ${estadoVisual}
+
+      </div>
+
     </div>
 
 
-    <p style="margin:8px 0;">
+    <div style="
+      font-size:13px;
+      color:#555;
+      margin-bottom:8px;
+    ">
 
-      <strong>📋 Estado:</strong><br>
+      <div>
+        📧 ${correo}
+      </div>
 
-      <span
-        id="estadoTexto-${id}"
-        style="
-          font-weight:bold;
-          color:#003366;
-        "
-      >
-        ${estadoVisual}
-      </span>
+      <div style="
+        margin-top:3px;
+      ">
+        📱 ${telefono}
+      </div>
 
-    </p>
+    </div>
 
 
-    <label style="
-      display:block;
-      margin-top:12px;
+    <div style="
       font-weight:bold;
+      margin-top:8px;
     ">
 
       🔄 Cambiar estado:
 
-    </label>
+    </div>
 
 
     <select
@@ -1530,26 +2168,47 @@ function crearTarjetaPrealerta(
       style="
         width:100%;
         box-sizing:border-box;
-        padding:11px;
-        margin-top:7px;
-        border-radius:10px;
+        padding:10px;
+        margin-top:6px;
+        border-radius:9px;
         border:1px solid #ccc;
-        font-size:15px;
+        font-size:14px;
       "
     >
 
-      <option value="Prealertado"
-        ${estadoVisual === "Prealertado" ? "selected" : ""}>
+      <option
+        value="Prealertado"
+        ${
+          estadoVisual ===
+          "Prealertado"
+            ? "selected"
+            : ""
+        }
+      >
         Prealertado
       </option>
 
-      <option value="Recibido en bodega"
-        ${estadoVisual === "Recibido en bodega" ? "selected" : ""}>
+      <option
+        value="Recibido en bodega"
+        ${
+          estadoVisual ===
+          "Recibido en bodega"
+            ? "selected"
+            : ""
+        }
+      >
         Recibido en bodega
       </option>
 
-      <option value="Llegó a Venezuela"
-        ${estadoVisual === "Llegó a Venezuela" ? "selected" : ""}>
+      <option
+        value="Llegó a Venezuela"
+        ${
+          estadoVisual ===
+          "Llegó a Venezuela"
+            ? "selected"
+            : ""
+        }
+      >
         Llegó a Venezuela
       </option>
 
@@ -1561,13 +2220,13 @@ function crearTarjetaPrealerta(
       id="btnEstado-${id}"
       style="
         width:100%;
-        padding:12px;
-        margin-top:10px;
+        padding:10px;
+        margin-top:8px;
         border:0;
-        border-radius:10px;
+        border-radius:9px;
         background:#003366;
         color:white;
-        font-size:15px;
+        font-size:14px;
         font-weight:bold;
         cursor:pointer;
       "
@@ -1583,13 +2242,13 @@ function crearTarjetaPrealerta(
       id="btnVerEntrega-${id}"
       style="
         width:100%;
-        padding:12px;
-        margin-top:10px;
+        padding:10px;
+        margin-top:8px;
         border:0;
-        border-radius:10px;
+        border-radius:9px;
         background:#198754;
         color:white;
-        font-size:15px;
+        font-size:14px;
         font-weight:bold;
         cursor:pointer;
       "
@@ -1605,13 +2264,13 @@ function crearTarjetaPrealerta(
       id="btnEliminar-${id}"
       style="
         width:100%;
-        padding:12px;
-        margin-top:10px;
+        padding:10px;
+        margin-top:8px;
         border:0;
-        border-radius:10px;
+        border-radius:9px;
         background:#dc3545;
         color:white;
-        font-size:15px;
+        font-size:14px;
         font-weight:bold;
         cursor:pointer;
       "
@@ -1623,35 +2282,20 @@ function crearTarjetaPrealerta(
 
   `;
 
-  // ------------------------------------------
-  // Agregar fila al cliente
-  // ------------------------------------------
 
-  const listaTrackings =
-    tarjetaCliente.querySelector(
-      ".lista-trackings-cliente"
-    );
+  // ====================================================
+  // BOTÓN CAMBIAR ESTADO
+  // ====================================================
 
-  if (listaTrackings) {
-
-    listaTrackings.appendChild(
-      fila
-    );
-
-  }
-
-  // ------------------------------------------
-  // Botón cambiar estado
-  // ------------------------------------------
-
-  const boton =
+  const botonEstado =
     fila.querySelector(
       "#btnEstado-" + id
     );
 
-  if (boton) {
 
-    boton.addEventListener(
+  if (botonEstado) {
+
+    botonEstado.addEventListener(
       "click",
       async () => {
 
@@ -1664,14 +2308,16 @@ function crearTarjetaPrealerta(
 
   }
 
-  // ------------------------------------------
-  // Botón datos de entrega
-  // ------------------------------------------
+
+  // ====================================================
+  // BOTÓN DATOS DE ENTREGA
+  // ====================================================
 
   const botonVerEntrega =
     fila.querySelector(
       "#btnVerEntrega-" + id
     );
+
 
   if (botonVerEntrega) {
 
@@ -1681,6 +2327,7 @@ function crearTarjetaPrealerta(
 
         const prealerta =
           datosPrealertas[id];
+
 
         if (!prealerta) {
 
@@ -1692,6 +2339,7 @@ function crearTarjetaPrealerta(
 
         }
 
+
         await verDatosEntrega(
           prealerta.uid
         );
@@ -1701,14 +2349,16 @@ function crearTarjetaPrealerta(
 
   }
 
-  // ------------------------------------------
-  // Botón eliminar
-  // ------------------------------------------
+
+  // ====================================================
+  // BOTÓN ELIMINAR
+  // ====================================================
 
   const botonEliminar =
     fila.querySelector(
       "#btnEliminar-" + id
     );
+
 
   if (botonEliminar) {
 
@@ -1725,142 +2375,572 @@ function crearTarjetaPrealerta(
 
   }
 
+
   return fila;
 
 }
 
+
 // ======================================================
-// COLOCAR TRACKING EN SU TARJETA AGRUPADA
+// SECCIÓN 8/16
+// CREAR TARJETA AGRUPADA POR CLIENTE
 // ======================================================
 
-function colocarTarjetaEnColumna(
-  id
+function crearTarjetaCliente(
+  grupo
 ) {
 
-  const datos =
-    datosPrealertas[id];
+  const primerPaquete =
+    grupo.paquetes[0];
 
-  if (!datos) {
-    return;
+
+  if (!primerPaquete) {
+    return null;
   }
 
-  // ------------------------------------------
-  // Eliminar el tracking de su ubicación actual
-  // ------------------------------------------
 
-  const tarjetaActual =
-    document.getElementById(
-      "tarjetaPaquete-" + id
+  const cliente =
+    obtenerClienteDePaquete(
+      primerPaquete
     );
 
-  if (tarjetaActual) {
 
-    const tarjetaClienteAnterior =
-      tarjetaActual.closest(
-        ".tarjeta-cliente-admin"
-      );
-
-    tarjetaActual.remove();
-
-    // ----------------------------------------
-    // Si la tarjeta del cliente quedó sin
-    // trackings, eliminarla también
-    // ----------------------------------------
-
-    if (
-      tarjetaClienteAnterior
-    ) {
-
-      const listaTrackings =
-        tarjetaClienteAnterior.querySelector(
-          ".lista-trackings-cliente"
+  const nombre =
+    cliente
+      ? (
+          `${cliente.nombre || ""} ${cliente.apellido || ""}`
+            .trim() ||
+          "Cliente sin nombre"
+        )
+      : obtenerNombreCliente(
+          primerPaquete
         );
 
+
+  const codigo =
+    cliente
+      ? (
+          cliente.codigo ||
+          "Sin código"
+        )
+      : "Sin código";
+
+
+  const correo =
+    cliente
+      ? (
+          cliente.correo ||
+          cliente.email ||
+          "Sin correo"
+        )
+      : (
+          primerPaquete.correo ||
+          "Sin correo"
+        );
+
+
+  const telefono =
+    cliente
+      ? (
+          cliente.telefono ||
+          "Sin teléfono"
+        )
+      : "Sin teléfono";
+
+
+  const estadoVisual =
+    grupo.estadoVisual;
+
+
+  const tarjeta =
+    document.createElement(
+      "div"
+    );
+
+
+  tarjeta.id =
+    generarIdTarjetaCliente(
+      primerPaquete
+    );
+
+
+  tarjeta.className =
+    "tarjeta-cliente-admin";
+
+
+  tarjeta.style.background =
+    "#ffffff";
+
+
+  tarjeta.style.border =
+    "1px solid #d8d8d8";
+
+
+  tarjeta.style.borderRadius =
+    "16px";
+
+
+  tarjeta.style.padding =
+    "14px";
+
+
+  tarjeta.style.marginBottom =
+    "15px";
+
+
+  tarjeta.style.boxShadow =
+    "0 5px 15px rgba(0,0,0,.08)";
+
+
+  tarjeta.style.boxSizing =
+    "border-box";
+
+
+  tarjeta.dataset.cliente =
+    obtenerIdentificadorCliente(
+      primerPaquete
+    );
+
+
+  tarjeta.dataset.estado =
+    estadoVisual;
+
+
+  tarjeta.innerHTML = `
+
+    <div style="
+      border-bottom:1px solid #eee;
+      padding-bottom:12px;
+      margin-bottom:10px;
+    ">
+
+      <div style="
+        color:#003366;
+        font-size:18px;
+        font-weight:bold;
+        word-break:break-word;
+      ">
+
+        👤 ${nombre}
+
+      </div>
+
+
+      <div style="
+        margin-top:5px;
+        font-size:13px;
+        color:#555;
+      ">
+
+        🆔 Código RG:
+        <strong>
+          ${codigo}
+        </strong>
+
+      </div>
+
+
+      <div style="
+        margin-top:3px;
+        font-size:13px;
+        color:#555;
+        word-break:break-word;
+      ">
+
+        📧 ${correo}
+
+      </div>
+
+
+      <div style="
+        margin-top:3px;
+        font-size:13px;
+        color:#555;
+      ">
+
+        📱 ${telefono}
+
+      </div>
+
+    </div>
+
+
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:8px;
+    ">
+
+      <strong style="
+        color:#003366;
+      ">
+
+        📦 Paquetes:
+        ${grupo.paquetes.length}
+
+      </strong>
+
+
+      <span style="
+        background:#eef4ff;
+        color:#003366;
+        padding:6px 9px;
+        border-radius:8px;
+        font-size:11px;
+        font-weight:bold;
+      ">
+
+        ${estadoVisual}
+
+      </span>
+
+    </div>
+
+
+    <div
+      id="trackings-${normalizarTexto(
+        obtenerIdentificadorCliente(
+          primerPaquete
+        )
+      )}-${normalizarTexto(
+        estadoVisual
+      )}"
+    ></div>
+
+  `;
+
+
+  const contenedorTrackings =
+    tarjeta.querySelector(
+      `#trackings-${normalizarTexto(
+        obtenerIdentificadorCliente(
+          primerPaquete
+        )
+      )}-${normalizarTexto(
+        estadoVisual
+      )}`
+    );
+
+
+  grupo.paquetes.forEach(
+    (paquete) => {
+
+      const fila =
+        crearFilaTracking(
+          paquete.id,
+          paquete,
+          obtenerClienteDePaquete(
+            paquete
+          )
+        );
+
+
       if (
-        listaTrackings &&
-        listaTrackings.children.length === 0
+        fila &&
+        contenedorTrackings
       ) {
 
-        tarjetaClienteAnterior.remove();
+        contenedorTrackings.appendChild(
+          fila
+        );
 
       }
 
     }
+  );
 
-  }
 
-  // ------------------------------------------
-  // Crear nuevamente el tracking dentro
-  // de la tarjeta correspondiente
-  // ------------------------------------------
+  return tarjeta;
 
-  crearTarjetaPrealerta(
-    id,
-    datos,
-    datos.cliente || null
+}
+
+
+// ======================================================
+// FIN DE PARTE 2/4
+// ======================================================
+// CONTINUAR DIRECTAMENTE CON LA PARTE 3/4
+// ======================================================
+
+// ======================================================
+// SECCIÓN 9/16
+// AGRUPAR TRACKINGS POR CLIENTE Y ESTADO
+// ======================================================
+
+function agruparPaquetesPorClienteYEstado() {
+
+  const grupos = {};
+
+  Object.values(
+    datosPrealertas
+  ).forEach((paquete) => {
+
+    const estadoVisual =
+      obtenerEstadoVisual(
+        paquete.estado
+      );
+
+    const identificadorCliente =
+      obtenerIdentificadorCliente(
+        paquete
+      );
+
+    const clave =
+      identificadorCliente +
+      "||" +
+      estadoVisual;
+
+    if (!grupos[clave]) {
+
+      grupos[clave] = {
+
+        identificadorCliente:
+          identificadorCliente,
+
+        estadoVisual:
+          estadoVisual,
+
+        paquetes: []
+
+      };
+
+    }
+
+    grupos[clave].paquetes.push(
+      paquete
+    );
+
+  });
+
+  return grupos;
+
+}
+
+
+// ======================================================
+// ORDENAR TRACKINGS DENTRO DE CADA CLIENTE
+// ======================================================
+
+function ordenarPaquetesGrupo(
+  paquetes
+) {
+
+  return paquetes.sort(
+    (a, b) => {
+
+      const trackingA =
+        String(
+          a.tracking || ""
+        ).toLowerCase();
+
+      const trackingB =
+        String(
+          b.tracking || ""
+        ).toLowerCase();
+
+      return trackingA.localeCompare(
+        trackingB
+      );
+
+    }
   );
 
 }
 
 
 // ======================================================
+// PINTAR TODO EL TABLERO AGRUPADO
+// ======================================================
+
+function pintarTableroAgrupado() {
+
+  const columnas = {
+
+    "Prealertado":
+      document.getElementById(
+        "listaPrealertados"
+      ),
+
+    "Recibido en bodega":
+      document.getElementById(
+        "listaBodega"
+      ),
+
+    "Llegó a Venezuela":
+      document.getElementById(
+        "listaVenezuela"
+      )
+
+  };
+
+
+  Object.values(
+    columnas
+  ).forEach(
+    (columna) => {
+
+      if (columna) {
+
+        columna.innerHTML = "";
+
+      }
+
+    }
+  );
+
+
+  const grupos =
+    agruparPaquetesPorClienteYEstado();
+
+
+  const gruposOrdenados =
+    Object.values(
+      grupos
+    ).sort(
+      (a, b) => {
+
+        const nombreA =
+          obtenerNombreCliente(
+            a.paquetes[0]
+          ).toLowerCase();
+
+        const nombreB =
+          obtenerNombreCliente(
+            b.paquetes[0]
+          ).toLowerCase();
+
+        return nombreA.localeCompare(
+          nombreB
+        );
+
+      }
+    );
+
+
+  gruposOrdenados.forEach(
+    (grupo) => {
+
+      grupo.paquetes =
+        ordenarPaquetesGrupo(
+          grupo.paquetes
+        );
+
+
+      const columna =
+        columnas[
+          grupo.estadoVisual
+        ];
+
+
+      if (!columna) {
+        return;
+      }
+
+
+      const tarjeta =
+        crearTarjetaCliente(
+          grupo
+        );
+
+
+      if (tarjeta) {
+
+        columna.appendChild(
+          tarjeta
+        );
+
+      }
+
+    }
+  );
+
+
+  actualizarContadoresTablero();
+
+}
+
+
+// ======================================================
+// SECCIÓN 10/16
 // ACTUALIZAR CONTADORES DEL TABLERO
 // ======================================================
 
 function actualizarContadoresTablero() {
 
   let prealertados = 0;
+
   let bodega = 0;
+
   let venezuela = 0;
+
 
   Object.values(
     datosPrealertas
-  ).forEach((paquete) => {
+  ).forEach(
+    (paquete) => {
 
-    const estado =
-      paquete.estado ||
-      "Prealertado";
+      const estadoVisual =
+        obtenerEstadoVisual(
+          paquete.estado
+        );
 
-    if (
-      estado === "Prealertado"
-    ) {
 
-      prealertados++;
+      if (
+        estadoVisual ===
+        "Prealertado"
+      ) {
 
-    } else if (
-      estado === "Recibido en bodega" ||
-      estado === "En tránsito"
-    ) {
+        prealertados++;
 
-      bodega++;
+      }
 
-    } else if (
-      estado === "Llegó a Venezuela" ||
-      estado === "Entregado"
-    ) {
 
-      venezuela++;
+      else if (
+        estadoVisual ===
+        "Recibido en bodega"
+      ) {
+
+        bodega++;
+
+      }
+
+
+      else if (
+        estadoVisual ===
+        "Llegó a Venezuela"
+      ) {
+
+        venezuela++;
+
+      }
 
     }
+  );
 
-  });
 
   const contadorPrealertados =
     document.getElementById(
       "contadorPrealertados"
     );
 
+
   const contadorBodega =
     document.getElementById(
       "contadorBodega"
     );
+
 
   const contadorVenezuela =
     document.getElementById(
       "contadorVenezuela"
     );
 
-  if (contadorPrealertados) {
+
+  if (
+    contadorPrealertados
+  ) {
 
     contadorPrealertados.textContent =
       prealertados +
@@ -1872,7 +2952,10 @@ function actualizarContadoresTablero() {
 
   }
 
-  if (contadorBodega) {
+
+  if (
+    contadorBodega
+  ) {
 
     contadorBodega.textContent =
       bodega +
@@ -1884,7 +2967,10 @@ function actualizarContadoresTablero() {
 
   }
 
-  if (contadorVenezuela) {
+
+  if (
+    contadorVenezuela
+  ) {
 
     contadorVenezuela.textContent =
       venezuela +
@@ -1900,23 +2986,554 @@ function actualizarContadoresTablero() {
 
 
 // ======================================================
-// ACTUALIZAR SOLO UNA TARJETA
+// ACTUALIZAR UNA PARTE DEL TABLERO
 // ======================================================
 
-function actualizarTarjetaPaquete(
-  id,
-  datos
-) {
+function actualizarTableroCompleto() {
 
-  datosPrealertas[id] = datos;
-
-  colocarTarjetaEnColumna(
-    id
-  );
-
-  actualizarContadoresTablero();
+  pintarTableroAgrupado();
 
 }
+
+
+// ======================================================
+// SECCIÓN 11/16
+// CONSULTAR DATOS DE ENTREGA
+// ======================================================
+
+async function verDatosEntrega(
+  uid
+) {
+
+  try {
+
+    if (!uid) {
+
+      alert(
+        "❌ No se encontró el UID del cliente."
+      );
+
+      return;
+
+    }
+
+
+    const referencia =
+      doc(
+        db,
+        "datosEntrega",
+        uid
+      );
+
+
+    const resultado =
+      await getDoc(
+        referencia
+      );
+
+
+    if (
+      !resultado.exists()
+    ) {
+
+      alert(
+        "📍 Este cliente todavía no tiene datos de entrega guardados."
+      );
+
+      return;
+
+    }
+
+
+    const datosEntrega =
+      resultado.data();
+
+
+    const empresa =
+      datosEntrega.empresaEnvio ||
+      "No especificada";
+
+
+    const tipoEntrega =
+      datosEntrega.tipoEntrega ||
+      "No especificado";
+
+
+    const telefono =
+      datosEntrega.telefono ||
+      "No especificado";
+
+
+    const personaRecibe =
+      datosEntrega.personaRecibe ||
+      "No especificada";
+
+
+    const observaciones =
+      datosEntrega.observaciones ||
+      "Ninguna";
+
+
+    let mensaje =
+      "📍 DATOS DE ENTREGA\n\n" +
+
+      "🚚 Empresa de envío: " +
+      empresa +
+      "\n\n" +
+
+      "📦 Tipo de entrega: " +
+      tipoEntrega +
+      "\n\n";
+
+
+    // ==================================================
+    // ENTREGA A DOMICILIO
+    // ==================================================
+
+    if (
+      tipoEntrega
+        .toLowerCase()
+        .includes("domicilio")
+    ) {
+
+      mensaje +=
+
+        "📍 Estado: " +
+
+        (
+          datosEntrega.estadoDomicilio ||
+          datosEntrega.estado ||
+          "No especificado"
+        ) +
+
+        "\n\n" +
+
+        "🏙️ Ciudad/Municipio: " +
+
+        (
+          datosEntrega.ciudadDomicilio ||
+          datosEntrega.municipio ||
+          datosEntrega.ciudad ||
+          "No especificada"
+        ) +
+
+        "\n\n" +
+
+        "🏘️ Barrio/Urbanización: " +
+
+        (
+          datosEntrega.barrioUrbanizacion ||
+          "No especificado"
+        ) +
+
+        "\n\n" +
+
+        "🛣️ Calle/Avenida: " +
+
+        (
+          datosEntrega.calleAvenida ||
+          "No especificada"
+        ) +
+
+        "\n\n" +
+
+        "🏠 Número de casa: " +
+
+        (
+          datosEntrega.numeroCasa ||
+          "No especificado"
+        ) +
+
+        "\n\n" +
+
+        "🏠 Dirección: " +
+
+        (
+          datosEntrega.direccionDomicilio ||
+          datosEntrega.direccion ||
+          "No especificada"
+        ) +
+
+        "\n\n" +
+
+        "📮 Código postal: " +
+
+        (
+          datosEntrega.codigoPostal ||
+          "No especificado"
+        ) +
+
+        "\n\n" +
+
+        "📌 Punto de referencia: " +
+
+        (
+          datosEntrega.puntoReferencia ||
+          "No especificado"
+        ) +
+
+        "\n\n";
+
+    }
+
+
+    // ==================================================
+    // ENTREGA EN OFICINA
+    // ==================================================
+
+    else {
+
+      mensaje +=
+
+        "📍 Estado: " +
+
+        (
+          datosEntrega.estado ||
+          "No especificado"
+        ) +
+
+        "\n\n" +
+
+        "🏙️ Ciudad: " +
+
+        (
+          datosEntrega.ciudad ||
+          "No especificada"
+        ) +
+
+        "\n\n" +
+
+        "🏢 Oficina: " +
+
+        (
+          datosEntrega.oficina ||
+          "No especificada"
+        ) +
+
+        "\n\n" +
+
+        "🏠 Dirección de oficina: " +
+
+        (
+          datosEntrega.direccionOficina ||
+          datosEntrega.direccion ||
+          "No especificada"
+        ) +
+
+        "\n\n";
+
+    }
+
+
+    mensaje +=
+
+      "📱 Teléfono: " +
+
+      telefono +
+
+      "\n\n" +
+
+      "👤 Persona que recibe: " +
+
+      personaRecibe +
+
+      "\n\n" +
+
+      "📝 Observaciones: " +
+
+      observaciones;
+
+
+    alert(
+      mensaje
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "❌ Error al consultar los datos de entrega:",
+      error
+    );
+
+
+    alert(
+      "❌ No se pudieron consultar los datos de entrega."
+    );
+
+  }
+
+}
+
+
+// ======================================================
+// SECCIÓN 12/16
+// ELIMINAR Y CAMBIAR ESTADO
+// ======================================================
+
+
+// ======================================================
+// ELIMINAR PREALERTA
+// ======================================================
+
+async function eliminarPrealerta(
+  id
+) {
+
+  if (
+    !confirm(
+      "¿Seguro que quieres eliminar esta prealerta?"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  try {
+
+    await deleteDoc(
+      doc(
+        db,
+        "prealertas",
+        id
+      )
+    );
+
+
+    console.log(
+      "🗑️ PREALERTA ELIMINADA:",
+      id
+    );
+
+
+    /*
+     * El onSnapshot eliminará automáticamente
+     * el registro del objeto local y volverá
+     * a pintar el tablero agrupado.
+     */
+
+  } catch (error) {
+
+    console.error(
+      "ERROR ELIMINANDO PREALERTA:",
+      error
+    );
+
+
+    alert(
+      "❌ Error eliminando la prealerta:\n\n" +
+      error.message
+    );
+
+  }
+
+}
+
+
+// ======================================================
+// CAMBIAR ESTADO DESDE UNA FILA
+// ======================================================
+
+async function cambiarEstadoTarjeta(
+  id
+) {
+
+  const selector =
+    document.getElementById(
+      "estado-" + id
+    );
+
+
+  if (!selector) {
+
+    alert(
+      "❌ No se encontró el selector."
+    );
+
+    return;
+
+  }
+
+
+  const estadoNuevo =
+    selector.value;
+
+
+  /*
+   * Seguridad adicional:
+   * solamente permitimos los tres estados
+   * nuevos desde la interfaz.
+   */
+
+  const estadosPermitidos = [
+
+    "Prealertado",
+
+    "Recibido en bodega",
+
+    "Llegó a Venezuela"
+
+  ];
+
+
+  if (
+    !estadosPermitidos.includes(
+      estadoNuevo
+    )
+  ) {
+
+    alert(
+      "❌ Estado no permitido."
+    );
+
+    return;
+
+  }
+
+
+  const paquete =
+    datosPrealertas[id];
+
+
+  if (!paquete) {
+
+    alert(
+      "❌ No se encontró la información del paquete."
+    );
+
+    return;
+
+  }
+
+
+  const estadoAnterior =
+    paquete.estado ||
+    "Prealertado";
+
+
+  const estadoAnteriorVisual =
+    obtenerEstadoVisual(
+      estadoAnterior
+    );
+
+
+  if (
+    estadoNuevo ===
+    estadoAnteriorVisual
+  ) {
+
+    alert(
+      "El paquete ya tiene ese estado."
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    const referencia =
+      doc(
+        db,
+        "prealertas",
+        id
+      );
+
+
+    await updateDoc(
+      referencia,
+      {
+        estado:
+          estadoNuevo
+      }
+    );
+
+
+    /*
+     * No usamos cargarPrealertas().
+     *
+     * El listener onSnapshot detectará
+     * únicamente el cambio de este documento.
+     */
+
+    console.log(
+      "✅ ESTADO CAMBIADO:",
+      paquete.tracking,
+      estadoAnterior,
+      "→",
+      estadoNuevo
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "ERROR ACTUALIZANDO ESTADO:",
+      error
+    );
+
+
+    alert(
+      "❌ Error actualizando estado:\n\n" +
+      error.message
+    );
+
+  }
+
+}
+
+
+// ======================================================
+// ACTUALIZAR DATOS LOCALES DE UN PAQUETE
+// ======================================================
+
+function actualizarDatosPaqueteLocal(
+  id,
+  nuevosDatos
+) {
+
+  if (
+    !datosPrealertas[id]
+  ) {
+
+    datosPrealertas[id] = {
+
+      id:
+        id,
+
+      ...nuevosDatos
+
+    };
+
+    return;
+
+  }
+
+
+  datosPrealertas[id] = {
+
+    ...datosPrealertas[id],
+
+    ...nuevosDatos
+
+  };
+
+}
+
+
+// ======================================================
+// FIN DE PARTE 3/4
+// ======================================================
+// CONTINUAR DIRECTAMENTE CON LA PARTE 4/4
+// ======================================================
+
+// ======================================================
+// SECCIÓN 13/16
+// CARGAR PREALERTAS Y ESCUCHA EN TIEMPO REAL
+// ======================================================
 
 
 // ======================================================
@@ -1927,55 +3544,92 @@ async function cargarPrealertas() {
 
   crearTableroPrealertas();
 
+
   try {
+
+    // ==================================================
+    // CARGAR USUARIOS
+    // ==================================================
 
     const usuariosSnapshot =
       await getDocs(
-        collection(db, "usuarios")
+        collection(
+          db,
+          "usuarios"
+        )
       );
 
-     const usuariosPorUid = {};
 
-usuariosSnapshot.forEach(
-  (documento) => {
+    usuariosPorUid = {};
 
-    const datos =
-      documento.data();
 
-    // Guardar por el UID que está dentro del usuario
-    if (datos.uid) {
+    usuariosSnapshot.forEach(
+      (documento) => {
 
-      usuariosPorUid[
-        datos.uid
-      ] = datos;
+        const datos =
+          documento.data();
 
-    }
 
-    // Guardar también por el ID del documento
-    usuariosPorUid[
-      documento.id
-    ] = datos;
+        const usuario = {
 
-  }
-);
-    
-    
+          id:
+            documento.id,
+
+          ...datos
+
+        };
+
+
+        /*
+         * Primera posibilidad:
+         * el documento tiene un campo uid.
+         */
+
+        if (datos.uid) {
+
+          usuariosPorUid[
+            datos.uid
+          ] = usuario;
+
+        }
+
+
+        /*
+         * Segunda posibilidad:
+         * el ID del documento es el UID.
+         */
+
+        usuariosPorUid[
+          documento.id
+        ] = usuario;
+
+      }
+    );
+
+
+    console.log(
+      "👥 USUARIOS DISPONIBLES PARA PREALERTAS:",
+      Object.keys(
+        usuariosPorUid
+      ).length
+    );
+
+
+    // ==================================================
+    // CARGAR PREALERTAS
+    // ==================================================
+
     const prealertasSnapshot =
       await getDocs(
-        collection(db, "prealertas")
+        collection(
+          db,
+          "prealertas"
+        )
       );
+
 
     datosPrealertas = {};
 
-    if (
-      prealertasSnapshot.empty
-    ) {
-
-      actualizarContadoresTablero();
-
-      return;
-
-    }
 
     prealertasSnapshot.forEach(
       (documento) => {
@@ -1983,37 +3637,37 @@ usuariosSnapshot.forEach(
         const datos =
           documento.data();
 
+
         const cliente =
-          usuariosPorUid[
-            datos.uid
-          ] || null;
+          obtenerClienteDePaquete(
+            datos
+          );
+
 
         datosPrealertas[
           documento.id
         ] = {
 
-          id: documento.id,
+          id:
+            documento.id,
 
           ...datos,
 
-          cliente: cliente
+          cliente:
+            cliente
 
         };
 
       }
     );
 
-    Object.keys(
-      datosPrealertas
-    ).forEach((id) => {
 
-      colocarTarjetaEnColumna(
-        id
-      );
+    // ==================================================
+    // PINTAR TABLERO AGRUPADO
+    // ==================================================
 
-    });
+    pintarTableroAgrupado();
 
-    actualizarContadoresTablero();
 
     console.log(
       "📦 PREALERTAS CARGADAS:",
@@ -2021,6 +3675,7 @@ usuariosSnapshot.forEach(
         datosPrealertas
       ).length
     );
+
 
     // ==================================================
     // ESCUCHA EN TIEMPO REAL
@@ -2035,120 +3690,116 @@ usuariosSnapshot.forEach(
 
 
       onSnapshot(
-  collection(
-    db,
-    "prealertas"
-  ),
+        collection(
+          db,
+          "prealertas"
+        ),
 
-  (snapshot) => {
+        (snapshot) => {
 
-    snapshot.docChanges()
-      .forEach((cambio) => {
+          let huboCambios =
+            false;
 
-        const id =
-          cambio.doc.id;
 
-        // ------------------------------------------
-        // TRACKING ELIMINADO
-        // ------------------------------------------
+          snapshot.docChanges()
+            .forEach(
+              (cambio) => {
 
-        if (
-          cambio.type === "removed"
-        ) {
+                const id =
+                  cambio.doc.id;
 
-          delete datosPrealertas[
-            id
-          ];
 
-          const tarjeta =
-            document.getElementById(
-              "tarjetaPaquete-" +
-              id
-            );
+                // ========================================
+                // DOCUMENTO ELIMINADO
+                // ========================================
 
-          if (tarjeta) {
+                if (
+                  cambio.type ===
+                  "removed"
+                ) {
 
-            const tarjetaCliente =
-              tarjeta.closest(
-                ".tarjeta-cliente-admin"
-              );
+                  if (
+                    datosPrealertas[id]
+                  ) {
 
-            tarjeta.remove();
+                    delete datosPrealertas[
+                      id
+                    ];
 
-            // ----------------------------------------
-            // Si era el último tracking del cliente
-            // en ese estado, eliminar su tarjeta
-            // ----------------------------------------
+                    huboCambios =
+                      true;
 
-            if (
-              tarjetaCliente
-            ) {
+                  }
 
-              const listaTrackings =
-                tarjetaCliente.querySelector(
-                  ".lista-trackings-cliente"
-                );
+                  return;
 
-              if (
-                listaTrackings &&
-                listaTrackings.children.length === 0
-              ) {
+                }
 
-                tarjetaCliente.remove();
+
+                // ========================================
+                // DOCUMENTO NUEVO O MODIFICADO
+                // ========================================
+
+                const datos =
+                  cambio.doc.data();
+
+
+                const cliente =
+                  obtenerClienteDePaquete(
+                    datos
+                  );
+
+
+                /*
+                 * Si el paquete ya estaba cargado,
+                 * conservamos el cliente que ya conocemos
+                 * en caso de que no pueda resolverse
+                 * inmediatamente.
+                 */
+
+                const clienteAnterior =
+                  datosPrealertas[id]
+                    ? datosPrealertas[id].cliente
+                    : null;
+
+
+                datosPrealertas[id] = {
+
+                  id:
+                    id,
+
+                  ...datos,
+
+                  cliente:
+                    cliente ||
+                    clienteAnterior ||
+                    null
+
+                };
+
+
+                huboCambios =
+                  true;
 
               }
+            );
 
-            }
+
+          if (huboCambios) {
+
+            /*
+             * Volvemos a pintar el tablero agrupado.
+             *
+             * Esto no recarga la página.
+             * Solamente actualiza el contenido
+             * del tablero.
+             */
+
+            pintarTableroAgrupado();
 
           }
 
-          return;
-
-        }
-
-        // ------------------------------------------
-        // TRACKING NUEVO O MODIFICADO
-        // ------------------------------------------
-
-        const datos =
-          cambio.doc.data();
-
-        // ------------------------------------------
-        // Buscar nuevamente al cliente
-        // usando el UID del tracking
-        // ------------------------------------------
-
-        const cliente =
-          usuariosPorUid[
-            datos.uid
-          ] || null;
-
-        datosPrealertas[id] = {
-
-          id: id,
-
-          ...datos,
-
-          cliente: cliente
-
-        };
-
-        // ------------------------------------------
-        // Colocar únicamente este tracking
-        // en su grupo correspondiente
-        // ------------------------------------------
-
-        colocarTarjetaEnColumna(
-          id
-        );
-
-      });
-
-    actualizarContadoresTablero();
-
-  },
-
-        
+        },
 
         (error) => {
 
@@ -2163,6 +3814,7 @@ usuariosSnapshot.forEach(
 
     }
 
+
   } catch (error) {
 
     console.error(
@@ -2170,177 +3822,45 @@ usuariosSnapshot.forEach(
       error
     );
 
-    listaAdmin.innerHTML = `
 
-      <p style="color:red;">
+    if (listaAdmin) {
 
-        ❌ Error cargando prealertas.
+      listaAdmin.innerHTML = `
 
-        <br>
+        <p style="
+          color:red;
+          text-align:center;
+        ">
 
-        ${error.message}
+          ❌ Error cargando prealertas.
 
-      </p>
+          <br><br>
 
-    `;
+          ${error.message}
 
-  }
+        </p>
 
-}
+      `;
 
-// ======================================================
-// ELIMINAR PREALERTA
-// ======================================================
-
-async function eliminarPrealerta(id) {
-
-  if (!confirm("¿Seguro que quieres eliminar esta prealerta?")) {
-    return;
-  }
-
-  try {
-
-    await deleteDoc(
-      doc(
-        db,
-        "prealertas",
-        id
-      )
-    );
-
-    console.log(
-      "🗑️ PREALERTA ELIMINADA:",
-      id
-    );
-
-  } catch (error) {
-
-    console.error(
-      "ERROR ELIMINANDO PREALERTA:",
-      error
-    );
-
-    alert(
-      "❌ Error eliminando la prealerta:\n\n" +
-      error.message
-    );
+    }
 
   }
 
 }
 
-// ======================================================
-// CAMBIAR ESTADO DESDE TARJETA
-// ======================================================
-
-async function cambiarEstadoTarjeta(
-  id
-) {
-
-  const selector =
-    document.getElementById(
-      "estado-" + id
-    );
-
-  if (!selector) {
-
-    alert(
-      "No se encontró el selector."
-    );
-
-    return;
-
-  }
-
-  const estadoNuevo =
-    selector.value;
-
-  const paquete =
-    datosPrealertas[id];
-
-  if (!paquete) {
-
-    alert(
-      "No se encontró la información del paquete."
-    );
-
-    return;
-
-  }
-
-  const estadoAnterior =
-    paquete.estado ||
-    "Prealertado";
-
-  if (
-    estadoNuevo === estadoAnterior
-  ) {
-
-    alert(
-      "El paquete ya tiene ese estado."
-    );
-
-    return;
-
-  }
-
-  try {
-
-    const referencia =
-      doc(
-        db,
-        "prealertas",
-        id
-      );
-
-    await updateDoc(
-      referencia,
-      {
-        estado: estadoNuevo
-      }
-    );
-
-    /*
-     * NO llamamos cargarPrealertas().
-     *
-     * Firestore actualizará automáticamente
-     * la tarjeta mediante onSnapshot.
-     *
-     * De esta manera la página NO se recarga
-     * y el administrador conserva su posición.
-     */
-
-    console.log(
-      "✅ ESTADO CAMBIADO:",
-      paquete.tracking,
-      estadoAnterior,
-      "→",
-      estadoNuevo
-    );
-
-  } catch (error) {
-
-    console.error(
-      "ERROR ACTUALIZANDO ESTADO:",
-      error
-    );
-
-    alert(
-      "Error actualizando estado: " +
-      error.message
-    );
-
-  }
-
-}
 
 // ======================================================
+// SECCIÓN 14/16
 // AUTENTICACIÓN DEL ADMINISTRADOR
 // ======================================================
 
 onAuthStateChanged(
   auth,
   async (usuario) => {
+
+    // ==================================================
+    // NO HAY USUARIO
+    // ==================================================
 
     if (!usuario) {
 
@@ -2351,6 +3871,10 @@ onAuthStateChanged(
 
     }
 
+
+    // ==================================================
+    // COMPROBAR CORREO DEL ADMINISTRADOR
+    // ==================================================
 
     if (
       !usuario.email ||
@@ -2366,6 +3890,7 @@ onAuthStateChanged(
       window.location.href =
         "cliente.html";
 
+
       return;
 
     }
@@ -2376,11 +3901,23 @@ onAuthStateChanged(
     );
 
 
+    // ==================================================
+    // CREAR PANEL DE USUARIOS
+    // ==================================================
+
     crearPanelUsuarios();
 
 
+    // ==================================================
+    // CARGAR USUARIOS
+    // ==================================================
+
     await cargarUsuarios();
 
+
+    // ==================================================
+    // CARGAR PREALERTAS
+    // ==================================================
 
     await cargarPrealertas();
 
@@ -2394,10 +3931,17 @@ onAuthStateChanged(
 
 
 // ======================================================
-// ESCÁNER DE CÓDIGOS DE BARRAS - TRACKING
+// SECCIÓN 15/16
+// ESCÁNER DE CÓDIGOS DE BARRAS
+// ======================================================
+
+
+// ======================================================
+// VARIABLES DEL ESCÁNER
 // ======================================================
 
 let escanerQR = null;
+
 let escaneando = false;
 
 
@@ -2434,13 +3978,17 @@ async function abrirEscaner() {
     "block";
 
 
-  resultado.textContent =
-    "📷 Preparando cámara...";
+  if (resultado) {
+
+    resultado.textContent =
+      "📷 Preparando cámara...";
+
+  }
 
 
-  // ====================================================
+  // ==================================================
   // CERRAR ESCÁNER ANTERIOR
-  // ====================================================
+  // ==================================================
 
   if (escanerQR) {
 
@@ -2467,13 +4015,14 @@ async function abrirEscaner() {
     );
 
 
-  escaneando = true;
+  escaneando =
+    true;
 
 
   try {
 
     // ==================================================
-    // CONFIGURACIÓN PARA CÓDIGOS DE BARRAS
+    // CONFIGURACIÓN DE CÁMARA
     // ==================================================
 
     await escanerQR.start(
@@ -2485,7 +4034,8 @@ async function abrirEscaner() {
 
       {
 
-        fps: 40,
+        fps:
+          40,
 
 
         qrbox:
@@ -2498,14 +4048,16 @@ async function abrirEscaner() {
 
               width:
                 Math.floor(
-                  viewfinderWidth * 0.90
+                  viewfinderWidth *
+                  0.90
                 ),
 
               height:
                 Math.min(
                   220,
                   Math.floor(
-                    viewfinderHeight * 0.35
+                    viewfinderHeight *
+                    0.35
                   )
                 )
 
@@ -2548,7 +4100,8 @@ async function abrirEscaner() {
         }
 
 
-        escaneando = false;
+        escaneando =
+          false;
 
 
         console.log(
@@ -2561,23 +4114,20 @@ async function abrirEscaner() {
         // MOSTRAR TRACKING
         // ==============================================
 
-        resultado.textContent =
-          "✅ Tracking leído: " +
-          codigoEscaneado;
+        if (resultado) {
+
+          resultado.textContent =
+            "✅ Tracking leído: " +
+            codigoEscaneado;
+
+        }
 
 
         // ==============================================
         // SONIDO
         // ==============================================
 
-        if (
-          typeof reproducirSonido ===
-          "function"
-        ) {
-
-          await reproducirSonido();
-
-        }
+        await reproducirSonido();
 
 
         // ==============================================
@@ -2588,7 +4138,7 @@ async function abrirEscaner() {
 
 
         // ==============================================
-        // MOSTRAR TRACKING
+        // AVISO
         // ==============================================
 
         alert(
@@ -2597,14 +4147,18 @@ async function abrirEscaner() {
         );
 
 
-        // ==================================================
-        // BUSCAR TRACKING EN FIRESTORE
-        // ==================================================
+        // ==============================================
+        // BUSCAR TRACKING
+        // ==============================================
 
         try {
 
-          resultado.textContent =
-            "🔎 Buscando paquete...";
+          if (resultado) {
+
+            resultado.textContent =
+              "🔎 Buscando paquete...";
+
+          }
 
 
           const consultaTracking =
@@ -2632,21 +4186,23 @@ async function abrirEscaner() {
             snapshotTracking.empty
           ) {
 
-            resultado.innerHTML =
-              "❌ No se encontró ningún paquete con el tracking:<br><br>" +
+            if (resultado) {
 
-              "<strong>" +
+              resultado.innerHTML =
+                "❌ No se encontró ningún paquete con el tracking:<br><br>" +
 
-              codigoEscaneado +
+                "<strong>" +
 
-              "</strong>";
+                codigoEscaneado +
+
+                "</strong>";
+
+            }
 
 
             alert(
               "❌ PAQUETE NO ENCONTRADO\n\n" +
-
               "Tracking: " +
-
               codigoEscaneado
             );
 
@@ -2664,24 +4220,42 @@ async function abrirEscaner() {
             documento.data();
 
 
+          const idPaquete =
+            documento.id;
+
+
           // ==================================================
           // BUSCAR CLIENTE
           // ==================================================
 
-          let nombreCliente =
-            "No disponible";
+          let cliente =
+            null;
 
 
-          let codigoCliente =
-            "No disponible";
+          if (
+            paquete.uid &&
+            usuariosPorUid[
+              paquete.uid
+            ]
+          ) {
+
+            cliente =
+              usuariosPorUid[
+                paquete.uid
+              ];
+
+          }
 
 
-          let correoCliente =
-            paquete.correo ||
-            "No disponible";
+          /*
+           * Si no está en memoria, hacemos
+           * una consulta directa a usuarios.
+           */
 
-
-          if (paquete.uid) {
+          if (
+            !cliente &&
+            paquete.uid
+          ) {
 
             const consultaCliente =
               query(
@@ -2710,30 +4284,118 @@ async function abrirEscaner() {
               !snapshotCliente.empty
             ) {
 
-              const datosCliente =
-                snapshotCliente
-                  .docs[0]
-                  .data();
+              cliente =
+                {
+
+                  id:
+                    snapshotCliente
+                      .docs[0]
+                      .id,
+
+                  ...snapshotCliente
+                    .docs[0]
+                    .data()
+
+                };
 
 
-              nombreCliente =
-                datosCliente.nombre ||
-                "No disponible";
-
-
-              codigoCliente =
-                datosCliente.codigo ||
-                "No disponible";
-
-
-              correoCliente =
-                datosCliente.correo ||
-                paquete.correo ||
-                "No disponible";
+              usuariosPorUid[
+                paquete.uid
+              ] =
+                cliente;
 
             }
 
           }
+
+
+          /*
+           * Último respaldo:
+           * buscar por correo.
+           */
+
+          if (
+            !cliente &&
+            paquete.correo
+          ) {
+
+            const consultaCorreo =
+              query(
+
+                collection(
+                  db,
+                  "usuarios"
+                ),
+
+                where(
+                  "correo",
+                  "==",
+                  paquete.correo
+                )
+
+              );
+
+
+            const snapshotCorreo =
+              await getDocs(
+                consultaCorreo
+              );
+
+
+            if (
+              !snapshotCorreo.empty
+            ) {
+
+              cliente =
+                {
+
+                  id:
+                    snapshotCorreo
+                      .docs[0]
+                      .id,
+
+                  ...snapshotCorreo
+                    .docs[0]
+                    .data()
+
+                };
+
+            }
+
+          }
+
+
+          const nombreCliente =
+            cliente
+              ? (
+                  `${cliente.nombre || ""} ${cliente.apellido || ""}`
+                    .trim() ||
+                  "No disponible"
+                )
+              : "No disponible";
+
+
+          const codigoCliente =
+            cliente
+              ? (
+                  cliente.codigo ||
+                  "No disponible"
+                )
+              : "No disponible";
+
+
+          const correoCliente =
+            cliente
+              ? (
+                  cliente.correo ||
+                  cliente.email ||
+                  paquete.correo ||
+                  "No disponible"
+                )
+              : (
+                  paquete.correo ||
+                  "No disponible"
+                );
 
 
           console.log(
@@ -2743,233 +4405,229 @@ async function abrirEscaner() {
 
 
           // ==================================================
-          // MOSTRAR INFORMACIÓN DEL PAQUETE
+          // ESTADO VISUAL ACTUAL
           // ==================================================
 
-          resultado.innerHTML = `
+          const estadoActual =
+            paquete.estado ||
+            "Prealertado";
 
-            <div style="
-              background:#f8faff;
-              padding:20px;
-              border-radius:15px;
-              border:2px solid #003366;
-            ">
 
-              <h3 style="
-                color:#003366;
+          const estadoVisualActual =
+            obtenerEstadoVisual(
+              estadoActual
+            );
+
+
+          // ==================================================
+          // MOSTRAR INFORMACIÓN
+          // ==================================================
+
+          if (resultado) {
+
+            resultado.innerHTML = `
+
+              <div style="
+                background:#f8faff;
+                padding:20px;
+                border-radius:15px;
+                border:2px solid #003366;
               ">
-                📦 Paquete encontrado
-              </h3>
+
+                <h3 style="
+                  color:#003366;
+                ">
+
+                  📦 Paquete encontrado
+
+                </h3>
 
 
-              <p>
+                <p>
 
-                <strong>
-                  📦 Tracking:
-                </strong>
+                  <strong>
+                    📦 Tracking:
+                  </strong>
 
-                <br>
+                  <br>
 
-                ${
-                  paquete.tracking ||
-                  codigoEscaneado
-                }
-
-              </p>
-
-
-              <p>
-
-                <strong>
-                  👤 Cliente:
-                </strong>
-
-                <br>
-
-                ${nombreCliente}
-
-              </p>
-
-
-              <p>
-
-                <strong>
-                  🆔 Código del cliente:
-                </strong>
-
-                <br>
-
-                ${codigoCliente}
-
-              </p>
-
-
-              <p>
-
-                <strong>
-                  📧 Correo:
-                </strong>
-
-                <br>
-
-                ${correoCliente}
-
-              </p>
-
-
-              <p>
-
-                <strong>
-                  📋 Estado actual:
-                </strong>
-
-                <br>
-
-                ${
-                  paquete.estado ||
-                  "Prealertado"
-                }
-
-              </p>
-
-
-              <label>
-
-                <strong>
-                  🔄 Cambiar estado:
-                </strong>
-
-              </label>
-
-
-              <select
-                id="estadoEscaneado-${documento.id}"
-                style="
-                  width:100%;
-                  padding:12px;
-                  margin-top:8px;
-                  border-radius:10px;
-                  border:1px solid #ccc;
-                  font-size:16px;
-                "
-              >
-
-                <option
-                  value="Prealertado"
                   ${
-                    paquete.estado ===
-                    "Prealertado"
-                      ? "selected"
-                      : ""
+                    paquete.tracking ||
+                    codigoEscaneado
                   }
+
+                </p>
+
+
+                <p>
+
+                  <strong>
+                    👤 Cliente:
+                  </strong>
+
+                  <br>
+
+                  ${nombreCliente}
+
+                </p>
+
+
+                <p>
+
+                  <strong>
+                    🆔 Código del cliente:
+                  </strong>
+
+                  <br>
+
+                  ${codigoCliente}
+
+                </p>
+
+
+                <p>
+
+                  <strong>
+                    📧 Correo:
+                  </strong>
+
+                  <br>
+
+                  ${correoCliente}
+
+                </p>
+
+
+                <p>
+
+                  <strong>
+                    📋 Estado actual:
+                  </strong>
+
+                  <br>
+
+                  ${estadoVisualActual}
+
+                </p>
+
+
+                <label>
+
+                  <strong>
+                    🔄 Cambiar estado:
+                  </strong>
+
+                </label>
+
+
+                <select
+                  id="estadoEscaneado-${idPaquete}"
+                  style="
+                    width:100%;
+                    padding:12px;
+                    margin-top:8px;
+                    border-radius:10px;
+                    border:1px solid #ccc;
+                    font-size:16px;
+                  "
                 >
-                  Prealertado
-                </option>
+
+                  <option
+                    value="Prealertado"
+                    ${
+                      estadoVisualActual ===
+                      "Prealertado"
+                        ? "selected"
+                        : ""
+                    }
+                  >
+                    Prealertado
+                  </option>
 
 
-                <option
-                  value="Recibido en bodega"
-                  ${
-                    paquete.estado ===
-                    "Recibido en bodega"
-                      ? "selected"
-                      : ""
-                  }
+                  <option
+                    value="Recibido en bodega"
+                    ${
+                      estadoVisualActual ===
+                      "Recibido en bodega"
+                        ? "selected"
+                        : ""
+                    }
+                  >
+                    Recibido en bodega
+                  </option>
+
+
+                  <option
+                    value="Llegó a Venezuela"
+                    ${
+                      estadoVisualActual ===
+                      "Llegó a Venezuela"
+                        ? "selected"
+                        : ""
+                    }
+                  >
+                    Llegó a Venezuela
+                  </option>
+
+                </select>
+
+
+                <button
+                  type="button"
+                  id="btnGuardarEstadoEscaneado"
+                  style="
+                    width:100%;
+                    padding:14px;
+                    margin-top:15px;
+                    border:0;
+                    border-radius:10px;
+                    background:#003366;
+                    color:white;
+                    font-size:16px;
+                    font-weight:bold;
+                    cursor:pointer;
+                  "
                 >
-                  Recibido en bodega
-                </option>
 
+                  💾 Guardar cambio
 
-                <option
-                  value="En tránsito"
-                  ${
-                    paquete.estado ===
-                    "En tránsito"
-                      ? "selected"
-                      : ""
-                  }
-                >
-                  En tránsito
-                </option>
+                </button>
 
+              </div>
 
-                <option
-                  value="Llegó a Venezuela"
-                  ${
-                    paquete.estado ===
-                    "Llegó a Venezuela"
-                      ? "selected"
-                      : ""
-                  }
-                >
-                  Llegó a Venezuela
-                </option>
+            `;
 
-
-                <option
-                  value="Entregado"
-                  ${
-                    paquete.estado ===
-                    "Entregado"
-                      ? "selected"
-                      : ""
-                  }
-                >
-                  Entregado
-                </option>
-
-              </select>
-
-
-              <button
-                type="button"
-                id="btnGuardarEstadoEscaneado"
-                style="
-                  width:100%;
-                  padding:14px;
-                  margin-top:15px;
-                  border:0;
-                  border-radius:10px;
-                  background:#003366;
-                  color:white;
-                  font-size:16px;
-                  font-weight:bold;
-                  cursor:pointer;
-                "
-              >
-
-                💾 Guardar cambio
-
-              </button>
-
-            </div>
-
-          `;
+          }
 
 
           // ==================================================
           // BOTÓN GUARDAR ESTADO DEL ESCÁNER
           // ==================================================
 
-          document
-            .getElementById(
+          const botonGuardar =
+            document.getElementById(
               "btnGuardarEstadoEscaneado"
-            )
-            .addEventListener(
+            );
+
+
+          if (botonGuardar) {
+
+            botonGuardar.addEventListener(
               "click",
               async () => {
 
                 const selector =
                   document.getElementById(
                     "estadoEscaneado-" +
-                    documento.id
+                    idPaquete
                   );
 
 
                 if (!selector) {
 
                   alert(
-                    "No se encontró el selector de estado."
+                    "❌ No se encontró el selector de estado."
                   );
 
                   return;
@@ -2981,19 +4639,70 @@ async function abrirEscaner() {
                   selector.value;
 
 
+                const estadosPermitidos = [
+
+                  "Prealertado",
+
+                  "Recibido en bodega",
+
+                  "Llegó a Venezuela"
+
+                ];
+
+
+                if (
+                  !estadosPermitidos.includes(
+                    nuevoEstado
+                  )
+                ) {
+
+                  alert(
+                    "❌ Estado no permitido."
+                  );
+
+                  return;
+
+                }
+
+
+                const estadoAnterior =
+                  paquete.estado ||
+                  "Prealertado";
+
+
+                const estadoAnteriorVisual =
+                  obtenerEstadoVisual(
+                    estadoAnterior
+                  );
+
+
+                if (
+                  nuevoEstado ===
+                  estadoAnteriorVisual
+                ) {
+
+                  alert(
+                    "El paquete ya tiene ese estado."
+                  );
+
+                  return;
+
+                }
+
+
                 try {
 
                   const referencia =
                     doc(
                       db,
                       "prealertas",
-                      documento.id
+                      idPaquete
                     );
 
 
-                  // ==================================================
-                  // GUARDAR ESTADO EN FIRESTORE
-                  // ==================================================
+                  // ==========================================
+                  // GUARDAR SOLO ESTE TRACKING
+                  // ==========================================
 
                   await updateDoc(
                     referencia,
@@ -3004,38 +4713,26 @@ async function abrirEscaner() {
                   );
 
 
-                  // ==================================================
-                  // ACTUALIZAR DATOS LOCALES
-                  // ==================================================
+                  // ==========================================
+                  // ACTUALIZAR MEMORIA LOCAL
+                  // ==========================================
+
+                  actualizarDatosPaqueteLocal(
+                    idPaquete,
+                    {
+                      estado:
+                        nuevoEstado
+                    }
+                  );
+
+
+                  // ==========================================
+                  // EMAIL AL RECIBIR EN BODEGA
+                  // ==========================================
 
                   if (
-                    datosPrealertas[
-                      documento.id
-                    ]
-                  ) {
-
-                    datosPrealertas[
-                      documento.id
-                    ].estado =
-                      nuevoEstado;
-
-                  }
-
-
-                  // ==================================================
-                  // ENVIAR CORREO AL CLIENTE
-                  // ==================================================
-
-                  if (
-
                     nuevoEstado ===
-                      "Recibido en bodega"
-
-                    ||
-
-                    nuevoEstado ===
-                      "En tránsito"
-
+                    "Recibido en bodega"
                   ) {
 
                     try {
@@ -3092,13 +4789,9 @@ async function abrirEscaner() {
                         "pero no se pudo enviar el correo al cliente.\n\n" +
 
                         (
-
                           errorCorreo.text ||
-
                           errorCorreo.message ||
-
                           "Error desconocido"
-
                         )
 
                       );
@@ -3108,28 +4801,63 @@ async function abrirEscaner() {
                   }
 
 
-                  // ==================================================
-                  // MOVER TARJETA INMEDIATAMENTE
-                  // ==================================================
+                  // ==========================================
+                  // EL LISTENER ACTUALIZARÁ EL TABLERO
+                  // ==========================================
 
                   if (
-                    datosPrealertas[
-                      documento.id
-                    ]
+                    resultado
                   ) {
 
-                    colocarTarjetaEnColumna(
-                      documento.id
-                    );
+                    resultado.innerHTML = `
 
-                    actualizarContadoresTablero();
+                      <div style="
+                        background:#f0fff4;
+                        padding:20px;
+                        border-radius:15px;
+                        border:2px solid #28a745;
+                        text-align:center;
+                      ">
+
+                        <h3>
+                          ✅ Estado actualizado
+                        </h3>
+
+
+                        <p>
+
+                          <strong>
+                            Tracking:
+                          </strong>
+
+                          <br>
+
+                          ${
+                            paquete.tracking ||
+                            codigoEscaneado
+                          }
+
+                        </p>
+
+
+                        <p>
+
+                          <strong>
+                            Nuevo estado:
+                          </strong>
+
+                          <br>
+
+                          ${nuevoEstado}
+
+                        </p>
+
+                      </div>
+
+                    `;
 
                   }
 
-
-                  // ==================================================
-                  // AVISO DE ACTUALIZACIÓN
-                  // ==================================================
 
                   alert(
 
@@ -3147,58 +4875,6 @@ async function abrirEscaner() {
                     nuevoEstado
 
                   );
-
-
-                  // ==================================================
-                  // MOSTRAR RESULTADO DEL ESCANEO
-                  // ==================================================
-
-                  resultado.innerHTML = `
-
-                    <div style="
-                      background:#f0fff4;
-                      padding:20px;
-                      border-radius:15px;
-                      border:2px solid #28a745;
-                      text-align:center;
-                    ">
-
-                      <h3>
-                        ✅ Estado actualizado
-                      </h3>
-
-
-                      <p>
-
-                        <strong>
-                          Tracking:
-                        </strong>
-
-                        <br>
-
-                        ${
-                          paquete.tracking ||
-                          codigoEscaneado
-                        }
-
-                      </p>
-
-
-                      <p>
-
-                        <strong>
-                          Nuevo estado:
-                        </strong>
-
-                        <br>
-
-                        ${nuevoEstado}
-
-                      </p>
-
-                    </div>
-
-                  `;
 
 
                 } catch (
@@ -3222,8 +4898,9 @@ async function abrirEscaner() {
                 }
 
               }
-
             );
+
+          }
 
 
         } catch (
@@ -3236,10 +4913,13 @@ async function abrirEscaner() {
           );
 
 
-          resultado.innerHTML =
-            "❌ Error buscando el paquete.<br><br>" +
+          if (resultado) {
 
-            error.message;
+            resultado.innerHTML =
+              "❌ Error buscando el paquete.<br><br>" +
+              error.message;
+
+          }
 
 
           alert(
@@ -3258,10 +4938,8 @@ async function abrirEscaner() {
       (errorMessage) => {
 
         /*
-         * No mostramos errores mientras busca.
-         *
-         * Es normal que aparezcan mientras
-         * la cámara está activa.
+         * No mostramos errores mientras
+         * la cámara está buscando.
          */
 
       }
@@ -3269,13 +4947,15 @@ async function abrirEscaner() {
     );
 
 
-    resultado.textContent =
-      "📷 Apunta la cámara al código de barras del paquete.";
+    if (resultado) {
+
+      resultado.textContent =
+        "📷 Apunta la cámara al código de barras del paquete.";
+
+    }
 
 
-  } catch (
-    error
-  ) {
+  } catch (error) {
 
     console.error(
       "ERROR ABRIENDO CÁMARA:",
@@ -3283,10 +4963,13 @@ async function abrirEscaner() {
     );
 
 
-    resultado.innerHTML =
-      "❌ No se pudo abrir la cámara.<br><br>" +
+    if (resultado) {
 
-      error.message;
+      resultado.innerHTML =
+        "❌ No se pudo abrir la cámara.<br><br>" +
+        error.message;
+
+    }
 
 
     escaneando =
@@ -3313,22 +4996,38 @@ async function detenerEscaner() {
 
       await escanerQR.stop();
 
+    } catch (
+      error
+    ) {
+
+      console.log(
+        "Error deteniendo escáner:",
+        error
+      );
+
+    }
+
+
+    try {
 
       await escanerQR.clear();
-
 
     } catch (
       error
     ) {
 
       console.log(
-        "Error cerrando escáner:",
+        "Error limpiando escáner:",
         error
       );
 
     }
 
   }
+
+
+  escanerQR =
+    null;
 
 
   const contenedor =
@@ -3339,12 +5038,23 @@ async function detenerEscaner() {
 
   if (contenedor) {
 
+    /*
+     * Lo dejamos visible para que el administrador
+     * pueda ver el resultado del escaneo.
+     */
+
     contenedor.style.display =
       "block";
 
   }
 
 }
+
+
+// ======================================================
+// SECCIÓN 16/16
+// BOTONES Y FINAL DEL ARCHIVO
+// ======================================================
 
 
 // ======================================================
@@ -3386,12 +5096,16 @@ if (btnCerrarScanner) {
 
 }
 
+
 // ======================================================
 // BOTÓN BUSCAR PRINCIPAL
 // ======================================================
 
 const btnBuscarPrincipal =
-  document.getElementById("btnBuscar");
+  document.getElementById(
+    "btnBuscar"
+  );
+
 
 if (btnBuscarPrincipal) {
 
@@ -3402,6 +5116,38 @@ if (btnBuscarPrincipal) {
 
 }
 
+
+// ======================================================
+// PERMITIR BUSCAR CON ENTER
+// ======================================================
+
+const inputBuscarPrincipal =
+  document.getElementById(
+    "buscar"
+  );
+
+
+if (inputBuscarPrincipal) {
+
+  inputBuscarPrincipal.addEventListener(
+    "keydown",
+    (evento) => {
+
+      if (
+        evento.key ===
+        "Enter"
+      ) {
+
+        buscarPrincipal();
+
+      }
+
+    }
+  );
+
+}
+
+
 // ======================================================
 // FIN DE ADMIN.JS
 // ======================================================
@@ -3409,3 +5155,24 @@ if (btnBuscarPrincipal) {
 console.log(
   "✅ ADMIN.JS COMPLETO CARGADO"
 );
+
+console.log(
+  "✅ TABLERO AGRUPADO POR CLIENTE ACTIVADO"
+);
+
+console.log(
+  "✅ 3 ESTADOS VISUALES ACTIVADOS"
+);
+
+console.log(
+  "✅ ESCÁNER DE TRACKING ACTIVADO"
+);
+
+console.log(
+  "✅ TIEMPO REAL DE PREALERTAS ACTIVADO"
+);
+
+
+
+
+
