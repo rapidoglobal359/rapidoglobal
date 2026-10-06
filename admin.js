@@ -2784,19 +2784,6 @@ async function abrirEscaner() {
 
 
                 <option
-                  value="En tránsito"
-                  ${
-                    paquete.estado ===
-                    "En tránsito"
-                      ? "selected"
-                      : ""
-                  }
-                >
-                  En tránsito
-                </option>
-
-
-                <option
                   value="Llegó a Venezuela"
                   ${
                     paquete.estado ===
@@ -2806,19 +2793,6 @@ async function abrirEscaner() {
                   }
                 >
                   Llegó a Venezuela
-                </option>
-
-
-                <option
-                  value="Entregado"
-                  ${
-                    paquete.estado ===
-                    "Entregado"
-                      ? "selected"
-                      : ""
-                  }
-                >
-                  Entregado
                 </option>
 
               </select>
@@ -2849,6 +2823,9 @@ async function abrirEscaner() {
 
           `;
 
+
+
+          
 
           // ==================================================
           // BOTÓN GUARDAR ESTADO DEL ESCÁNER
