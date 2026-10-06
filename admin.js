@@ -2902,7 +2902,7 @@ async function abrirEscaner() {
                   }
 
 
-                  // ==================================================
+                 // ==================================================
                   // ENVIAR CORREO AL CLIENTE
                   // ==================================================
 
@@ -2914,7 +2914,7 @@ async function abrirEscaner() {
                     ||
 
                     nuevoEstado ===
-                      "En tránsito"
+                      "Llegó a Venezuela"
 
                   ) {
 
@@ -2987,6 +2987,7 @@ async function abrirEscaner() {
 
                   }
 
+                  
 
                   // ==================================================
                   // MOVER TARJETA INMEDIATAMENTE
