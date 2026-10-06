@@ -367,47 +367,29 @@ async function cargarPrealertas(usuario) {
           doc.data();
 
 
-        if (
-          datos.estado ===
-          "Recibido en bodega"
-        ) {
+   if (
+  datos.estado ===
+  "Recibido en bodega"
+) {
 
-          recibidos++;
+  recibidos++;
 
-        }
-
-
-        if (
-          datos.estado ===
-          "En tránsito"
-        ) {
-
-          transito++;
-
-        }
+}
 
 
-        if (
-          datos.estado ===
-          "Llegó a Venezuela"
-        ) {
+if (
+  datos.estado ===
+  "Llegó a Venezuela"
+) {
 
-          venezuela++;
+  venezuela++;
 
-        }
+}
 
+}
+);
 
-        if (
-          datos.estado ===
-          "Entregado"
-        ) {
-
-          entregados++;
-
-        }
-
-      }
-    );
+          
 
 
     document
