@@ -431,23 +431,22 @@ document
 
           lista.innerHTML += `
 
-            <div class="tarjeta-prealerta">
+  <div class="tarjeta-prealerta">
 
-              <h3>📦 Prealerta</h3>
+    <p>
+      <strong>📦 Tracking:</strong>
+      ${datos.tracking}
+    </p>
 
-              <p>
-                <strong>Tracking:</strong>
-                ${datos.tracking}
-              </p>
+    <p>
+      <strong>Estado:</strong>
+      ${datos.estado || "Prealertado"}
+    </p>
 
-              <p>
-                <strong>Estado:</strong>
-                ${datos.estado || "Prealertado"}
-              </p>
+  </div>
 
-            </div>
-
-          `;
+`;
+            
 
         }
       );
