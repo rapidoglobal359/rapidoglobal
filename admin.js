@@ -1359,20 +1359,13 @@ function crearTarjetaPrealerta(
         Recibido en bodega
       </option>
 
-      <option value="En tránsito"
-        ${estado === "En tránsito" ? "selected" : ""}>
-        En tránsito
-      </option>
-
+      
       <option value="Llegó a Venezuela"
         ${estado === "Llegó a Venezuela" ? "selected" : ""}>
         Llegó a Venezuela
       </option>
 
-      <option value="Entregado"
-        ${estado === "Entregado" ? "selected" : ""}>
-        Entregado
-      </option>
+     
 
     </select>
 
