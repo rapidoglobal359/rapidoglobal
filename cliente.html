@@ -327,6 +327,190 @@ let usuarioActual = null;
 
 
 // ===============================
+// CARGAR PREALERTAS
+// ===============================
+
+async function cargarPrealertas(usuario) {
+
+  try {
+
+    const consultaPrealertas =
+      query(
+        collection(db, "prealertas"),
+        where(
+          "uid",
+          "==",
+          usuario.uid
+        )
+      );
+
+
+    const resultadoPrealertas =
+      await getDocs(
+        consultaPrealertas
+      );
+
+
+    console.log(
+      "UID DEL CLIENTE:",
+      usuario.uid
+    );
+
+    console.log(
+      "PREALERTAS ENCONTRADAS:",
+      resultadoPrealertas.size
+    );
+
+
+    let recibidos = 0;
+    let transito = 0;
+    let venezuela = 0;
+    let entregados = 0;
+
+
+    resultadoPrealertas.forEach(
+      (doc) => {
+
+        const datos =
+          doc.data();
+
+
+        if (
+          datos.estado ===
+          "Recibido en bodega"
+        ) {
+
+          recibidos++;
+
+        }
+
+
+        if (
+          datos.estado ===
+          "En tránsito"
+        ) {
+
+          transito++;
+
+        }
+
+
+        if (
+          datos.estado ===
+          "Llegó a Venezuela"
+        ) {
+
+          venezuela++;
+
+        }
+
+
+        if (
+          datos.estado ===
+          "Entregado"
+        ) {
+
+          entregados++;
+
+        }
+
+      }
+    );
+
+
+    document
+    .getElementById("paquetesRecibidos")
+    .textContent =
+      recibidos;
+
+
+    document
+    .getElementById("paquetesTransito")
+    .textContent =
+      transito;
+
+
+    document
+    .getElementById("paquetesVenezuela")
+    .textContent =
+      venezuela;
+
+
+    document
+    .getElementById("paquetesEntregados")
+    .textContent =
+      entregados;
+
+
+    const lista =
+      document.getElementById(
+        "listaPrealertas"
+      );
+
+
+    if (
+      resultadoPrealertas.empty
+    ) {
+
+      lista.innerHTML =
+        "<p>No tienes prealertas registradas.</p>";
+
+    } else {
+
+      lista.innerHTML = "";
+
+
+      resultadoPrealertas.forEach(
+        (doc) => {
+
+          const datos =
+            doc.data();
+
+
+          lista.innerHTML += `
+
+            <div class="tarjeta-prealerta">
+
+              <h3>📦 Prealerta</h3>
+
+              <p>
+                <strong>Tracking:</strong>
+                ${datos.tracking}
+              </p>
+
+              <p>
+                <strong>Estado:</strong>
+                ${datos.estado || "Prealertado"}
+              </p>
+
+            </div>
+
+          `;
+
+        }
+      );
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "ERROR CARGANDO PREALERTAS:",
+      error
+    );
+
+
+    document
+    .getElementById("listaPrealertas")
+    .innerHTML =
+      "<p>No fue posible cargar las prealertas.</p>";
+
+  }
+
+}
+
+
+// ===============================
 // CERRAR SESIÓN
 // ===============================
 
@@ -363,23 +547,13 @@ document
     document.getElementById("datosDomicilio");
 
 
-  // ===============================
-  // DOMESA
-  // ===============================
-
   if (empresa === "Domesa") {
 
     contenedorTipo.style.display = "block";
 
     actualizarTipoEntrega();
 
-  }
-
-  // ===============================
-  // MRW / ZOOM / TEALCA
-  // ===============================
-
-  else {
+  } else {
 
     contenedorTipo.style.display = "none";
 
@@ -451,6 +625,7 @@ document
 
   const empresa =
     document.getElementById("empresaEnvio").value;
+
 
   if (!empresa) {
 
@@ -548,8 +723,10 @@ document
     const mensaje =
       document.getElementById("mensajeDatosEntrega");
 
+
     mensaje.textContent =
       "✅ Datos de entrega guardados correctamente.";
+
 
     setTimeout(() => {
 
@@ -660,6 +837,13 @@ onAuthStateChanged(
 
 
     usuarioActual = usuario;
+
+
+    // ===============================
+    // CARGAR PREALERTAS INMEDIATAMENTE
+    // ===============================
+
+    await cargarPrealertas(usuario);
 
 
     document
@@ -879,161 +1063,8 @@ onAuthStateChanged(
     .value =
       entrega.observaciones || "";
 
-
-    // ===============================
-    // PREALERTAS
-    // ===============================
-
-    const consultaPrealertas =
-      query(
-        collection(db, "prealertas"),
-        where(
-          "uid",
-          "==",
-          usuario.uid
-        )
-      );
-
-
-    const resultadoPrealertas =
-      await getDocs(
-        consultaPrealertas
-      );
-
-     console.log("UID DEL CLIENTE:", usuario.uid);
-console.log("PREALERTAS ENCONTRADAS:", resultadoPrealertas.size);      
-
-    let recibidos = 0;
-    let transito = 0;
-    let venezuela = 0;
-    let entregados = 0;
-
-
-    resultadoPrealertas.forEach(
-      (doc) => {
-
-        const datos =
-          doc.data();
-
-
-        if (
-          datos.estado ===
-          "Recibido en bodega"
-        ) {
-
-          recibidos++;
-
-        }
-
-
-        if (
-          datos.estado ===
-          "En tránsito"
-        ) {
-
-          transito++;
-
-        }
-
-
-        if (
-          datos.estado ===
-          "Llegó a Venezuela"
-        ) {
-
-          venezuela++;
-
-        }
-
-
-        if (
-          datos.estado ===
-          "Entregado"
-        ) {
-
-          entregados++;
-
-        }
-
-      }
-    );
-
-
-    document
-    .getElementById("paquetesRecibidos")
-    .textContent =
-      recibidos;
-
-
-    document
-    .getElementById("paquetesTransito")
-    .textContent =
-      transito;
-
-
-    document
-    .getElementById("paquetesVenezuela")
-    .textContent =
-      venezuela;
-
-
-    document
-    .getElementById("paquetesEntregados")
-    .textContent =
-      entregados;
-
-
-    const lista =
-      document.getElementById(
-        "listaPrealertas"
-      );
-
-
-    if (
-      resultadoPrealertas.empty
-    ) {
-
-      lista.innerHTML =
-        "<p>No tienes prealertas registradas.</p>";
-
-    } else {
-
-      lista.innerHTML = "";
-
-
-      resultadoPrealertas.forEach(
-        (doc) => {
-
-          const datos =
-            doc.data();
-
-
-          lista.innerHTML += `
-
-            <div class="tarjeta-prealerta">
-
-              <h3>📦 Prealerta</h3>
-
-              <p>
-                <strong>Tracking:</strong>
-                ${datos.tracking}
-              </p>
-
-              <p>
-                <strong>Estado:</strong>
-                ${datos.estado || "Prealertado"}
-              </p>
-
-            </div>
-
-          `;
-
-        }
-      );
-
-    }
-
   }
+
 );
 
 </script>
