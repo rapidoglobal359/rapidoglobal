@@ -1790,15 +1790,13 @@ function actualizarContadoresTablero() {
       prealertados++;
 
     } else if (
-      estado === "Recibido en bodega" ||
-      estado === "En tránsito"
+      estado === "Recibido en bodega"
     ) {
 
       bodega++;
 
     } else if (
-      estado === "Llegó a Venezuela" ||
-      estado === "Entregado"
+      estado === "Llegó a Venezuela"
     ) {
 
       venezuela++;
@@ -1859,6 +1857,7 @@ function actualizarContadoresTablero() {
   }
 
 }
+
 
 
 // ======================================================
