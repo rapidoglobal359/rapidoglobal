@@ -1709,39 +1709,6 @@ function obtenerContenedorEstado(
 
   }
 
-  /*
-   * Los estados "En tránsito" y "Entregado"
-   * se mantienen en el sistema.
-   *
-   * Para el tablero principal:
-   *
-   * - En tránsito permanece junto a los
-   *   paquetes recibidos en bodega.
-   *
-   * - Entregado permanece junto a los
-   *   paquetes que llegaron a Venezuela.
-   */
-
-  if (
-    estado === "En tránsito"
-  ) {
-
-    return document.getElementById(
-      "listaBodega"
-    );
-
-  }
-
-  if (
-    estado === "Entregado"
-  ) {
-
-    return document.getElementById(
-      "listaVenezuela"
-    );
-
-  }
-
   return document.getElementById(
     "listaPrealertados"
   );
@@ -1795,6 +1762,7 @@ function colocarTarjetaEnColumna(
   );
 
 }
+
 
 
 // ======================================================
