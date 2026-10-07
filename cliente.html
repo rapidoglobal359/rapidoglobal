@@ -417,103 +417,96 @@ async function cargarPrealertas(usuario) {
     );
 
 
-    let recibidos = 0;
-    let venezuela = 0;
-    
+    // ===============================
+    // SEPARAR LOS TRACKING POR ESTADO
+    // ===============================
+
+    const prealertados = [];
+    const bodega = [];
+    const venezuela = [];
 
 
-    resultadoPrealertas.forEach(
-      (doc) => {
+    resultadoPrealertas.forEach((documento) => {
 
-        const datos =
-          doc.data();
+      const datos = documento.data();
 
+      const tracking =
+        datos.tracking || "Sin tracking";
 
-   if (
-  datos.estado ===
-  "Recibido en bodega"
-) {
-
-  recibidos++;
-
-}
+      const estado =
+        datos.estado || "Prealertado";
 
 
-if (
-  datos.estado ===
-  "Llegó a Venezuela"
-) {
+      if (estado === "Recibido en bodega") {
 
-  venezuela++;
+        bodega.push(tracking);
 
-}
+      } else if (estado === "Llegó a Venezuela") {
 
-}
-);
+        venezuela.push(tracking);
 
-          
+      } else {
+
+        prealertados.push(tracking);
+
+      }
+
+    });
+
+
+    // ===============================
+    // CONTADORES
+    // ===============================
+
+    document
+      .getElementById("contadorPrealertados")
+      .textContent =
+        prealertados.length;
 
 
     document
-.getElementById("paquetesRecibidos")
-.textContent =
-  recibidos;
+      .getElementById("contadorBodega")
+      .textContent =
+        bodega.length;
 
 
-document
-.getElementById("paquetesVenezuela")
-.textContent =
-  venezuela;
-      
+    document
+      .getElementById("contadorVenezuela")
+      .textContent =
+        venezuela.length;
 
-    const lista =
+
+    // ===============================
+    // MOSTRAR TRACKING
+    // ===============================
+
+    const listaPrealertados =
       document.getElementById(
-        "listaPrealertas"
+        "listaPrealertados"
+      );
+
+    const listaBodega =
+      document.getElementById(
+        "listaBodega"
+      );
+
+    const listaVenezuela =
+      document.getElementById(
+        "listaVenezuela"
       );
 
 
-    if (
-      resultadoPrealertas.empty
-    ) {
-
-      lista.innerHTML =
-        "<p>No tienes prealertas registradas.</p>";
-
-    } else {
-
-      lista.innerHTML = "";
+    listaPrealertados.innerHTML =
+      crearListaTracking(prealertados);
 
 
-      resultadoPrealertas.forEach(
-        (doc) => {
-
-          const datos =
-            doc.data();
+    listaBodega.innerHTML =
+      crearListaTracking(bodega);
 
 
-          lista.innerHTML += `
+    listaVenezuela.innerHTML =
+      crearListaTracking(venezuela);
 
-  <div class="tarjeta-prealerta">
-
-    <p>
-      <strong>📦 Tracking:</strong>
-      ${datos.tracking}
-    </p>
-
-    <p>
-      <strong>Estado:</strong>
-      ${datos.estado || "Prealertado"}
-    </p>
-
-  </div>
-
-`;
-            
-
-        }
-      );
-
-    }
 
   } catch (error) {
 
@@ -522,16 +515,104 @@ document
       error
     );
 
-
-    document
-    .getElementById("listaPrealertas")
-    .innerHTML =
-      "<p>No fue posible cargar las prealertas.</p>";
-
   }
 
 }
 
+
+// ===============================
+// CREAR LISTA DE TRACKING
+// ===============================
+
+function crearListaTracking(trackings) {
+
+  if (!trackings.length) {
+
+    return `
+      <p style="text-align:center;">
+        No tienes paquetes en este estado.
+      </p>
+    `;
+
+  }
+
+
+  return trackings.map((tracking) => `
+
+    <div class="item-tracking">
+
+      <span>
+        📦 ${tracking}
+      </span>
+
+      <button
+        type="button"
+        onclick="copiarTracking('${tracking}')"
+      >
+        📋 Copiar
+      </button>
+
+    </div>
+
+  `).join("");
+
+}
+
+
+// ===============================
+// MOSTRAR / OCULTAR TRACKINGS
+// ===============================
+
+window.toggleTracking = function(id) {
+
+  const lista =
+    document.getElementById(id);
+
+
+  if (!lista) {
+    return;
+  }
+
+
+  if (lista.style.display === "none") {
+
+    lista.style.display = "block";
+
+  } else {
+
+    lista.style.display = "none";
+
+  }
+
+};
+
+
+// ===============================
+// COPIAR TRACKING
+// ===============================
+
+window.copiarTracking = async function(tracking) {
+
+  try {
+
+    await navigator.clipboard.writeText(tracking);
+
+    alert(
+      "Tracking copiado: " + tracking
+    );
+
+  } catch (error) {
+
+    console.error(
+      "No fue posible copiar el tracking:",
+      error
+    );
+
+  }
+
+};
+
+    
 
 // ===============================
 // CERRAR SESIÓN
