@@ -8,6 +8,99 @@
 
 <link rel="stylesheet" href="style.css">
 
+
+<style>
+
+#resumenPaquetes {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.grupo-paquetes {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.10);
+    border: 1px solid #e5e5e5;
+}
+
+.encabezado-grupo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.encabezado-grupo h3 {
+    margin: 0 0 5px 0;
+}
+
+.encabezado-grupo p {
+    margin: 0;
+    color: #666;
+}
+
+.encabezado-grupo button {
+    border: none;
+    background: #f2f2f2;
+    padding: 9px 13px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.lista-tracking {
+    margin-top: 15px;
+    border-top: 1px solid #eeeeee;
+    padding-top: 10px;
+}
+
+.item-tracking {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.item-tracking:last-child {
+    border-bottom: none;
+}
+
+.item-tracking span {
+    word-break: break-all;
+}
+
+.item-tracking button {
+    flex-shrink: 0;
+    border: none;
+    background: #f2f2f2;
+    padding: 7px 10px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+
+    .encabezado-grupo {
+        align-items: flex-start;
+    }
+
+    .encabezado-grupo button {
+        white-space: nowrap;
+    }
+
+    .item-tracking {
+        align-items: flex-start;
+    }
+
+}
+
+</style>
+    
 </head>
 
 <body>
