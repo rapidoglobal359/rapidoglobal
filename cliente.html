@@ -972,6 +972,29 @@ document
   }
 
 
+  // ===============================
+  // RECHAZAR CÓDIGOS GSH
+  // ===============================
+
+  const trackingMayusculas =
+    tracking.toUpperCase();
+
+
+  if (trackingMayusculas.startsWith("GSH")) {
+
+    alert(
+      "⚠️ Tracking no válido.\n\n" +
+      "El código ingresado corresponde a un número de pedido " +
+      "o proceso de compra y no a la guía de envío.\n\n" +
+      "Por favor, ingresa el número de tracking proporcionado " +
+      "por la empresa de transporte."
+    );
+
+    return;
+
+  }
+
+
   const usuario = auth.currentUser;
 
 
@@ -986,54 +1009,42 @@ document
 
   try {
 
-// ===============================
-// VERIFICAR TRACKING DUPLICADO
-// ===============================
+    // ===============================
+    // VERIFICAR TRACKING DUPLICADO
+    // ===============================
 
-const consultaTracking =
-  query(
-    collection(db, "prealertas"),
-    where(
-      "tracking",
-      "==",
-      tracking
-    )
-  );
-
-const resultadoTracking =
-  await getDocs(
-    consultaTracking
-  );
+    const consultaTracking =
+      query(
+        collection(db, "prealertas"),
+        where(
+          "tracking",
+          "==",
+          tracking
+        )
+      );
 
 
-if (!resultadoTracking.empty) {
-
-  alert(
-    "⚠️ Este tracking ya fue registrado."
-  );
-
-  return;
-
-}
+    const resultadoTracking =
+      await getDocs(
+        consultaTracking
+      );
 
 
-await addDoc(
-  collection(db, "prealertas"),
-  {
+    if (!resultadoTracking.empty) {
 
-    uid: usuario.uid,
+      alert(
+        "⚠️ Este tracking ya fue registrado."
+      );
 
-    correo: usuario.email,
+      return;
 
-    tracking: tracking,
+    }
 
-    estado: "Prealertado",
 
-    fecha: new Date()
+    // ===============================
+    // GUARDAR PREALERTA
+    // ===============================
 
-  }
-);
-      
     await addDoc(
       collection(db, "prealertas"),
       {
@@ -1070,6 +1081,7 @@ await addDoc(
 
 });
 
+    
 
 // ===============================
 // CARGAR CUENTA
