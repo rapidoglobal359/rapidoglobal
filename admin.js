@@ -1246,6 +1246,45 @@ function crearTarjetaPrealerta(
     datos.estado ||
     "Prealertado";
 
+  let fechaHoraPrealerta = "No disponible";
+
+if (datos.fecha) {
+  const fechaPrealerta =
+    typeof datos.fecha.toDate === "function"
+      ? datos.fecha.toDate()
+      : new Date(datos.fecha);
+
+  if (!isNaN(fechaPrealerta.getTime())) {
+    const dia =
+      String(fechaPrealerta.getDate()).padStart(2, "0");
+
+    const mes =
+      String(fechaPrealerta.getMonth() + 1).padStart(2, "0");
+
+    const año =
+      fechaPrealerta.getFullYear();
+
+    let horas =
+      fechaPrealerta.getHours();
+
+    const minutos =
+      String(fechaPrealerta.getMinutes()).padStart(2, "0");
+
+    const periodo =
+      horas >= 12 ? "PM" : "AM";
+
+    horas = horas % 12;
+
+    if (horas === 0) {
+      horas = 12;
+    }
+
+    fechaHoraPrealerta =
+      `${dia}/${mes}/${año} — ${horas}:${minutos} ${periodo}`;
+  }
+}
+  
+  
   tarjeta.innerHTML = `
 
     <div style="
