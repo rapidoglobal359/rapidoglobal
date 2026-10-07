@@ -60,9 +60,8 @@
 
 .item-tracking {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     padding: 10px 0;
     border-bottom: 1px solid #eeeeee;
 }
@@ -72,20 +71,27 @@
 }
 
 .item-tracking span {
+    flex: 1;
+    min-width: 0;
+    color: #222222;
+    font-weight: 500;
     white-space: nowrap;
-    word-break: normal;
     overflow-x: auto;
+    word-break: normal;
 }
-    
+
 .item-tracking button {
     flex-shrink: 0;
     border: none;
-    background: #f2f2f2;
+    background: #007bff;
+    color: white;
     padding: 7px 10px;
     border-radius: 7px;
     cursor: pointer;
+    font-weight: bold;
 }
 
+    
 @media (max-width: 600px) {
 
     .encabezado-grupo {
