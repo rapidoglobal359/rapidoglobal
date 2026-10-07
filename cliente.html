@@ -986,6 +986,54 @@ document
 
   try {
 
+// ===============================
+// VERIFICAR TRACKING DUPLICADO
+// ===============================
+
+const consultaTracking =
+  query(
+    collection(db, "prealertas"),
+    where(
+      "tracking",
+      "==",
+      tracking
+    )
+  );
+
+const resultadoTracking =
+  await getDocs(
+    consultaTracking
+  );
+
+
+if (!resultadoTracking.empty) {
+
+  alert(
+    "⚠️ Este tracking ya fue registrado."
+  );
+
+  return;
+
+}
+
+
+await addDoc(
+  collection(db, "prealertas"),
+  {
+
+    uid: usuario.uid,
+
+    correo: usuario.email,
+
+    tracking: tracking,
+
+    estado: "Prealertado",
+
+    fecha: new Date()
+
+  }
+);
+      
     await addDoc(
       collection(db, "prealertas"),
       {
