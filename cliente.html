@@ -38,16 +38,78 @@ Aquí puedes consultar tus paquetes y prealertas.
 
 <h2>📦 Mis Paquetes</h2>
 
+<div id="resumenPaquetes">
 
-<p>
-Paquetes recibidos: <strong id="paquetesRecibidos">0</strong>
-</p>
+    <div class="grupo-paquetes" id="grupoPrealertados">
+        <div class="encabezado-grupo">
+            <div>
+                <h3>🟡 Prealertados</h3>
+                <p><strong id="contadorPrealertados">0</strong> paquetes</p>
+            </div>
 
-<p>
-Paquetes llegados a Venezuela: <strong id="paquetesVenezuela">0</strong>
-</p>    
+            <button
+                type="button"
+                onclick="toggleTracking('listaPrealertados')"
+            >
+                Ver paquetes →
+            </button>
+        </div>
 
-<hr>
+        <div
+            id="listaPrealertados"
+            class="lista-tracking"
+            style="display:none;"
+        ></div>
+    </div>
+
+
+    <div class="grupo-paquetes" id="grupoBodega">
+        <div class="encabezado-grupo">
+            <div>
+                <h3>🔵 Recibidos en bodega</h3>
+                <p><strong id="contadorBodega">0</strong> paquetes</p>
+            </div>
+
+            <button
+                type="button"
+                onclick="toggleTracking('listaBodega')"
+            >
+                Ver paquetes →
+            </button>
+        </div>
+
+        <div
+            id="listaBodega"
+            class="lista-tracking"
+            style="display:none;"
+        ></div>
+    </div>
+
+
+    <div class="grupo-paquetes" id="grupoVenezuela">
+        <div class="encabezado-grupo">
+            <div>
+                <h3>🟢 Llegaron a Venezuela</h3>
+                <p><strong id="contadorVenezuela">0</strong> paquetes</p>
+            </div>
+
+            <button
+                type="button"
+                onclick="toggleTracking('listaVenezuela')"
+            >
+                Ver paquetes →
+            </button>
+        </div>
+
+        <div
+            id="listaVenezuela"
+            class="lista-tracking"
+            style="display:none;"
+        ></div>
+    </div>
+
+</div>
+    
 
 <h2>📦 Registrar Prealerta</h2>
 
