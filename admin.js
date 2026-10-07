@@ -1346,6 +1346,13 @@ if (datos.fecha) {
 
     </p>
 
+    <p style="margin:8px 0;">
+
+  <strong>📅 Prealerta registrada:</strong><br>
+
+  ${fechaHoraPrealerta}
+
+</p>
 
     <p style="margin:8px 0;">
 
