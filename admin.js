@@ -1418,27 +1418,6 @@ if (datos.fecha) {
 
     <button
       type="button"
-      id="btnEstado-${id}"
-      style="
-        width:100%;
-        padding:12px;
-        margin-top:10px;
-        border:0;
-        border-radius:10px;
-        background:#003366;
-        color:white;
-        font-size:15px;
-        font-weight:bold;
-        cursor:pointer;
-      "
-    >
-
-    💾 Guardar cambio
-
-    </button>
-
-    <button
-      type="button"
       id="btnVerEntrega-${id}"
       style="
         width:100%;
@@ -1453,172 +1432,134 @@ if (datos.fecha) {
         cursor:pointer;
       "
     >
+      📍 Ver datos de entrega
+    </button>
+
+    <button
+      type="button"
+      id="btnEliminar-${id}"
+      style="
+        width:100%;
+        padding:12px;
+        margin-top:10px;
+        border:0;
+        border-radius:10px;
+        background:#dc3545;
+        color:white;
+        font-size:15px;
+        font-weight:bold;
+        cursor:pointer;
+      "
+    >
+      🗑️ Eliminar prealerta
+    </button>
+
+  `;
+
+  const boton =
+    tarjeta.querySelector("#btnEstado-" + id);
+
+  if (boton) {
+    boton.addEventListener("click", async () => {
+      await cambiarEstadoTarjeta(id);
+    });
+  }
+
+  const botonVerEntrega =
+    tarjeta.querySelector("#btnVerEntrega-" + id);
+
+  if (botonVerEntrega) {
+    botonVerEntrega.addEventListener("click", async () => {
+      const prealerta = datosPrealertas[id];
+
+      if (!prealerta) {
+        alert("❌ No se encontraron los datos de esta prealerta.");
+        return;
+      }
+
+      await verDatosEntrega(prealerta.uid);
+    });
+  }
+
+  const botonEliminar =
+    tarjeta.querySelector("#btnEliminar-" + id);
+
+  if (botonEliminar) {
+    botonEliminar.addEventListener("click", async () => {
+      await eliminarPrealerta(id);
+    });
+  }
+
+  return tarjeta;
+}
 
 
-   async function verDatosEntrega(uid) {
+// ======================================================
+// VER DATOS DE ENTREGA DEL CLIENTE
+// ======================================================
 
+async function verDatosEntrega(uid) {
   try {
-
     if (!uid) {
-
       alert("❌ No se encontró el UID del cliente.");
-
       return;
-
     }
 
-    const referencia =
-      doc(
-        db,
-        "datosEntrega",
-        uid
-      );
-
-    const resultado =
-      await getDoc(
-        referencia
-      );
+    const referencia = doc(db, "datosEntrega", uid);
+    const resultado = await getDoc(referencia);
 
     if (!resultado.exists()) {
-
-      alert(
-        "📍 Este cliente todavía no tiene datos de entrega guardados."
-      );
-
+      alert("📍 Este cliente todavía no tiene datos de entrega guardados.");
       return;
-
     }
 
-    const datosEntrega =
-      resultado.data();
+    const datosEntrega = resultado.data();
 
-    const empresa =
-      datosEntrega.empresaEnvio ||
-      "No especificada";
-
-    const tipoEntrega =
-      datosEntrega.tipoEntrega ||
-      "No especificado";
-
-    const telefono =
-      datosEntrega.telefono ||
-      "No especificado";
-
-    const personaRecibe =
-      datosEntrega.personaRecibe ||
-      "No especificada";
-
-    const cedulaRecibe =
-      datosEntrega.cedulaRecibe ||
-      "No especificada";
-
-    const observaciones =
-      datosEntrega.observaciones ||
-      "Ninguna";
+    const empresa = datosEntrega.empresaEnvio || "No especificada";
+    const tipoEntrega = datosEntrega.tipoEntrega || "No especificado";
+    const telefono = datosEntrega.telefono || "No especificado";
+    const personaRecibe = datosEntrega.personaRecibe || "No especificada";
+    const cedulaRecibe = datosEntrega.cedulaRecibe || "No especificada";
+    const observaciones = datosEntrega.observaciones || "Ninguna";
 
     let mensaje =
       "📍 DATOS DE ENTREGA\n\n" +
+      "🚚 Empresa de envío: " + empresa + "\n\n" +
+      "📦 Tipo de entrega: " + tipoEntrega + "\n\n";
 
-      "🚚 Empresa de envío: " +
-      empresa + "\n\n" +
-
-      "📦 Tipo de entrega: " +
-      tipoEntrega + "\n\n";
-
-    if (
-      tipoEntrega.toLowerCase() === "domicilio"
-    ) {
-
+    if (tipoEntrega.toLowerCase() === "domicilio") {
       mensaje +=
-
-        "📍 Estado: " +
-        (datosEntrega.estadoDomicilio || "No especificado") +
-        "\n\n" +
-
-        "🏙️ Ciudad/Municipio: " +
-        (datosEntrega.ciudadDomicilio || "No especificada") +
-        "\n\n" +
-
-        "🏘️ Barrio/Urbanización: " +
-        (datosEntrega.barrioUrbanizacion || "No especificado") +
-        "\n\n" +
-
-        "🛣️ Calle/Avenida: " +
-        (datosEntrega.calleAvenida || "No especificada") +
-        "\n\n" +
-
-        "🏠 Número de casa: " +
-        (datosEntrega.numeroCasa || "No especificado") +
-        "\n\n" +
-
-        "🏠 Dirección: " +
-        (datosEntrega.direccionDomicilio || "No especificada") +
-        "\n\n" +
-
-        "📮 Código postal: " +
-        (datosEntrega.codigoPostal || "No especificado") +
-        "\n\n" +
-
-        "📌 Punto de referencia: " +
-        (datosEntrega.puntoReferencia || "No especificado") +
-        "\n\n";
-
+        "📍 Estado: " + (datosEntrega.estadoDomicilio || "No especificado") + "\n\n" +
+        "🏙️ Ciudad/Municipio: " + (datosEntrega.ciudadDomicilio || "No especificada") + "\n\n" +
+        "🏘️ Barrio/Urbanización: " + (datosEntrega.barrioUrbanizacion || "No especificado") + "\n\n" +
+        "🛣️ Calle/Avenida: " + (datosEntrega.calleAvenida || "No especificada") + "\n\n" +
+        "🏠 Número de casa: " + (datosEntrega.numeroCasa || "No especificado") + "\n\n" +
+        "🏠 Dirección: " + (datosEntrega.direccionDomicilio || "No especificada") + "\n\n" +
+        "📮 Código postal: " + (datosEntrega.codigoPostal || "No especificado") + "\n\n" +
+        "📌 Punto de referencia: " + (datosEntrega.puntoReferencia || "No especificado") + "\n\n";
     } else {
-
       mensaje +=
-
-        "📍 Estado: " +
-        (datosEntrega.estado || "No especificado") +
-        "\n\n" +
-
-        "🏙️ Ciudad: " +
-        (datosEntrega.ciudad || "No especificada") +
-        "\n\n" +
-
-        "🏢 Oficina: " +
-        (datosEntrega.oficina || "No especificada") +
-        "\n\n" +
-
-        "🏠 Dirección de oficina: " +
-        (datosEntrega.direccionOficina || "No especificada") +
-        "\n\n";
-
+        "📍 Estado: " + (datosEntrega.estado || "No especificado") + "\n\n" +
+        "🏙️ Ciudad: " + (datosEntrega.ciudad || "No especificada") + "\n\n" +
+        "🏢 Oficina: " + (datosEntrega.oficina || "No especificada") + "\n\n" +
+        "🏠 Dirección de oficina: " + (datosEntrega.direccionOficina || "No especificada") + "\n\n";
     }
 
     mensaje +=
-
-      "📱 Teléfono: " +
-      telefono +
-      "\n\n" +
-
-      "👤 Persona que recibe: " +
-      personaRecibe +
-      "\n\n" +
-
-      "🪪 Cédula de quien recibe: " +
-      cedulaRecibe +
-      "\n\n" +
-
-      "📝 Observaciones: " +
-      observaciones;
+      "📱 Teléfono: " + telefono + "\n\n" +
+      "👤 Persona que recibe: " + personaRecibe + "\n\n" +
+      "🪪 Cédula de quien recibe: " + cedulaRecibe + "\n\n" +
+      "📝 Observaciones: " + observaciones;
 
     alert(mensaje);
 
   } catch (error) {
-
-    console.error(
-      "❌ Error al consultar los datos de entrega:",
-      error
-    );
-
-    alert(
-      "❌ No se pudieron consultar los datos de entrega."
-    );
-
+    console.error("❌ Error al consultar los datos de entrega:", error);
+    alert("❌ No se pudieron consultar los datos de entrega.");
   }
-
 }
 
+   
    
 // ======================================================
 // OBTENER COLUMNA SEGÚN ESTADO
