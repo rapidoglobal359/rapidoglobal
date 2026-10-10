@@ -594,7 +594,6 @@ async function cargarPrealertas(usuario) {
 // ===============================
 
 function escaparHTML(texto) {
-
   return String(texto).replace(/[&<>"']/g, (caracter) => ({
     "&": "&amp;",
     "<": "&lt;",
@@ -602,63 +601,56 @@ function escaparHTML(texto) {
     '"': "&quot;",
     "'": "&#39;"
   })[caracter]);
-
 }
 
-
 function crearListaTracking(paquetes, permitirEliminar = false) {
-
   if (!paquetes.length) {
-
     return `
       <p style="text-align:center;">
         No tienes paquetes en este estado.
       </p>
     `;
-
   }
 
   return paquetes.map((paquete) => {
-
     const id = escaparHTML(paquete.id);
     const tracking = escaparHTML(paquete.tracking);
 
     return `
+      <div class="item-tracking"
+           style="display:flex; flex-direction:column; align-items:stretch; gap:10px; padding:12px;">
 
-      <div class="item-tracking">
-
-        <div style="display:block; color:#000000; font-size:18px; font-weight:bold; white-space:nowrap; overflow-x:auto; flex:1; min-width:0;">
+        <div style="width:100%; box-sizing:border-box; color:#000000; font-size:18px; font-weight:bold; overflow-wrap:anywhere; word-break:break-word;">
           📦 ${tracking}
         </div>
 
-        <button
-          type="button"
-          data-tracking="${tracking}"
-          onclick="copiarTracking(this.dataset.tracking)"
-        >
-          📋 Copiar
-        </button>
-
-        ${permitirEliminar ? `
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
           <button
             type="button"
-            data-id="${id}"
-            onclick="eliminarPrealerta(this.dataset.id)"
-            style="background:#dc3545;"
+            data-tracking="${tracking}"
+            onclick="copiarTracking(this.dataset.tracking)"
+            style="width:auto; flex:0 0 auto; margin:0; padding:8px 12px; white-space:nowrap;"
           >
-            🗑️ Eliminar
+            📋 Copiar
           </button>
-        ` : ""}
 
+          ${permitirEliminar ? `
+            <button
+              type="button"
+              data-id="${id}"
+              onclick="eliminarPrealerta(this.dataset.id)"
+              style="width:auto; flex:0 0 auto; margin:0; padding:8px 12px; white-space:nowrap; background:#dc3545; color:white;"
+            >
+              🗑️ Eliminar
+            </button>
+          ` : ""}
+        </div>
       </div>
-
     `;
-
   }).join("");
-
 }
-    
 
+    
 // ===============================
 // MOSTRAR / OCULTAR TRACKINGS
 // ===============================
