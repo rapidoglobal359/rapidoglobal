@@ -593,9 +593,22 @@ async function cargarPrealertas(usuario) {
 // CREAR LISTA DE TRACKING
 // ===============================
 
-function crearListaTracking(trackings) {
+function escaparHTML(texto) {
 
-  if (!trackings.length) {
+  return String(texto).replace(/[&<>"']/g, (caracter) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[caracter]);
+
+}
+
+
+function crearListaTracking(paquetes, permitirEliminar = false) {
+
+  if (!paquetes.length) {
 
     return `
       <p style="text-align:center;">
@@ -605,28 +618,46 @@ function crearListaTracking(trackings) {
 
   }
 
+  return paquetes.map((paquete) => {
 
-  return trackings.map((tracking) => `
+    const id = escaparHTML(paquete.id);
+    const tracking = escaparHTML(paquete.tracking);
 
-    <div class="item-tracking">
+    return `
 
-    <div style="display:block; color:#000000; font-size:18px; font-weight:bold; white-space:nowrap;">
-    📦 ${tracking}
-</div>
-    
-      <button
-        type="button"
-        onclick="copiarTracking('${tracking}')"
-      >
-        📋 Copiar
-      </button>
+      <div class="item-tracking">
 
-    </div>
+        <div style="display:block; color:#000000; font-size:18px; font-weight:bold; white-space:nowrap; overflow-x:auto; flex:1; min-width:0;">
+          📦 ${tracking}
+        </div>
 
-  `).join("");
+        <button
+          type="button"
+          data-tracking="${tracking}"
+          onclick="copiarTracking(this.dataset.tracking)"
+        >
+          📋 Copiar
+        </button>
+
+        ${permitirEliminar ? `
+          <button
+            type="button"
+            data-id="${id}"
+            onclick="eliminarPrealerta(this.dataset.id)"
+            style="background:#dc3545;"
+          >
+            🗑️ Eliminar
+          </button>
+        ` : ""}
+
+      </div>
+
+    `;
+
+  }).join("");
 
 }
-
+    
 
 // ===============================
 // MOSTRAR / OCULTAR TRACKINGS
