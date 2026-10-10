@@ -712,6 +712,82 @@ window.copiarTracking = async function(tracking) {
 
 };
 
+
+// ===============================
+// ELIMINAR PREALERTA
+// ===============================
+
+window.eliminarPrealerta = async function(id) {
+
+  if (!usuarioActual) {
+    alert("Debes iniciar sesión.");
+    return;
+  }
+
+  const confirmar = confirm(
+    "¿Estás seguro de que deseas eliminar esta prealerta?\n\n" +
+    "Esta acción no se puede deshacer."
+  );
+
+  if (!confirmar) {
+    return;
+  }
+
+  try {
+
+    const referencia = doc(db, "prealertas", id);
+
+    const resultado = await getDoc(referencia);
+
+    if (!resultado.exists()) {
+
+      alert("Esta prealerta ya no existe.");
+
+      await cargarPrealertas(usuarioActual);
+
+      return;
+    }
+
+    const datos = resultado.data();
+
+    if (datos.uid !== usuarioActual.uid) {
+
+      alert("No tienes permiso para eliminar esta prealerta.");
+
+      return;
+    }
+
+    const estadoActual = datos.estado || "Prealertado";
+
+    if (estadoActual !== "Prealertado") {
+
+      alert("Este paquete ya cambió de estado y no se puede eliminar.");
+
+      await cargarPrealertas(usuarioActual);
+
+      return;
+    }
+
+    await deleteDoc(referencia);
+
+    await cargarPrealertas(usuarioActual);
+
+    alert("✅ Prealerta eliminada correctamente.");
+
+  } catch (error) {
+
+    console.error(
+      "ERROR AL ELIMINAR PREALERTA:",
+      error
+    );
+
+    alert(
+      "No fue posible eliminar la prealerta. Verifica tu conexión e inténtalo nuevamente."
+    );
+
+  }
+
+};
     
 
 // ===============================
