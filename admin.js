@@ -1454,114 +1454,8 @@ if (datos.fecha) {
       "
     >
 
-      📍 Ver datos de entrega
 
-    </button>
-    <button
-      type="button"
-      id="btnEliminar-${id}"
-      style="
-        width:100%;
-        padding:12px;
-        margin-top:10px;
-        border:0;
-        border-radius:10px;
-        background:#dc3545;
-        color:white;
-        font-size:15px;
-        font-weight:bold;
-        cursor:pointer;
-      "
-    >
-
-      🗑️ Eliminar prealerta
-
-    </button>
-
-  `;     
-
-  const boton =
-    tarjeta.querySelector(
-      "#btnEstado-" + id
-    );
-
-  if (boton) {
-
-    boton.addEventListener(
-      "click",
-      async () => {
-
-        await cambiarEstadoTarjeta(
-          id
-        );
-
-      }
-    );
-
-  }
-
-  const botonVerEntrega =
-    tarjeta.querySelector(
-      "#btnVerEntrega-" + id
-    );
-
-  if (botonVerEntrega) {
-
-    botonVerEntrega.addEventListener(
-      "click",
-      async () => {
-
-        const prealerta =
-          datosPrealertas[id];
-
-        if (!prealerta) {
-
-          alert(
-            "❌ No se encontraron los datos de esta prealerta."
-          );
-
-          return;
-
-        }
-
-        await verDatosEntrega(
-          prealerta.uid
-        );
-
-      }
-    );
-
-  }
-  
-  const botonEliminar =
-    tarjeta.querySelector(
-      "#btnEliminar-" + id
-    );
-
-  if (botonEliminar) {
-
-    botonEliminar.addEventListener(
-      "click",
-      async () => {
-
-        await eliminarPrealerta(
-          id
-        );
-
-      }
-    );
-
-  }
-
-  return tarjeta;
-
-}
-
-// ======================================================
-// CONSULTAR DATOS DE ENTREGA DEL CLIENTE
-// ======================================================
-
-async function verDatosEntrega(uid) {
+   async function verDatosEntrega(uid) {
 
   try {
 
@@ -1612,6 +1506,10 @@ async function verDatosEntrega(uid) {
 
     const personaRecibe =
       datosEntrega.personaRecibe ||
+      "No especificada";
+
+    const cedulaRecibe =
+      datosEntrega.cedulaRecibe ||
       "No especificada";
 
     const observaciones =
@@ -1697,6 +1595,10 @@ async function verDatosEntrega(uid) {
       personaRecibe +
       "\n\n" +
 
+      "🪪 Cédula de quien recibe: " +
+      cedulaRecibe +
+      "\n\n" +
+
       "📝 Observaciones: " +
       observaciones;
 
@@ -1717,6 +1619,7 @@ async function verDatosEntrega(uid) {
 
 }
 
+   
 // ======================================================
 // OBTENER COLUMNA SEGÚN ESTADO
 // ======================================================
