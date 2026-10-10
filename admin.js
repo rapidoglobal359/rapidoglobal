@@ -1424,7 +1424,7 @@ if (datos.fecha) {
     margin-top:10px;
     border:0;
     border-radius:10px;
-    background:#0d6efd;
+    background:#0056b3;
     color:white;
     font-size:15px;
     font-weight:bold;
