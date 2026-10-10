@@ -499,12 +499,10 @@ async function cargarPrealertas(usuario) {
         )
       );
 
-
     const resultadoPrealertas =
       await getDocs(
         consultaPrealertas
       );
-
 
     console.log(
       "UID DEL CLIENTE:",
@@ -516,43 +514,39 @@ async function cargarPrealertas(usuario) {
       resultadoPrealertas.size
     );
 
-
     // ===============================
-    // SEPARAR LOS TRACKING POR ESTADO
+    // SEPARAR LOS PAQUETES POR ESTADO
     // ===============================
 
     const prealertados = [];
     const bodega = [];
     const venezuela = [];
 
-
     resultadoPrealertas.forEach((documento) => {
 
       const datos = documento.data();
 
-      const tracking =
-        datos.tracking || "Sin tracking";
+      const paquete = {
+        id: documento.id,
+        tracking: datos.tracking || "Sin tracking",
+        estado: datos.estado || "Prealertado"
+      };
 
-      const estado =
-        datos.estado || "Prealertado";
+      if (paquete.estado === "Recibido en bodega") {
 
+        bodega.push(paquete);
 
-      if (estado === "Recibido en bodega") {
+      } else if (paquete.estado === "Llegó a Venezuela") {
 
-        bodega.push(tracking);
-
-      } else if (estado === "Llegó a Venezuela") {
-
-        venezuela.push(tracking);
+        venezuela.push(paquete);
 
       } else {
 
-        prealertados.push(tracking);
+        prealertados.push(paquete);
 
       }
 
     });
-
 
     // ===============================
     // CONTADORES
@@ -560,53 +554,28 @@ async function cargarPrealertas(usuario) {
 
     document
       .getElementById("contadorPrealertados")
-      .textContent =
-        prealertados.length;
-
+      .textContent = prealertados.length;
 
     document
       .getElementById("contadorBodega")
-      .textContent =
-        bodega.length;
-
+      .textContent = bodega.length;
 
     document
       .getElementById("contadorVenezuela")
-      .textContent =
-        venezuela.length;
-
+      .textContent = venezuela.length;
 
     // ===============================
-    // MOSTRAR TRACKING
+    // MOSTRAR PAQUETES
     // ===============================
 
-    const listaPrealertados =
-      document.getElementById(
-        "listaPrealertados"
-      );
+    document.getElementById("listaPrealertados").innerHTML =
+      crearListaTracking(prealertados, true);
 
-    const listaBodega =
-      document.getElementById(
-        "listaBodega"
-      );
+    document.getElementById("listaBodega").innerHTML =
+      crearListaTracking(bodega, false);
 
-    const listaVenezuela =
-      document.getElementById(
-        "listaVenezuela"
-      );
-
-
-    listaPrealertados.innerHTML =
-      crearListaTracking(prealertados);
-
-
-    listaBodega.innerHTML =
-      crearListaTracking(bodega);
-
-
-    listaVenezuela.innerHTML =
-      crearListaTracking(venezuela);
-
+    document.getElementById("listaVenezuela").innerHTML =
+      crearListaTracking(venezuela, false);
 
   } catch (error) {
 
@@ -619,7 +588,7 @@ async function cargarPrealertas(usuario) {
 
 }
 
-
+    
 // ===============================
 // CREAR LISTA DE TRACKING
 // ===============================
