@@ -1407,6 +1407,12 @@ onAuthStateChanged(
 
 
     document
+    .getElementById("cedulaRecibe")
+    .value =
+      entrega.cedulaRecibe || "";
+
+
+    document
     .getElementById("observacionesEntrega")
     .value =
       entrega.observaciones || "";
@@ -1419,3 +1425,5 @@ onAuthStateChanged(
 
 </body>
 </html>
+
+    
