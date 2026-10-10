@@ -1415,6 +1415,25 @@ if (datos.fecha) {
 
     </select>
 
+    <button
+  type="button"
+  id="btnEstado-${id}"
+  style="
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:0;
+    border-radius:10px;
+    background:#0d6efd;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+  "
+>
+  Guardar cambios
+</button>
+
 
     <button
       type="button"
