@@ -10,20 +10,149 @@
 
 
 <style>
+/* ========================================
+   RÁPIDO GLOBAL — DISEÑO DE CLIENTE
+   ======================================== */
+
+:root {
+    --rg-azul: #003366;
+    --rg-azul-vivo: #0055a5;
+    --rg-naranja: #ff9900;
+    --rg-fondo: #edf4fc;
+    --rg-texto: #18324d;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 25px;
+}
+
+body {
+    min-height: 100vh;
+    padding: 1px 0 30px;
+    color: var(--rg-texto);
+    background:
+        radial-gradient(
+            circle at 10% 5%,
+            rgba(0, 119, 255, 0.25),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 95% 45%,
+            rgba(255, 153, 0, 0.13),
+            transparent 25%
+        ),
+        linear-gradient(145deg, #001a35, #06477e 55%, #001a35);
+    background-attachment: fixed;
+}
+
+/* CONTENEDOR PRINCIPAL */
+
+.contenedor {
+    width: calc(100% - 30px);
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 35px;
+    background: #ffffff;
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 12, 35, 0.35);
+}
+
+/* LOGO Y BIENVENIDA */
+
+.contenedor > img {
+    max-width: 80%;
+    height: auto;
+    filter: drop-shadow(0 8px 12px rgba(0, 51, 102, 0.14));
+}
+
+h1 {
+    margin: 15px 0;
+    color: var(--rg-azul);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 800;
+    line-height: 1.2;
+    text-align: center;
+    letter-spacing: -0.7px;
+}
+
+h1 + p {
+    color: #60758b;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* TÍTULOS DE LAS SECCIONES */
+
+h2 {
+    margin: 30px 0 18px;
+    padding: 15px 18px;
+    color: var(--rg-azul);
+    background: linear-gradient(100deg, #edf5ff, #ffffff);
+    border-left: 5px solid var(--rg-naranja);
+    border-radius: 10px;
+    font-size: 22px;
+    text-align: left;
+}
+
+/* SEPARADORES */
+
+.contenedor > hr {
+    height: 1px;
+    margin: 28px 0;
+    border: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #cbdced,
+        transparent
+    );
+}
+
+/* INFORMACIÓN DEL CLIENTE Y CASILLERO */
+
+#nombreCliente,
+#codigoCliente,
+#correoCliente,
+#nombreCasillero,
+#codigoCasillero {
+    color: var(--rg-azul);
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.contenedor > p {
+    line-height: 1.8;
+}
+
+.contenedor > p strong {
+    color: var(--rg-azul);
+}
+
+/* TARJETAS DE PAQUETES */
 
 #resumenPaquetes {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 15px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 20px 0 30px;
 }
 
 .grupo-paquetes {
-    background: #ffffff;
-    border-radius: 14px;
-    padding: 18px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.10);
-    border: 1px solid #e5e5e5;
+    position: relative;
+    overflow: hidden;
+    padding: 20px;
+    background: linear-gradient(135deg, #ffffff, #f4f8fe);
+    border: 1px solid #dbe7f5;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0, 51, 102, 0.07);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.grupo-paquetes:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 51, 102, 0.12);
 }
 
 .encabezado-grupo {
@@ -34,85 +163,202 @@
 }
 
 .encabezado-grupo h3 {
-    margin: 0 0 5px 0;
+    margin: 0 0 8px;
+    color: var(--rg-azul);
+    font-size: 19px;
 }
 
 .encabezado-grupo p {
     margin: 0;
-    color: #666;
+    color: #60758b;
+    text-align: left;
 }
 
-.encabezado-grupo button {
-    border: none;
-    background: #007bff;
-    color: white;
-    padding: 9px 13px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
+.encabezado-grupo p strong {
+    color: var(--rg-azul);
+    font-size: 22px;
 }
-    
+
+.encabezado-grupo button,
+.item-tracking button {
+    width: auto;
+    margin: 0;
+    padding: 10px 14px;
+    flex-shrink: 0;
+    color: #ffffff;
+    background: linear-gradient(135deg, #0068bd, #003f7d);
+    border: none;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.encabezado-grupo button:hover,
+.item-tracking button:hover {
+    background: var(--rg-naranja);
+    transform: translateY(-1px);
+}
+
 .lista-tracking {
-    margin-top: 15px;
-    border-top: 1px solid #eeeeee;
+    margin-top: 18px;
     padding-top: 10px;
+    border-top: 1px solid #dce7f2;
 }
 
 .item-tracking {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid #eeeeee;
+    margin: 10px 0;
+    padding: 14px !important;
+    background: #ffffff;
+    border: 1px solid #e0eaf5;
+    border-radius: 12px;
 }
 
 .item-tracking:last-child {
-    border-bottom: none;
+    border-bottom: 1px solid #e0eaf5;
 }
 
 .item-tracking span {
-    display: block;
-    flex: 1;
-    min-width: 0;
-    color: #222222 !important;
-    background: transparent;
+    color: #18324d !important;
+    font-weight: 700;
+}
+
+/* CAMPOS Y FORMULARIOS */
+
+input,
+select,
+textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 13px 14px;
+    margin: 8px 0 15px;
+    box-sizing: border-box;
+    color: #18324d;
+    background: #f9fbff;
+    border: 1px solid #ccd9e8;
+    border-radius: 10px;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
-    font-weight: 500;
-    white-space: nowrap;
-    overflow-x: auto;
-    word-break: normal;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
-    
 
-.item-tracking button {
-    flex-shrink: 0;
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    background: #ffffff;
+    border-color: var(--rg-azul-vivo);
+    box-shadow: 0 0 0 3px rgba(0, 85, 165, 0.12);
+}
+
+label {
+    display: block;
+    margin-top: 8px;
+    color: var(--rg-azul);
+    line-height: 1.5;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* BOTONES PRINCIPALES */
+
+.contenedor > button,
+#prealerta,
+#guardarDatosEntrega {
+    width: 100%;
+    min-height: 48px;
+    margin: 12px 0;
+    padding: 13px 18px;
+    color: #ffffff;
+    background: linear-gradient(110deg, #0055a5, #003366);
     border: none;
-    background: #007bff;
-    color: white;
-    padding: 7px 10px;
-    border-radius: 7px;
+    border-radius: 11px;
+    box-shadow: 0 5px 14px rgba(0, 51, 102, 0.16);
+    font-size: 16px;
+    font-weight: 700;
     cursor: pointer;
-    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
-    
-@media (max-width: 600px) {
+.contenedor > button:hover,
+#prealerta:hover,
+#guardarDatosEntrega:hover {
+    background: linear-gradient(110deg, #ffad24, #ff8800);
+    box-shadow: 0 7px 18px rgba(255, 153, 0, 0.23);
+    transform: translateY(-1px);
+}
+
+/* MENSAJE DE GUARDADO */
+
+#mensajeDatosEntrega {
+    padding: 10px;
+    color: #176b3a;
+    background: #effaf3;
+    border-radius: 9px;
+}
+
+/* MÓVILES */
+
+@media (max-width: 650px) {
+    .contenedor {
+        width: calc(100% - 20px);
+        margin: 12px auto;
+        padding: 22px 15px;
+        border-radius: 17px;
+    }
+
+    h1 {
+        font-size: 27px;
+    }
+
+    h2 {
+        margin: 25px 0 15px;
+        padding: 13px;
+        font-size: 19px;
+    }
+
+    .grupo-paquetes {
+        padding: 15px;
+    }
 
     .encabezado-grupo {
         align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .encabezado-grupo h3 {
+        font-size: 17px;
     }
 
     .encabezado-grupo button {
-        white-space: nowrap;
+        padding: 9px 11px;
+        font-size: 13px;
     }
 
     .item-tracking {
-        align-items: flex-start;
+        padding: 11px !important;
     }
 
+    input,
+    select,
+    textarea {
+        font-size: 16px;
+    }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+    }
+}
 </style>
+    
     
 </head>
 
