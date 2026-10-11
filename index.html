@@ -5,358 +5,1587 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Rápido Global | Casillero Internacional</title>
+<meta name="description" content="Tu casillero internacional desde Colombia para Venezuela. Compra online y recibe tus paquetes con Rápido Global.">
 
 <link rel="stylesheet" href="style.css">
+
+<style>
+/* =====================================
+   RÁPIDO GLOBAL — PORTADA RENOVADA
+   ===================================== */
+
+:root {
+    --rg-navy: #04152e;
+    --rg-blue: #0879e8;
+    --rg-light: #56b8ff;
+    --rg-orange: #ff9b27;
+    --rg-white: #ffffff;
+}
+
+body {
+    background:
+        radial-gradient(ellipse at 80% 15%, rgba(0, 113, 232, .30), transparent 35%),
+        radial-gradient(ellipse at 10% 60%, rgba(0, 79, 171, .20), transparent 35%),
+        linear-gradient(145deg, #020b1b, #062650 65%, #03142c) !important;
+    color: white;
+}
+
+/* Encabezado */
+
+.header {
+    background: rgba(2, 15, 35, .94) !important;
+    border-bottom: 1px solid rgba(86, 184, 255, .28);
+    padding: 12px 4% !important;
+}
+
+.header nav a {
+    color: #f2f8ff;
+}
+
+/* Contenedor principal */
+
+.contenedor {
+    width: 100% !important;
+    max-width: 1440px !important;
+    margin: 0 auto !important;
+    padding: 0 4% 65px !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+}
+
+.contenedor::before {
+    display: none !important;
+}
+
+/* Portada principal */
+
+.rg-hero {
+    min-height: 570px;
+    padding: 55px 0 48px;
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    align-items: center;
+    gap: 30px;
+    position: relative;
+}
+
+.rg-hero-copy {
+    position: relative;
+    z-index: 2;
+}
+
+.rg-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 15px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(86, 184, 255, .35);
+    border-radius: 30px;
+    background: rgba(15, 91, 163, .20);
+    color: #a9dcff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.rg-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #45e6a2;
+    box-shadow: 0 0 12px rgba(69, 230, 162, .8);
+}
+
+.rg-hero h1 {
+    text-align: left;
+    color: white;
+    font-size: clamp(38px, 5.2vw, 69px);
+    line-height: 1.04;
+    letter-spacing: -1.8px;
+    margin-bottom: 23px;
+    font-weight: 900;
+}
+
+.rg-hero h1 span {
+    display: block;
+    color: #55baff;
+    background: linear-gradient(90deg, #69c9ff, #1685f5);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.rg-hero-copy > p {
+    max-width: 540px;
+    color: #c1d3e9;
+    font-size: 17px;
+    line-height: 1.9;
+    text-align: left;
+    margin-bottom: 28px;
+}
+
+.rg-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 13px;
+    margin-bottom: 30px;
+}
+
+.rg-hero-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 15px 21px;
+    border-radius: 11px;
+    font-size: 14px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: .25s ease;
+}
+
+.rg-primary-link {
+    color: #06162c;
+    background: linear-gradient(135deg, #ffc05c, #ff9222);
+    box-shadow: 0 8px 28px rgba(255, 153, 34, .20);
+}
+
+.rg-secondary-link {
+    color: white;
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .23);
+}
+
+.rg-hero-actions a:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.08);
+}
+
+.rg-benefits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 23px;
+}
+
+.rg-benefit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #c9dcf2;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.rg-benefit span {
+    color: #59c9ff;
+    font-size: 17px;
+}
+
+/* Escena visual logística */
+
+.rg-hero-art {
+    min-height: 420px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    isolation: isolate;
+}
+
+.rg-art-glow {
+    position: absolute;
+    width: 85%;
+    height: 75%;
+    border-radius: 50%;
+    background: rgba(0, 111, 255, .20);
+    filter: blur(65px);
+    z-index: -2;
+}
+
+.rg-art-orbit {
+    position: absolute;
+    width: 95%;
+    height: 72%;
+    border: 1px solid rgba(82, 185, 255, .25);
+    border-radius: 50%;
+    transform: rotate(-17deg);
+    box-shadow: 0 0 35px rgba(0, 111, 255, .07);
+}
+
+.rg-art-orbit::before {
+    content: "";
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    top: 13%;
+    left: 15%;
+    border-radius: 50%;
+    background: #6bd4ff;
+    box-shadow: 0 0 17px #1689ff;
+}
+
+.rg-plane {
+    position: absolute;
+    top: 5%;
+    left: 8%;
+    font-size: clamp(65px, 8vw, 105px);
+    line-height: 1;
+    transform: rotate(-8deg);
+    filter: drop-shadow(0 10px 22px rgba(0, 125, 255, .42));
+    animation: rg-plane-float 5s ease-in-out infinite;
+}
+
+.rg-route {
+    position: absolute;
+    top: 27%;
+    left: 15%;
+    right: 4%;
+    height: 65px;
+    border-top: 2px dashed rgba(95, 198, 255, .65);
+    border-radius: 50%;
+    transform: rotate(7deg);
+}
+
+.rg-route-label {
+    position: absolute;
+    top: 25%;
+    right: 4%;
+    padding: 8px 12px;
+    border: 1px solid rgba(92, 191, 255, .35);
+    border-radius: 9px;
+    background: rgba(3, 25, 55, .85);
+    color: #c4e8ff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.rg-package-stack {
+    position: absolute;
+    bottom: 15%;
+    left: 6%;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    filter: drop-shadow(0 15px 16px rgba(0, 0, 0, .25));
+}
+
+.rg-package {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 194, 111, .45);
+    background: linear-gradient(145deg, #dca86c, #8f592d);
+    color: #fff0d9;
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, .12);
+}
+
+.rg-package-one {
+    width: 69px;
+    height: 77px;
+    font-size: 28px;
+}
+
+.rg-package-two {
+    width: 57px;
+    height: 59px;
+    font-size: 23px;
+}
+
+.rg-package-three {
+    width: 64px;
+    height: 91px;
+    font-size: 26px;
+}
+
+.rg-truck-platform {
+    position: absolute;
+    bottom: 7%;
+    right: 0;
+    width: 76%;
+    min-height: 175px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(94, 182, 255, .30);
+    border-radius: 25px;
+    background:
+        linear-gradient(145deg, rgba(16, 85, 153, .55), rgba(3, 23, 50, .88));
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, .28),
+        inset 0 1px 0 rgba(255, 255, 255, .10);
+    transform: perspective(650px) rotateY(-7deg);
+}
+
+.rg-truck-platform::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(120deg, transparent 20%, rgba(72, 177, 255, .09), transparent 75%);
+    pointer-events: none;
+}
+
+.rg-truck {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(95px, 12vw, 155px);
+    line-height: 1;
+    filter: drop-shadow(0 12px 12px rgba(0, 0, 0, .3));
+    animation: rg-truck-float 4s ease-in-out infinite;
+}
+
+.rg-truck-caption {
+    position: absolute;
+    bottom: 12px;
+    left: 15px;
+    right: 15px;
+    color: #b8dfff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.rg-location-tag {
+    position: absolute;
+    top: 5%;
+    right: 1%;
+    padding: 11px 14px;
+    border-radius: 12px;
+    background: rgba(4, 24, 50, .91);
+    border: 1px solid rgba(86, 184, 255, .30);
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+}
+
+.rg-location-tag strong {
+    display: block;
+    color: #65c9ff;
+    margin-top: 5px;
+    font-size: 13px;
+}
+
+@keyframes rg-plane-float {
+    0%, 100% { transform: translateY(0) rotate(-8deg); }
+    50% { transform: translateY(-9px) rotate(-5deg); }
+}
+
+@keyframes rg-truck-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Franja informativa */
+
+.rg-trust-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    padding: 23px;
+    border: 1px solid rgba(93, 179, 255, .22);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, .045);
+    margin-bottom: 60px;
+}
+
+.rg-trust-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 10px;
+    color: #d5e8fa;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.rg-trust-icon {
+    font-size: 28px;
+}
+
+.rg-trust-item strong {
+    display: block;
+    color: white;
+    font-size: 13px;
+}
+
+/* Secciones claras */
+
+.rg-light-section {
+    padding: 44px 35px;
+    margin: 35px 0;
+    border-radius: 23px;
+    background: linear-gradient(145deg, #ffffff, #f1f7ff);
+    color: #24364d;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, .14);
+}
+
+.rg-section-heading {
+    max-width: 720px;
+    margin: 0 auto 32px;
+    text-align: center;
+}
+
+.rg-section-kicker {
+    display: block;
+    color: #0879e8;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.rg-light-section h2 {
+    color: #062653;
+    font-size: clamp(25px, 3vw, 36px);
+    margin: 0 0 13px;
+}
+
+.rg-section-heading p {
+    color: #64748b;
+    font-size: 15px;
+    margin-bottom: 0;
+}
+
+/* Tarjetas de servicios */
+
+.rg-service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.rg-service-card {
+    padding: 25px 21px;
+    border: 1px solid #dce8f5;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow: 0 8px 23px rgba(0, 51, 102, .05);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.rg-service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 32px rgba(0, 51, 102, .11);
+}
+
+.rg-service-icon {
+    width: 53px;
+    height: 53px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #e3f2ff, #d2e8ff);
+    font-size: 27px;
+}
+
+.rg-service-card h3 {
+    margin-bottom: 10px;
+    color: #062653;
+    font-size: 17px;
+}
+
+.rg-service-card p {
+    color: #64748b;
+    font-size: 13px;
+    text-align: left;
+    line-height: 1.8;
+    margin: 0;
+}
+
+/* Acceso y registro */
+
+.rg-account-section {
+    display: grid;
+    grid-template-columns: .8fr 1.2fr;
+    align-items: start;
+    gap: 35px;
+    padding: 45px 0;
+}
+
+.rg-account-copy {
+    padding: 24px 0;
+}
+
+.rg-account-copy .rg-section-kicker {
+    color: #70caff;
+}
+
+.rg-account-copy h2 {
+    color: #ffffff;
+    font-size: clamp(28px, 3.5vw, 42px);
+    text-align: left;
+    margin: 0 0 18px;
+}
+
+.rg-account-copy p {
+    text-align: left;
+    color: #bfd2e8;
+    font-size: 15px;
+}
+
+.rg-account-points {
+    list-style: none;
+    margin-top: 25px;
+}
+
+.rg-account-points li {
+    padding: 11px 0;
+    color: #e0efff;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255, 255, 255, .10);
+}
+
+.rg-account-points li span {
+    margin-right: 9px;
+    color: #5ad6a1;
+}
+
+.rg-account-panel {
+    min-width: 0;
+}
+
+.rg-account-panel .acceso-cliente,
+.rg-account-panel .registro-casillero {
+    width: 100%;
+    max-width: 540px;
+    margin: 0 auto 22px;
+    padding: 30px;
+    background: #ffffff;
+    color: #25364d;
+    border: 1px solid #dce8f5;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .20);
+}
+
+.rg-account-panel h2 {
+    color: #062653;
+}
+
+.rg-account-panel p {
+    color: #64748b;
+}
+
+/* Tarifas y rastreo */
+
+#tarifas,
+#rastreo,
+#contacto {
+    scroll-margin-top: 125px;
+}
+
+#tarifas ul {
+    max-width: 540px;
+}
+
+#tarifas li {
+    color: #354a63;
+}
+
+#rastreo input {
+    color: #24364d;
+}
+
+#rastreo .btn-whatsapp,
+#contacto .btn-whatsapp {
+    text-decoration: none;
+}
+
+/* Pie de página */
+
+.rg-footer {
+    padding: 32px 10px 10px;
+    text-align: center;
+    color: #94b4d6;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.rg-footer strong {
+    color: #ffffff;
+}
+
+/* Accesibilidad */
+
+@media (prefers-reduced-motion: reduce) {
+    .rg-plane,
+    .rg-truck {
+        animation: none;
+    }
+
+    .rg-service-card,
+    .rg-hero-actions a {
+        transition: none;
+    }
+}
+
+/* Tablet */
+
+@media (max-width: 1000px) {
+    .rg-hero {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        min-height: 510px;
+    }
+
+    .rg-hero h1 {
+        font-size: clamp(35px, 5vw, 53px);
+    }
+
+    .rg-hero-art {
+        min-height: 350px;
+    }
+
+    .rg-truck {
+        font-size: 100px;
+    }
+
+    .rg-service-grid {
+        gap: 12px;
+    }
+
+    .rg-service-card {
+        padding: 21px 16px;
+    }
+}
+
+/* Móvil */
+
+@media (max-width: 768px) {
+    .header {
+        position: relative;
+    }
+
+    .contenedor {
+        width: 100% !important;
+        padding: 0 17px 35px !important;
+    }
+
+    .rg-hero {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding: 38px 0 22px;
+        min-height: 0;
+    }
+
+    .rg-hero-copy {
+        text-align: center;
+    }
+
+    .rg-eyebrow {
+        font-size: 10px;
+        margin-bottom: 20px;
+    }
+
+    .rg-hero h1 {
+        text-align: center;
+        font-size: clamp(36px, 10vw, 49px);
+        letter-spacing: -1px;
+        line-height: 1.1;
+    }
+
+    .rg-hero-copy > p {
+        text-align: center;
+        font-size: 15px;
+        margin: 0 auto 23px;
+        max-width: 500px;
+    }
+
+    .rg-hero-actions {
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .rg-hero-actions a {
+        padding: 14px 15px;
+        font-size: 12px;
+    }
+
+    .rg-benefits {
+        justify-content: center;
+        gap: 12px 17px;
+    }
+
+    .rg-benefit {
+        font-size: 11px;
+    }
+
+    .rg-hero-art {
+        min-height: 320px;
+        margin-top: 10px;
+    }
+
+    .rg-plane {
+        top: 4%;
+        left: 4%;
+        font-size: 68px;
+    }
+
+    .rg-route-label {
+        top: 18%;
+        right: 0;
+        font-size: 9px;
+    }
+
+    .rg-route {
+        top: 28%;
+    }
+
+    .rg-truck-platform {
+        width: 79%;
+        min-height: 132px;
+        bottom: 8%;
+    }
+
+    .rg-truck {
+        font-size: clamp(90px, 25vw, 125px);
+    }
+
+    .rg-truck-caption {
+        font-size: 8px;
+        letter-spacing: 1px;
+    }
+
+    .rg-package-stack {
+        left: 0;
+        bottom: 15%;
+        transform: scale(.78);
+        transform-origin: left bottom;
+    }
+
+    .rg-location-tag {
+        top: 0;
+        right: 0;
+        font-size: 9px;
+        padding: 9px 10px;
+    }
+
+    .rg-trust-strip {
+        grid-template-columns: 1fr;
+        gap: 4px;
+        padding: 12px;
+        margin-bottom: 35px;
+    }
+
+    .rg-trust-item {
+        justify-content: flex-start;
+        padding: 11px 8px;
+        border-bottom: 1px solid rgba(93, 179, 255, .12);
+    }
+
+    .rg-trust-item:last-child {
+        border-bottom: 0;
+    }
+
+    .rg-trust-icon {
+        font-size: 25px;
+    }
+
+    .rg-light-section {
+        padding: 30px 17px;
+        margin: 25px 0;
+        border-radius: 18px;
+    }
+
+    .rg-light-section h2 {
+        font-size: 26px;
+    }
+
+    .rg-section-heading {
+        margin-bottom: 23px;
+    }
+
+    .rg-section-heading p {
+        font-size: 13px;
+    }
+
+    .rg-service-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .rg-service-card {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        column-gap: 14px;
+        padding: 18px;
+    }
+
+    .rg-service-icon {
+        width: 46px;
+        height: 46px;
+        grid-row: span 2;
+        margin: 0;
+        font-size: 23px;
+    }
+
+    .rg-service-card h3 {
+        align-self: center;
+        font-size: 15px;
+        margin-bottom: 6px;
+    }
+
+    .rg-service-card p {
+        font-size: 12px;
+    }
+
+    .rg-account-section {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 32px 0;
+    }
+
+    .rg-account-copy {
+        padding: 8px 0;
+    }
+
+    .rg-account-copy h2 {
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .rg-account-copy p {
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .rg-account-points {
+        max-width: 420px;
+        margin: 20px auto;
+    }
+
+    .rg-account-points li {
+        font-size: 12px;
+    }
+
+    .rg-account-panel .acceso-cliente,
+    .rg-account-panel .registro-casillero {
+        padding: 24px 17px;
+        border-radius: 17px;
+    }
+
+    #tarifas,
+    #rastreo,
+    #contacto {
+        padding: 24px 15px;
+        margin-top: 25px;
+    }
+
+    .rg-footer {
+        padding-top: 25px;
+    }
+}
+
+/* Móviles pequeños */
+
+@media (max-width: 380px) {
+    .rg-hero h1 {
+        font-size: 34px;
+    }
+
+    .rg-hero-actions a {
+        padding: 12px 10px;
+        font-size: 11px;
+    }
+
+    .rg-hero-art {
+        min-height: 280px;
+    }
+
+    .rg-truck-platform {
+        min-height: 115px;
+    }
+
+    .rg-account-panel .acceso-cliente,
+    .rg-account-panel .registro-casillero {
+        padding: 21px 12px;
+    }
+}
+</style>
 </head>
 
 <body>
 
+<!-- =====================================
+     ENCABEZADO
+     ===================================== -->
+
 <header class="header">
 
-  <div class="logo">
-    <img src="ChatGPT Image 27 de jul. de 2026 16_26_44.png" alt="Rápido Global">
-  </div>
+    <div class="logo">
+        <img
+            src="ChatGPT Image 27 de jul. de 2026 16_26_44.png"
+            alt="Rápido Global"
+        >
+    </div>
 
-  <nav>
-    <a href="#inicio">Inicio</a>
-    <a href="#tarifas">Tarifas</a>
-    <a href="#rastreo">Rastrear</a>
-    <a href="#contacto">Contacto</a>
-  </nav>
+    <nav aria-label="Navegación principal">
+        <a href="#inicio">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#tarifas">Tarifas</a>
+        <a href="#rastreo">Rastrear</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
 
-  <div class="acciones-header">
+    <div class="acciones-header">
 
-    <a href="https://wa.me/584228440410" class="btn-whatsapp">
-      WhatsApp
-    </a>
+        <a
+            href="https://wa.me/584228440410"
+            class="btn-whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            WhatsApp
+        </a>
 
-    <button
-      type="button"
-      class="btn-crear-header"
-      onclick="mostrarRegistro()"
-    >
-      CREAR MI CASILLERO
-    </button>
+        <button
+            type="button"
+            class="btn-crear-header"
+            onclick="mostrarRegistro()"
+        >
+            CREAR MI CASILLERO
+        </button>
 
-  </div>
+    </div>
 
 </header>
 
 
 <main class="contenedor" id="inicio">
 
-  <img
-    src="ChatGPT Image 27 de jul. de 2026 16_26_44.png"
-    alt="Rápido Global"
-    class="logo-principal"
-  >
+    <!-- =====================================
+         PORTADA PRINCIPAL
+         ===================================== -->
 
-  <h1>🚚 RÁPIDO GLOBAL</h1>
+    <section class="rg-hero">
 
-  <p class="descripcion">
-    Tu casillero internacional desde Colombia para Venezuela.<br>
-    Compra online y recibe tus paquetes de forma segura.
-  </p>
+        <div class="rg-hero-copy">
 
+            <div class="rg-eyebrow">
+                <span class="rg-status-dot"></span>
+                LOGÍSTICA INTERNACIONAL
+            </div>
 
-  <!-- ACCESO DE CLIENTE -->
+            <h1>
+                Tus compras,
+                <span>más cerca de ti.</span>
+            </h1>
 
-  <section class="acceso-cliente">
+            <p>
+                Tu casillero internacional desde Colombia para Venezuela.
+                Compra online, recibe tus paquetes con seguridad
+                y cuenta con Rápido Global en cada paso.
+            </p>
 
-    <h2>🔐 Acceso de Cliente</h2>
+            <div class="rg-hero-actions">
 
-    <p>
-      Ingresa a tu cuenta para consultar la información de tu casillero.
-    </p>
+                <a
+                    href="#acceso"
+                    class="rg-primary-link"
+                >
+                    🔐 Entrar a mi casillero
+                </a>
 
-    <input
-      id="loginCorreo"
-      type="email"
-      placeholder="Correo electrónico"
-    >
+                <a
+                    href="#servicios"
+                    class="rg-secondary-link"
+                >
+                    Explorar servicios →
+                </a>
 
-    <input
-      id="loginPassword"
-      type="password"
-      placeholder="Contraseña"
-    >
+            </div>
 
-    <button id="iniciarSesion">
-      Ingresar a mi casillero
-    </button>
+            <div class="rg-benefits">
 
-    <!-- RECUPERAR CONTRASEÑA -->
+                <div class="rg-benefit">
+                    <span>✓</span>
+                    Casillero gratuito
+                </div>
 
-    <button
-      id="recuperarPassword"
-      type="button"
-      class="btn-recuperar"
-    >
-      ¿Olvidaste tu contraseña?
-    </button>
+                <div class="rg-benefit">
+                    <span>✓</span>
+                    Atención personalizada
+                </div>
 
+                <div class="rg-benefit">
+                    <span>✓</span>
+                    Compras online
+                </div>
 
-    <button
-      id="cerrarSesion"
-      type="button"
-    >
-      Cerrar sesión
-    </button>
+            </div>
 
-    <div id="cuentaUsuario"></div>
-
-  </section>
-
-
-  <!-- CREAR CASILLERO -->
-
-  <section
-    id="registroCasillero"
-    class="registro-casillero"
-    style="display:none;"
-  >
-
-    <h2>📦 Crear mi casillero</h2>
-
-    <p>
-      Regístrate gratis y obtén tu código de cliente Rápido Global.
-    </p>
-
-    <input
-      type="text"
-      id="nombre"
-      placeholder="Nombre completo"
-    >
-
-    <input
-      type="text"
-      id="cedula"
-      placeholder="Número de cédula"
-    >
-
-    <input
-      type="email"
-      id="correo"
-      placeholder="Correo electrónico"
-    >
-
-    <input
-      type="tel"
-      id="telefono"
-      placeholder="Número de teléfono"
-    >
-
-    <input
-      type="password"
-      id="password"
-      placeholder="Crear contraseña"
-    >
-
-    <button id="registrar">
-      Crear mi cuenta
-    </button>
-
-    <button
-      type="button"
-      class="btn-volver"
-      onclick="mostrarAcceso()"
-    >
-      ← Volver al acceso
-    </button>
-
-  </section>
+        </div>
 
 
-  <!-- TARIFAS -->
+        <!-- ESCENA VISUAL LOGÍSTICA -->
 
-  <section id="tarifas">
+        <div class="rg-hero-art" aria-label="Ilustración de logística internacional">
 
-    <h2>💰 Tarifas</h2>
+            <div class="rg-art-glow"></div>
 
-    <p>
-      <strong>Hasta 1 kg:</strong> USD $10.00 (tarifa mínima).
-    </p>
+            <div class="rg-art-orbit"></div>
 
-    <p>
-      Si el paquete supera 1 kg, el costo se calcula según el peso exacto.
-    </p>
+            <div class="rg-plane" aria-hidden="true">✈️</div>
 
-    <ul>
-      <li>0.300 kg = USD $10.00</li>
-      <li>0.600 kg = USD $10.00</li>
-      <li>0.900 kg = USD $10.00</li>
-      <li>1.000 kg = USD $10.00</li>
-      <li>1.200 kg = USD $12.00</li>
-      <li>1.300 kg = USD $13.00</li>
-      <li>1.550 kg = USD $15.50</li>
-      <li>1.680 kg = USD $16.80</li>
-    </ul>
+            <div class="rg-route"></div>
 
-  </section>
+            <div class="rg-route-label">
+                RUTA INTERNACIONAL
+            </div>
 
+            <div class="rg-location-tag">
+                NUESTRA CONEXIÓN
+                <strong>🇨🇴 Colombia → 🇻🇪 Venezuela</strong>
+            </div>
 
-  <!-- RASTREO -->
+            <div class="rg-package-stack" aria-hidden="true">
 
-  <section id="rastreo">
+                <div class="rg-package rg-package-one">📦</div>
+                <div class="rg-package rg-package-two">📦</div>
+                <div class="rg-package rg-package-three">📦</div>
 
-    <h2>📦 Rastreo de Envíos</h2>
+            </div>
 
-    <p>
-      Escribe tu número de guía y contáctanos por WhatsApp
-      para conocer el estado de tu envío.
-    </p>
+            <div class="rg-truck-platform">
 
-    <input
-      type="text"
-      id="guia"
-      placeholder="Número de guía"
-    >
+                <div class="rg-truck" aria-hidden="true">🚚</div>
 
-    <a
-      href="https://wa.me/584228440410"
-      class="btn-whatsapp"
-    >
-      Consultar por WhatsApp
-    </a>
+                <div class="rg-truck-caption">
+                    RÁPIDO GLOBAL · TU CASILLERO DE CONFIANZA
+                </div>
 
-  </section>
+            </div>
+
+        </div>
+
+    </section>
 
 
-  <!-- CONTACTO -->
+    <!-- =====================================
+         FRANJA DE CONFIANZA
+         ===================================== -->
 
-  <section id="contacto">
+    <section class="rg-trust-strip" aria-label="Ventajas de Rápido Global">
 
-    <h2>📞 Contacto</h2>
+        <div class="rg-trust-item">
+            <span class="rg-trust-icon">📦</span>
+            <div>
+                <strong>Tu casillero gratuito</strong>
+                Sin cuota de membresía
+            </div>
+        </div>
 
-    <p>
-      <strong>WhatsApp:</strong> +58 422 844 0410
-    </p>
+        <div class="rg-trust-item">
+            <span class="rg-trust-icon">🛍️</span>
+            <div>
+                <strong>Tus tiendas favoritas</strong>
+                Compra por internet
+            </div>
+        </div>
 
-    <p>
-      <strong>Correo:</strong> rapidoglobal359@gmail.com
-    </p>
+        <div class="rg-trust-item">
+            <span class="rg-trust-icon">💬</span>
+            <div>
+                <strong>Estamos para ayudarte</strong>
+                Atención por WhatsApp
+            </div>
+        </div>
 
-    <p>
-      <strong>Horario:</strong>
-      Lunes a Sábado de 8:00 a.m. a 6:00 p.m.
-    </p>
+    </section>
 
-    <a
-      href="https://wa.me/584228440410"
-      class="btn-whatsapp"
-    >
-      Escribir por WhatsApp
-    </a>
 
-  </section>
+    <!-- =====================================
+         SERVICIOS
+         ===================================== -->
+
+    <section id="servicios" class="rg-light-section">
+
+        <div class="rg-section-heading">
+
+            <span class="rg-section-kicker">
+                SOLUCIONES PARA TUS COMPRAS
+            </span>
+
+            <h2>Todo más fácil con Rápido Global</h2>
+
+            <p>
+                Te acompañamos desde tus compras online
+                hasta la gestión de tus paquetes.
+            </p>
+
+        </div>
+
+
+        <div class="rg-service-grid">
+
+            <article class="rg-service-card">
+
+                <div class="rg-service-icon">📦</div>
+
+                <h3>Casillero internacional</h3>
+
+                <p>
+                    Regístrate gratis y obtén tu código de cliente
+                    para identificar tus compras.
+                </p>
+
+            </article>
+
+
+            <article class="rg-service-card">
+
+                <div class="rg-service-icon">🛍️</div>
+
+                <h3>Compras asistidas</h3>
+
+                <p>
+                    ¿Necesitas ayuda con tus compras en Shein o Temu?
+                    Consúltanos por WhatsApp.
+                </p>
+
+            </article>
+
+
+            <article class="rg-service-card">
+
+                <div class="rg-service-icon">✈️</div>
+
+                <h3>Envíos internacionales</h3>
+
+                <p>
+                    Consulta nuestras tarifas y recibe información
+                    sobre el proceso de tus envíos.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         ACCESO Y REGISTRO
+         ===================================== -->
+
+    <section id="acceso" class="rg-account-section">
+
+        <div class="rg-account-copy">
+
+            <span class="rg-section-kicker">
+                TU ESPACIO PERSONAL
+            </span>
+
+            <h2>Tu casillero, siempre a tu alcance.</h2>
+
+            <p>
+                Ingresa a tu cuenta para consultar la información
+                de tu casillero y gestionar tus prealertas.
+            </p>
+
+            <ul class="rg-account-points">
+
+                <li>
+                    <span>✓</span>
+                    Consulta tus paquetes registrados.
+                </li>
+
+                <li>
+                    <span>✓</span>
+                    Registra tus prealertas.
+                </li>
+
+                <li>
+                    <span>✓</span>
+                    Mantén actualizados tus datos.
+                </li>
+
+                <li>
+                    <span>✓</span>
+                    Accede a tu información personal.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="rg-account-panel">
+
+            <!-- ACCESO DE CLIENTE -->
+
+            <section class="acceso-cliente">
+
+                <h2>🔐 Acceso de cliente</h2>
+
+                <p>
+                    Ingresa con el correo y la contraseña de tu cuenta.
+                </p>
+
+                <input
+                    id="loginCorreo"
+                    type="email"
+                    placeholder="Correo electrónico"
+                    autocomplete="email"
+                >
+
+                <input
+                    id="loginPassword"
+                    type="password"
+                    placeholder="Contraseña"
+                    autocomplete="current-password"
+                >
+
+                <button id="iniciarSesion" type="button">
+                    Ingresar a mi casillero
+                </button>
+
+                <button
+                    id="recuperarPassword"
+                    type="button"
+                    class="btn-recuperar"
+                >
+                    ¿Olvidaste tu contraseña?
+                </button>
+
+                <button
+                    id="cerrarSesion"
+                    type="button"
+                >
+                    Cerrar sesión
+                </button>
+
+                <div id="cuentaUsuario"></div>
+
+            </section>
+
+
+            <!-- CREAR CASILLERO -->
+
+            <section
+                id="registroCasillero"
+                class="registro-casillero"
+                style="display:none;"
+            >
+
+                <h2>📦 Crear mi casillero</h2>
+
+                <p>
+                    Regístrate gratis y obtén tu código de cliente
+                    Rápido Global.
+                </p>
+
+                <input
+                    type="text"
+                    id="nombre"
+                    placeholder="Nombre completo"
+                    autocomplete="name"
+                >
+
+                <input
+                    type="text"
+                    id="cedula"
+                    placeholder="Número de cédula"
+                >
+
+                <input
+                    type="email"
+                    id="correo"
+                    placeholder="Correo electrónico"
+                    autocomplete="email"
+                >
+
+                <input
+                    type="tel"
+                    id="telefono"
+                    placeholder="Número de teléfono"
+                    autocomplete="tel"
+                >
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Crear contraseña"
+                    autocomplete="new-password"
+                >
+
+                <button id="registrar" type="button">
+                    Crear mi cuenta
+                </button>
+
+                <button
+                    type="button"
+                    class="btn-volver"
+                    onclick="mostrarAcceso()"
+                >
+                    ← Volver al acceso
+                </button>
+
+            </section>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         TARIFAS
+         ===================================== -->
+
+    <section id="tarifas" class="rg-light-section">
+
+        <div class="rg-section-heading">
+
+            <span class="rg-section-kicker">
+                PRECIOS CLAROS
+            </span>
+
+            <h2>Nuestras tarifas</h2>
+
+            <p>
+                Conoce la tarifa de envío internacional
+                antes de gestionar tus paquetes.
+            </p>
+
+        </div>
+
+        <p>
+            <strong>Hasta 1 kg:</strong>
+            USD $10.00 (tarifa mínima).
+        </p>
+
+        <p>
+            Si el paquete supera 1 kg, el costo se calcula
+            según el peso exacto, a razón de USD $10 por kilogramo.
+        </p>
+
+        <ul>
+
+            <li>0.300 kg = USD $10.00</li>
+            <li>0.600 kg = USD $10.00</li>
+            <li>0.900 kg = USD $10.00</li>
+            <li>1.000 kg = USD $10.00</li>
+            <li>1.200 kg = USD $12.00</li>
+            <li>1.300 kg = USD $13.00</li>
+            <li>1.550 kg = USD $15.50</li>
+            <li>1.680 kg = USD $16.80</li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- =====================================
+         RASTREO
+         ===================================== -->
+
+    <section id="rastreo" class="rg-light-section">
+
+        <div class="rg-section-heading">
+
+            <span class="rg-section-kicker">
+                ESTAMOS PARA AYUDARTE
+            </span>
+
+            <h2>¿Necesitas consultar tu envío?</h2>
+
+            <p>
+                Escribe tu número de guía y envíanos la consulta
+                por WhatsApp para recibir asistencia.
+            </p>
+
+        </div>
+
+        <input
+            type="text"
+            id="guia"
+            placeholder="Escribe tu número de guía"
+            autocomplete="off"
+        >
+
+        <a
+            href="https://wa.me/584228440410"
+            class="btn-whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            Consultar por WhatsApp
+        </a>
+
+    </section>
+
+
+    <!-- =====================================
+         CONTACTO
+         ===================================== -->
+
+    <section id="contacto" class="rg-light-section">
+
+        <div class="rg-section-heading">
+
+            <span class="rg-section-kicker">
+                CUENTA CON NOSOTROS
+            </span>
+
+            <h2>Estamos a la orden</h2>
+
+            <p>
+                Si tienes preguntas sobre tu casillero,
+                tus compras o tus envíos, estamos aquí para ayudarte.
+            </p>
+
+        </div>
+
+        <p>
+            <strong>📱 WhatsApp:</strong>
+            +58 422 844 0410
+        </p>
+
+        <p>
+            <strong>✉️ Correo:</strong>
+            rapidoglobal359@gmail.com
+        </p>
+
+        <p>
+            <strong>🕒 Horario:</strong>
+            Lunes a sábado de 8:00 a.m. a 6:00 p.m.
+        </p>
+
+        <a
+            href="https://wa.me/584228440410"
+            class="btn-whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            Escribir por WhatsApp
+        </a>
+
+    </section>
+
+
+    <!-- PIE DE PÁGINA -->
+
+    <footer class="rg-footer">
+
+        <p>
+            <strong>RÁPIDO GLOBAL</strong><br>
+            Tu casillero de confianza.
+        </p>
+
+        <p>
+            Casillero internacional desde Colombia para Venezuela.
+        </p>
+
+    </footer>
 
 </main>
 
 
-<script type="module" src="firebase.js"></script>
+<!-- =====================================
+     FIREBASE Y LÓGICA EXISTENTE
+     NO MODIFICAR
+     ===================================== -->
 
+<script type="module" src="firebase.js"></script>
 <script type="module" src="app.js"></script>
 
 
-<script>
+<!-- CAMBIO ENTRE ACCESO Y REGISTRO -->
 
+<script>
 function mostrarRegistro() {
 
-  document.querySelector(".acceso-cliente").style.display = "none";
+    document.querySelector(".acceso-cliente").style.display = "none";
 
-  document.getElementById("registroCasillero").style.display = "block";
+    document.getElementById("registroCasillero").style.display = "block";
 
-  document.getElementById("registroCasillero").scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-  });
+    document.getElementById("registroCasillero").scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
 
 }
-
 
 function mostrarAcceso() {
 
-  document.getElementById("registroCasillero").style.display = "none";
+    document.getElementById("registroCasillero").style.display = "none";
 
-  document.querySelector(".acceso-cliente").style.display = "block";
+    document.querySelector(".acceso-cliente").style.display = "block";
 
-  document.querySelector(".acceso-cliente").scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-  });
+    document.querySelector(".acceso-cliente").scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
 
 }
-
 </script>
 
 
-<script>
+<!-- CHATBASE: ASISTENTE VIRTUAL EXISTENTE -->
 
+<script>
 (function(){
 
-  if(
-    !window.chatbase ||
-    window.chatbase("getState") !== "initialized"
-  ){
+    if(
+        !window.chatbase ||
+        window.chatbase("getState") !== "initialized"
+    ){
 
-    window.chatbase = (...arguments) => {
+        window.chatbase = (...arguments) => {
 
-      if(!window.chatbase.q){
-        window.chatbase.q = [];
-      }
+            if(!window.chatbase.q){
+                window.chatbase.q = [];
+            }
 
-      window.chatbase.q.push(arguments);
+            window.chatbase.q.push(arguments);
+
+        };
+
+        window.chatbase = new Proxy(
+            window.chatbase,
+            {
+                get(target, prop){
+
+                    if(prop === "q"){
+                        return target.q;
+                    }
+
+                    return (...args) => target(prop, ...args);
+
+                }
+            }
+        );
+
+    }
+
+    const onLoad = function(){
+
+        const script = document.createElement("script");
+
+        script.src = "https://www.chatbase.co/embed.min.js";
+        script.id = "IOoTakuPMYMU003b-JgMK";
+        script.domain = "www.chatbase.co";
+
+        document.body.appendChild(script);
 
     };
 
-    window.chatbase = new Proxy(
-      window.chatbase,
-      {
-        get(target, prop){
-
-          if(prop === "q"){
-            return target.q;
-          }
-
-          return (...args) => target(prop, ...args);
-
-        }
-      }
-    );
-
-  }
-
-
-  const onLoad = function(){
-
-    const script = document.createElement("script");
-
-    script.src =
-      "https://www.chatbase.co/embed.min.js";
-
-    script.id =
-      "IOoTakuPMYMU003b-JgMK";
-
-    script.domain =
-      "www.chatbase.co";
-
-    document.body.appendChild(script);
-
-  };
-
-
-  if(document.readyState === "complete"){
-
-    onLoad();
-
-  }else{
-
-    window.addEventListener("load", onLoad);
-
-  }
+    if(document.readyState === "complete"){
+        onLoad();
+    } else {
+        window.addEventListener("load", onLoad);
+    }
 
 })();
-
 </script>
 
 </body>
