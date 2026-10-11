@@ -1,524 +1,1049 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
+/* ==========================================
+   RÁPIDO GLOBAL — DISEÑO TECNOLÓGICO
+   Versión renovada | Octubre 2026
+   ========================================== */
+
+:root {
+    --azul-oscuro: #03152f;
+    --azul-profundo: #062653;
+    --azul-marca: #0757a6;
+    --azul-brillante: #1689ff;
+    --azul-claro: #eaf4ff;
+    --naranja: #ff9b24;
+    --verde-whatsapp: #25d366;
+    --blanco: #ffffff;
+    --texto: #25364d;
+    --texto-suave: #64748b;
+    --borde: #dce8f5;
+    --sombra: 0 18px 50px rgba(0, 22, 55, 0.16);
+    --radio: 20px;
 }
 
-html{
-    scroll-behavior:smooth;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-body{
-    min-height:100vh;
-    padding:0;
-    color:#333;
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 110px;
+}
+
+body {
+    min-height: 100vh;
+    padding: 0;
+    color: var(--texto);
+    overflow-x: hidden;
 
     background:
-        linear-gradient(rgba(0,40,90,.82), rgba(0,40,90,.82)),
-        url("fondo-logistica.png") center center/cover fixed no-repeat;
+        radial-gradient(
+            ellipse at 15% 10%,
+            rgba(20, 112, 220, 0.35),
+            transparent 38%
+        ),
+        linear-gradient(
+            145deg,
+            rgba(2, 16, 39, 0.94),
+            rgba(4, 42, 87, 0.91)
+        ),
+        url("fondo-logistica.png") center center / cover fixed no-repeat;
 }
 
+/* ==========================================
+   ENCABEZADO
+   ========================================== */
 
-/* ============================= */
-/* ENCABEZADO */
-/* ============================= */
+.header {
+    width: 100%;
+    min-height: 94px;
+    padding: 12px 4%;
 
-.header{
-    width:100%;
-    background:#003366;
-    padding:12px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
 
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 
-    gap:25px;
+    background: rgba(3, 21, 47, 0.94);
+    border-bottom: 1px solid rgba(113, 181, 255, 0.23);
 
-    position:sticky;
-    top:0;
-    z-index:100;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
 
-    box-shadow:0 3px 15px rgba(0,0,0,.30);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
 }
 
-.logo img{
-    height:75px;
-    width:auto;
-    display:block;
+.logo {
+    flex-shrink: 0;
 }
 
+.logo img {
+    height: 68px;
+    width: auto;
+    max-width: 190px;
+    object-fit: contain;
+    display: block;
 
-/* ============================= */
-/* MENÚ */
-/* ============================= */
+    filter: drop-shadow(0 3px 12px rgba(33, 140, 255, 0.18));
 
-nav{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:25px;
-    flex:1;
+    transition: transform 0.3s ease;
 }
 
-nav a{
-    color:#ffffff;
-    text-decoration:none;
-    font-weight:bold;
-    font-size:15px;
-    transition:.3s;
+.logo img:hover {
+    transform: scale(1.04);
 }
 
-nav a:hover{
-    color:#ff9900;
+/* ==========================================
+   MENÚ DE NAVEGACIÓN
+   ========================================== */
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 27px;
+    flex: 1;
 }
 
+nav a {
+    position: relative;
 
-/* ============================= */
-/* BOTONES SUPERIORES */
-/* ============================= */
+    color: #edf6ff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.3px;
 
-.acciones-header{
-    display:flex;
-    align-items:center;
-    gap:12px;
+    padding: 10px 0;
+
+    transition: color 0.25s ease;
 }
 
-.btn-whatsapp{
-    display:inline-block;
+nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 2px;
 
-    background:#25D366;
-    color:#ffffff;
+    width: 0;
+    height: 2px;
 
-    padding:11px 18px;
+    background: var(--naranja);
+    border-radius: 5px;
 
-    border-radius:8px;
-
-    text-decoration:none;
-    font-weight:bold;
-
-    transition:.3s;
+    transition: width 0.25s ease;
 }
 
-.btn-whatsapp:hover{
-    background:#1fa851;
-    transform:translateY(-2px);
+nav a:hover {
+    color: #8fcaff;
 }
 
-
-/* BOTÓN CREAR MI CASILLERO */
-
-.btn-crear-header{
-    width:auto;
-
-    margin:0;
-    padding:11px 18px;
-
-    border:none;
-    border-radius:8px;
-
-    background:#ff9900;
-    color:#ffffff;
-
-    font-size:15px;
-    font-weight:bold;
-
-    cursor:pointer;
-
-    white-space:nowrap;
-
-    transition:.3s;
+nav a:hover::after {
+    width: 100%;
 }
 
-.btn-crear-header:hover{
-    background:#e68a00;
-    transform:translateY(-2px);
+/* ==========================================
+   BOTONES DEL ENCABEZADO
+   ========================================== */
+
+.acciones-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
 }
 
+.btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 
-/* ============================= */
-/* CONTENEDOR */
-/* ============================= */
+    background: var(--verde-whatsapp);
+    color: #ffffff;
 
-.contenedor{
-    width:calc(100% - 30px);
-    max-width:1200px;
+    padding: 12px 19px;
 
-    margin:30px auto;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
 
-    background:#ffffff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
 
-    border-radius:20px;
+    box-shadow: 0 5px 18px rgba(37, 211, 102, 0.18);
 
-    padding:40px;
-
-    box-shadow:0 15px 40px rgba(0,0,0,.30);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
 }
 
-.logo-principal{
-    display:block;
-
-    margin:0 auto 15px;
-
-    width:220px;
-    max-width:80%;
+.btn-whatsapp:hover {
+    background: #1db954;
+    transform: translateY(-2px);
+    box-shadow: 0 9px 24px rgba(37, 211, 102, 0.28);
 }
 
-h1{
-    text-align:center;
+.btn-crear-header {
+    width: auto;
+    margin: 0;
 
-    color:#003366;
+    padding: 13px 18px;
 
-    font-size:36px;
-    font-weight:bold;
+    border: 1px solid rgba(255, 255, 255, 0.23);
+    border-radius: 10px;
 
-    margin-bottom:10px;
+    background: linear-gradient(135deg, #ffb13b, #ff851b);
+    color: #17243a;
+
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.35px;
+
+    cursor: pointer;
+    white-space: nowrap;
+
+    box-shadow: 0 6px 20px rgba(255, 153, 36, 0.20);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
 }
 
-h2{
-    color:#003366;
-
-    margin:25px 0 12px;
-
-    font-size:24px;
-
-    text-align:center;
+.btn-crear-header:hover {
+    background: linear-gradient(135deg, #ffc15c, #ff9b24);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(255, 153, 36, 0.30);
 }
 
-p{
-    text-align:center;
+/* ==========================================
+   CONTENEDOR PRINCIPAL
+   ========================================== */
 
-    color:#555;
+.contenedor {
+    position: relative;
 
-    margin-bottom:20px;
+    width: calc(100% - 40px);
+    max-width: 1240px;
 
-    line-height:1.5;
+    margin: 38px auto 50px;
+    padding: 48px 44px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.99),
+            rgba(242, 248, 255, 0.98)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 28px;
+
+    box-shadow:
+        0 30px 90px rgba(0, 8, 28, 0.34),
+        0 0 0 1px rgba(115, 183, 255, 0.10);
+
+    overflow: hidden;
 }
 
-.descripcion{
-    font-size:18px;
-    margin-bottom:35px;
+/* Brillo decorativo superior */
+
+.contenedor::before {
+    content: "";
+    position: absolute;
+
+    top: 0;
+    left: 8%;
+    right: 8%;
+
+    height: 4px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #1689ff,
+        #ff9b24,
+        #1689ff,
+        transparent
+    );
+
+    border-radius: 0 0 8px 8px;
 }
 
+.logo-principal {
+    display: block;
 
-/* ============================= */
-/* ACCESO / REGISTRO */
-/* ============================= */
+    margin: 0 auto 18px;
+
+    width: 205px;
+    max-width: 80%;
+    height: auto;
+
+    object-fit: contain;
+
+    filter: drop-shadow(0 8px 18px rgba(0, 65, 130, 0.12));
+
+    animation: entradaSuave 0.8s ease both;
+}
+
+/* ==========================================
+   TÍTULOS Y TEXTOS
+   ========================================== */
+
+h1 {
+    text-align: center;
+
+    color: var(--azul-profundo);
+
+    font-size: clamp(30px, 4vw, 45px);
+    font-weight: 900;
+    letter-spacing: 1.2px;
+    line-height: 1.2;
+
+    margin-bottom: 15px;
+
+    text-shadow: 0 2px 0 rgba(5, 87, 166, 0.05);
+}
+
+h2 {
+    position: relative;
+
+    color: var(--azul-profundo);
+
+    margin: 25px 0 16px;
+
+    font-size: clamp(21px, 2.5vw, 27px);
+    font-weight: 800;
+    line-height: 1.3;
+
+    text-align: center;
+}
+
+p {
+    text-align: center;
+
+    color: var(--texto-suave);
+
+    margin-bottom: 20px;
+
+    line-height: 1.75;
+    font-size: 15px;
+}
+
+.descripcion {
+    max-width: 760px;
+
+    margin: 0 auto 38px;
+
+    color: #536782;
+
+    font-size: clamp(16px, 2vw, 19px);
+    line-height: 1.8;
+}
+
+/* ==========================================
+   ACCESO DE CLIENTES Y REGISTRO
+   ========================================== */
 
 .acceso-cliente,
-.registro-casillero{
-    width:100%;
-    max-width:600px;
+.registro-casillero {
+    position: relative;
 
-    margin:0 auto 40px;
+    width: 100%;
+    max-width: 590px;
 
-    padding:30px;
+    margin: 0 auto 42px;
+    padding: 32px;
 
-    background:#f8fbff;
+    background: linear-gradient(
+        145deg,
+        #ffffff,
+        #f5f9ff
+    );
 
-    border:1px solid #dcecff;
+    border: 1px solid #d9e8fa;
+    border-radius: 22px;
 
-    border-radius:18px;
+    box-shadow:
+        0 12px 34px rgba(0, 51, 102, 0.08),
+        inset 0 1px 0 #ffffff;
 
-    box-shadow:0 8px 25px rgba(0,51,102,.10);
+    transition:
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.acceso-cliente:hover,
+.registro-casillero:hover {
+    border-color: #bfdcff;
+
+    box-shadow:
+        0 18px 42px rgba(0, 51, 102, 0.12),
+        inset 0 1px 0 #ffffff;
 }
 
 .acceso-cliente h2,
-.registro-casillero h2{
-    margin-top:0;
+.registro-casillero h2 {
+    margin-top: 0;
+    margin-bottom: 14px;
 }
 
-input{
-    width:100%;
+.acceso-cliente h2::after,
+.registro-casillero h2::after {
+    content: "";
 
-    padding:14px;
+    display: block;
 
-    margin:8px 0;
+    width: 55px;
+    height: 4px;
 
-    border:1px solid #d5d5d5;
+    margin: 12px auto 0;
 
-    border-radius:10px;
+    background: linear-gradient(
+        90deg,
+        var(--azul-brillante),
+        var(--naranja)
+    );
 
-    font-size:16px;
-
-    background:#ffffff;
-
-    transition:.3s;
+    border-radius: 10px;
 }
 
-input:focus{
-    outline:none;
+input {
+    display: block;
 
-    border-color:#0055A5;
+    width: 100%;
 
-    box-shadow:0 0 8px rgba(0,85,165,.25);
+    padding: 15px 16px;
+    margin: 11px 0;
+
+    border: 1px solid #d4e0ee;
+    border-radius: 11px;
+
+    font-size: 16px;
+    color: #24364d;
+
+    background: #ffffff;
+
+    box-shadow: 0 2px 5px rgba(0, 35, 80, 0.02);
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
 }
 
-button{
-    width:100%;
-
-    padding:15px;
-
-    margin-top:12px;
-
-    border:none;
-
-    border-radius:10px;
-
-    background:#0055A5;
-
-    color:#fff;
-
-    font-size:17px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    transition:all .3s ease;
+input::placeholder {
+    color: #8998aa;
+    opacity: 1;
 }
 
-button:hover{
-    background:#ff9900;
-
-    transform:translateY(-2px);
+input:hover {
+    border-color: #aacdf3;
 }
 
-.btn-volver{
-    background:#6c757d;
+input:focus {
+    outline: none;
+
+    border-color: var(--azul-brillante);
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 4px rgba(22, 137, 255, 0.11),
+        0 5px 15px rgba(0, 85, 165, 0.05);
 }
 
-.btn-volver:hover{
-    background:#495057;
+/* ==========================================
+   BOTONES GENERALES
+   ========================================== */
+
+button {
+    width: 100%;
+
+    padding: 15px 18px;
+    margin-top: 12px;
+
+    border: 1px solid transparent;
+    border-radius: 11px;
+
+    background: linear-gradient(
+        135deg,
+        #0866bb,
+        #03447f
+    );
+
+    color: #ffffff;
+
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+
+    cursor: pointer;
+
+    box-shadow: 0 7px 18px rgba(0, 76, 145, 0.17);
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
+button:hover {
+    background: linear-gradient(
+        135deg,
+        #ffad35,
+        #ff8a18
+    );
 
-/* ============================= */
-/* RECUPERAR CONTRASEÑA */
-/* ============================= */
+    color: #17243a;
 
-.btn-recuperar{
-    width:auto;
+    transform: translateY(-2px);
 
-    display:block;
-
-    margin:14px auto 5px;
-
-    padding:5px 10px;
-
-    background:transparent;
-
-    color:#0055A5;
-
-    border:none;
-
-    border-radius:0;
-
-    font-size:14px;
-
-    font-weight:normal;
-
-    cursor:pointer;
-
-    box-shadow:none;
-
-    transition:.3s;
+    box-shadow: 0 10px 24px rgba(0, 51, 102, 0.15);
 }
 
-.btn-recuperar:hover{
-    background:transparent;
-
-    color:#ff9900;
-
-    transform:none;
-
-    text-decoration:underline;
+button:active {
+    transform: translateY(0);
 }
 
-
-#cerrarSesion{
-    background:#d32f2f;
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid #ffb13b;
+    outline-offset: 3px;
 }
 
-#cerrarSesion:hover{
-    background:#b71c1c;
+.btn-volver {
+    background: #64748b;
+    color: #ffffff;
+
+    box-shadow: none;
 }
 
-#cuentaUsuario{
-    margin-top:18px;
-
-    padding:12px;
-
-    background:#eef6ff;
-
-    border-radius:10px;
-
-    text-align:center;
-
-    color:#003366;
-
-    font-weight:bold;
+.btn-volver:hover {
+    background: #475569;
+    color: #ffffff;
 }
 
+/* ==========================================
+   RECUPERAR CONTRASEÑA
+   ========================================== */
 
-/* ============================= */
-/* SECCIONES */
-/* ============================= */
+.btn-recuperar {
+    display: block;
 
-section{
-    scroll-margin-top:110px;
+    width: auto;
+
+    margin: 15px auto 8px;
+    padding: 7px 10px;
+
+    background: transparent;
+    color: #0757a6;
+
+    border: none;
+    border-radius: 6px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow: none;
+
+    transition:
+        color 0.25s ease,
+        text-decoration-color 0.25s ease;
+}
+
+.btn-recuperar:hover {
+    background: transparent;
+    color: #e87913;
+
+    transform: none;
+
+    text-decoration: underline;
+    box-shadow: none;
+}
+
+#cerrarSesion {
+    background: #c93442;
+    color: #ffffff;
+
+    box-shadow: 0 5px 14px rgba(201, 52, 66, 0.12);
+}
+
+#cerrarSesion:hover {
+    background: #a91f30;
+    color: #ffffff;
+}
+
+#cuentaUsuario {
+    margin-top: 18px;
+    padding: 15px;
+
+    background: linear-gradient(
+        135deg,
+        #eaf4ff,
+        #f5f9ff
+    );
+
+    border: 1px solid #cfe3fb;
+    border-radius: 12px;
+
+    text-align: center;
+
+    color: var(--azul-profundo);
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
+}
+
+/* ==========================================
+   SECCIONES: TARIFAS, RASTREO Y CONTACTO
+   ========================================== */
+
+section {
+    scroll-margin-top: 115px;
 }
 
 #tarifas,
 #rastreo,
-#contacto{
-    margin-top:45px;
+#contacto {
+    position: relative;
 
-    padding:30px;
+    margin-top: 45px;
+    padding: 34px 28px;
 
-    border-top:1px solid #e2e2e2;
+    background: rgba(255, 255, 255, 0.78);
+
+    border: 1px solid #e1ebf7;
+    border-radius: 20px;
+
+    box-shadow: 0 8px 24px rgba(0, 51, 102, 0.045);
 }
 
-#tarifas ul{
-    max-width:500px;
-
-    margin:20px auto;
-
-    padding-left:25px;
+#tarifas h2,
+#rastreo h2,
+#contacto h2 {
+    margin-top: 0;
+    margin-bottom: 18px;
 }
 
-#tarifas li{
-    margin:8px 0;
+#tarifas h2::after,
+#rastreo h2::after,
+#contacto h2::after {
+    content: "";
 
-    color:#444;
+    display: block;
+
+    width: 48px;
+    height: 4px;
+
+    margin: 11px auto 0;
+
+    background: linear-gradient(
+        90deg,
+        var(--azul-brillante),
+        var(--naranja)
+    );
+
+    border-radius: 8px;
 }
 
+#tarifas ul {
+    max-width: 520px;
 
-/* ============================= */
-/* WHATSAPP EN SECCIONES */
-/* ============================= */
+    margin: 22px auto 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+#tarifas li {
+    position: relative;
+
+    margin: 9px 0;
+    padding: 12px 15px 12px 42px;
+
+    color: #354a63;
+
+    background: #f2f7fd;
+
+    border: 1px solid #e4edf8;
+    border-radius: 10px;
+
+    line-height: 1.5;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s ease;
+}
+
+#tarifas li::before {
+    content: "✓";
+
+    position: absolute;
+
+    left: 14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 19px;
+    height: 19px;
+
+    border-radius: 50%;
+
+    background: #dceeff;
+    color: #0757a6;
+
+    font-size: 12px;
+    font-weight: 900;
+}
+
+#tarifas li:hover {
+    background: #eaf4ff;
+    border-color: #c5dfff;
+    transform: translateX(3px);
+}
+
+/* ==========================================
+   RASTREO Y CONTACTO
+   ========================================== */
+
+#rastreo input {
+    max-width: 520px;
+    margin: 18px auto 12px;
+}
 
 #rastreo .btn-whatsapp,
-#contacto .btn-whatsapp{
-    display:block;
+#contacto .btn-whatsapp {
+    display: flex;
 
-    width:max-content;
+    width: fit-content;
+    max-width: 100%;
 
-    margin:15px auto 0;
+    margin: 18px auto 0;
 }
 
+#contacto p {
+    margin-bottom: 13px;
+    overflow-wrap: anywhere;
+}
 
-/* ============================= */
-/* MÓVILES */
-/* ============================= */
+#contacto p strong {
+    color: var(--azul-profundo);
+}
 
-@media (max-width:768px){
+/* ==========================================
+   ANIMACIONES SUAVES
+   ========================================== */
 
-    body{
+@keyframes entradaSuave {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   TABLET
+   ========================================== */
+
+@media (min-width: 769px) and (max-width: 1050px) {
+    .header {
+        padding: 12px 22px;
+        gap: 15px;
+    }
+
+    .logo img {
+        height: 58px;
+        max-width: 150px;
+    }
+
+    nav {
+        gap: 16px;
+    }
+
+    nav a {
+        font-size: 13px;
+    }
+
+    .acciones-header {
+        gap: 8px;
+    }
+
+    .header .btn-whatsapp,
+    .btn-crear-header {
+        padding: 11px 12px;
+        font-size: 12px;
+    }
+
+    .contenedor {
+        padding: 38px 28px;
+    }
+}
+
+/* ==========================================
+   MÓVILES
+   ========================================== */
+
+@media (max-width: 768px) {
+    html {
+        scroll-padding-top: 155px;
+    }
+
+    body {
         background:
-            linear-gradient(rgba(0,40,90,.86), rgba(0,40,90,.86)),
-            url("fondo-logistica.png") center center/cover fixed no-repeat;
+            radial-gradient(
+                ellipse at 50% 0%,
+                rgba(20, 112, 220, 0.30),
+                transparent 45%
+            ),
+            linear-gradient(
+                145deg,
+                rgba(2, 16, 39, 0.95),
+                rgba(4, 42, 87, 0.94)
+            ),
+            url("fondo-logistica.png") center center / cover fixed no-repeat;
     }
 
-    .header{
-        padding:10px 15px;
+    .header {
+        min-height: auto;
 
-        flex-wrap:wrap;
+        padding: 12px 14px;
 
-        justify-content:center;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
 
-        gap:12px;
+        position: sticky;
+        top: 0;
     }
 
-    .logo img{
-        height:65px;
+    .logo {
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    nav{
-        width:100%;
-
-        order:3;
-
-        gap:14px;
-
-        flex-wrap:wrap;
+    .logo img {
+        height: 57px;
+        max-width: 190px;
     }
 
-    nav a{
-        font-size:13px;
+    nav {
+        order: 3;
+
+        display: flex;
+
+        width: 100%;
+        flex: 0 0 100%;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 9px 20px;
+        flex-wrap: wrap;
     }
 
-    .acciones-header{
-        display:flex;
-
-        order:2;
-
-        gap:8px;
+    nav a {
+        font-size: 12px;
+        padding: 5px 0;
     }
 
-    .btn-whatsapp,
-    .btn-crear-header{
-        padding:10px 12px;
+    .acciones-header {
+        order: 2;
 
-        font-size:13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 100%;
+        gap: 9px;
     }
 
-    .contenedor{
-        width:calc(100% - 20px);
+    .header .btn-whatsapp,
+    .btn-crear-header {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
 
-        margin:15px auto;
+        padding: 11px 13px;
 
-        padding:25px 18px;
+        font-size: 12px;
+        line-height: 1.3;
 
-        border-radius:16px;
+        white-space: normal;
+        text-align: center;
     }
 
-    .logo-principal{
-        width:180px;
+    .contenedor {
+        width: calc(100% - 20px);
+
+        margin: 18px auto 28px;
+        padding: 28px 17px;
+
+        border-radius: 21px;
     }
 
-    h1{
-        font-size:28px;
+    .logo-principal {
+        width: 165px;
+        margin-bottom: 16px;
     }
 
-    h2{
-        font-size:21px;
+    h1 {
+        font-size: 29px;
+        letter-spacing: 0.5px;
+        line-height: 1.25;
     }
 
-    .descripcion{
-        font-size:16px;
+    h2 {
+        font-size: 22px;
+    }
+
+    p {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .descripcion {
+        font-size: 16px;
+        margin-bottom: 28px;
     }
 
     .acceso-cliente,
-    .registro-casillero{
-        padding:22px 16px;
+    .registro-casillero {
+        padding: 24px 16px;
+        margin-bottom: 28px;
 
-        border-radius:15px;
+        border-radius: 17px;
     }
 
-    input,
-    button{
-        font-size:16px;
+    .acceso-cliente h2,
+    .registro-casillero h2 {
+        font-size: 21px;
+    }
+
+    input {
+        padding: 14px 13px;
+        font-size: 16px;
+    }
+
+    button {
+        padding: 14px 13px;
+        font-size: 15px;
+    }
+
+    .btn-recuperar {
+        width: auto;
+        padding: 8px 10px;
+        font-size: 14px;
     }
 
     #tarifas,
     #rastreo,
-    #contacto{
-        padding:25px 10px;
+    #contacto {
+        margin-top: 28px;
+        padding: 25px 15px;
+
+        border-radius: 16px;
+    }
+
+    #tarifas li {
+        padding: 11px 10px 11px 36px;
+        font-size: 14px;
+    }
+
+    #tarifas li::before {
+        left: 10px;
     }
 
     #rastreo .btn-whatsapp,
-    #contacto .btn-whatsapp{
-        width:100%;
+    #contacto .btn-whatsapp {
+        width: 100%;
+        max-width: 100%;
 
-        text-align:center;
+        text-align: center;
+        justify-content: center;
+    }
+}
+
+/* ==========================================
+   MÓVILES PEQUEÑOS
+   ========================================== */
+
+@media (max-width: 380px) {
+    .header {
+        padding: 10px;
     }
 
-    .btn-recuperar{
-        width:auto;
+    .logo img {
+        height: 49px;
+    }
 
-        font-size:14px;
+    nav {
+        gap: 8px 13px;
+    }
 
-        padding:5px 10px;
+    nav a {
+        font-size: 11px;
+    }
+
+    .header .btn-whatsapp,
+    .btn-crear-header {
+        padding: 10px 9px;
+        font-size: 11px;
+    }
+
+    .contenedor {
+        width: calc(100% - 14px);
+        padding: 24px 12px;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    .acceso-cliente,
+    .registro-casillero {
+        padding: 21px 12px;
+    }
+}
+
+/* ==========================================
+   ACCESIBILIDAD: MENOS MOVIMIENTO
+   ========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }
