@@ -8,18 +8,27 @@
 
 <link rel="stylesheet" href="style.css">
 
-
 <style>
-/* ========================================
-   RÁPIDO GLOBAL — DISEÑO DE CLIENTE
-   ======================================== */
+/* =====================================================
+   RÁPIDO GLOBAL — EXPERIENCIA TECNOLÓGICA PARA CLIENTES
+   Identidad visual: azul, azul eléctrico y naranja
+   ===================================================== */
 
 :root {
     --rg-azul: #003366;
-    --rg-azul-vivo: #0055a5;
+    --rg-azul-vivo: #087df5;
+    --rg-azul-luz: #36c5ff;
     --rg-naranja: #ff9900;
-    --rg-fondo: #edf4fc;
-    --rg-texto: #18324d;
+    --rg-fondo: #06152b;
+    --rg-panel: #0c2341;
+    --rg-texto: #f3f8ff;
+    --rg-texto-secundario: #b6c9df;
+    --rg-borde: rgba(91, 173, 255, 0.24);
+    --rg-brillo: 0 0 25px rgba(0, 132, 255, 0.15);
+}
+
+* {
+    box-sizing: border-box;
 }
 
 html {
@@ -28,131 +37,335 @@ html {
 }
 
 body {
+    position: relative;
     min-height: 100vh;
-    padding: 1px 0 30px;
+    margin: 0;
+    padding: 1px 0 35px;
+    overflow-x: hidden;
     color: var(--rg-texto);
     background:
         radial-gradient(
-            circle at 10% 5%,
-            rgba(0, 119, 255, 0.25),
-            transparent 32%
+            ellipse at 12% 5%,
+            rgba(0, 119, 255, 0.27),
+            transparent 35%
         ),
         radial-gradient(
-            circle at 95% 45%,
-            rgba(255, 153, 0, 0.13),
-            transparent 25%
+            ellipse at 95% 30%,
+            rgba(0, 195, 255, 0.12),
+            transparent 28%
         ),
-        linear-gradient(145deg, #001a35, #06477e 55%, #001a35);
+        radial-gradient(
+            ellipse at 50% 100%,
+            rgba(255, 153, 0, 0.09),
+            transparent 38%
+        ),
+        linear-gradient(
+            145deg,
+            #020b18 0%,
+            #061b35 45%,
+            #082b50 75%,
+            #020b18 100%
+        );
     background-attachment: fixed;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-/* CONTENEDOR PRINCIPAL */
+/* Cuadrícula tecnológica del fondo */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.19;
+    background-image:
+        linear-gradient(
+            rgba(80, 164, 255, 0.10) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(80, 164, 255, 0.10) 1px,
+            transparent 1px
+        );
+    background-size: 42px 42px;
+    mask-image: linear-gradient(
+        to bottom,
+        black,
+        transparent 88%
+    );
+}
+
+/* Resplandor ambiental */
+
+body::after {
+    content: "";
+    position: fixed;
+    width: 340px;
+    height: 340px;
+    top: 12%;
+    right: -190px;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: 50%;
+    background: rgba(0, 119, 255, 0.15);
+    filter: blur(85px);
+}
+
+/* =====================================================
+   PANEL PRINCIPAL
+   ===================================================== */
 
 .contenedor {
+    position: relative;
+    z-index: 1;
+    isolation: isolate;
     width: calc(100% - 30px);
-    max-width: 1100px;
+    max-width: 1120px;
     margin: 30px auto;
     padding: 35px;
-    background: #ffffff;
-    border: 1px solid rgba(255,255,255,0.7);
-    border-radius: 24px;
-    box-shadow: 0 20px 60px rgba(0, 12, 35, 0.35);
+    overflow: hidden;
+    color: var(--rg-texto);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(13, 39, 69, 0.97),
+            rgba(4, 20, 40, 0.98)
+        );
+    border: 1px solid rgba(76, 166, 255, 0.35);
+    border-radius: 25px;
+    box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.43),
+        0 0 35px rgba(0, 110, 255, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    animation: rgEntrada 0.7s ease both;
 }
 
-/* LOGO Y BIENVENIDA */
+/* Línea luminosa superior */
+
+.contenedor::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 8%;
+    right: 8%;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--rg-azul-luz),
+        var(--rg-naranja),
+        transparent
+    );
+    box-shadow: 0 0 18px rgba(54, 197, 255, 0.6);
+    pointer-events: none;
+}
+
+/* Decoración de luz inferior */
+
+.contenedor::after {
+    content: "";
+    position: absolute;
+    bottom: -150px;
+    left: -100px;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: rgba(0, 119, 255, 0.07);
+    filter: blur(50px);
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes rgEntrada {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =====================================================
+   LOGO Y BIENVENIDA
+   ===================================================== */
 
 .contenedor > img {
-    max-width: 80%;
+    display: block;
+    width: min(340px, 82vw) !important;
+    max-width: 100%;
     height: auto;
-    filter: drop-shadow(0 8px 12px rgba(0, 51, 102, 0.14));
+    margin: 14px auto 22px !important;
+    filter:
+        drop-shadow(0 0 13px rgba(0, 142, 255, 0.30))
+        drop-shadow(0 7px 15px rgba(0, 0, 0, 0.35));
+    animation: rgLogo 4s ease-in-out infinite;
+}
+
+@keyframes rgLogo {
+    0%, 100% {
+        filter:
+            drop-shadow(0 0 10px rgba(0, 142, 255, 0.25))
+            drop-shadow(0 7px 15px rgba(0, 0, 0, 0.30));
+    }
+
+    50% {
+        filter:
+            drop-shadow(0 0 21px rgba(54, 197, 255, 0.42))
+            drop-shadow(0 7px 15px rgba(0, 0, 0, 0.30));
+    }
 }
 
 h1 {
     margin: 15px 0;
-    color: var(--rg-azul);
-    font-size: clamp(26px, 4vw, 38px);
-    font-weight: 800;
+    color: #ffffff;
+    font-size: clamp(27px, 4vw, 40px);
+    font-weight: 900;
     line-height: 1.2;
     text-align: center;
-    letter-spacing: -0.7px;
+    letter-spacing: -0.8px;
+    text-shadow: 0 0 22px rgba(54, 197, 255, 0.16);
 }
 
 h1 + p {
-    color: #60758b;
+    max-width: 650px;
+    margin: 0 auto;
+    color: var(--rg-texto-secundario);
     font-size: 16px;
-    line-height: 1.7;
+    line-height: 1.8;
 }
 
-/* TÍTULOS DE LAS SECCIONES */
+/* =====================================================
+   TÍTULOS DE SECCIONES
+   ===================================================== */
 
 h2 {
-    margin: 30px 0 18px;
-    padding: 15px 18px;
-    color: var(--rg-azul);
-    background: linear-gradient(100deg, #edf5ff, #ffffff);
-    border-left: 5px solid var(--rg-naranja);
+    position: relative;
+    margin: 32px 0 20px;
+    padding: 16px 18px;
+    color: #f5fbff;
+    background:
+        linear-gradient(
+            100deg,
+            rgba(0, 100, 200, 0.24),
+            rgba(10, 35, 62, 0.80)
+        );
+    border: 1px solid rgba(73, 164, 255, 0.18);
+    border-left: 4px solid var(--rg-naranja);
     border-radius: 10px;
     font-size: 22px;
+    font-weight: 800;
+    line-height: 1.4;
     text-align: left;
+    box-shadow: inset 0 0 20px rgba(0, 119, 255, 0.035);
 }
 
-/* SEPARADORES */
+/* Separadores */
 
 .contenedor > hr {
     height: 1px;
-    margin: 28px 0;
+    margin: 30px 0;
     border: 0;
     background: linear-gradient(
         90deg,
         transparent,
-        #cbdced,
+        rgba(54, 197, 255, 0.45),
+        rgba(255, 153, 0, 0.25),
         transparent
     );
 }
 
-/* INFORMACIÓN DEL CLIENTE Y CASILLERO */
+/* =====================================================
+   INFORMACIÓN DEL CLIENTE Y CASILLERO
+   ===================================================== */
+
+.contenedor > p {
+    color: #e4effc;
+    font-size: 16px;
+    line-height: 1.9;
+    overflow-wrap: anywhere;
+}
+
+.contenedor > p strong {
+    color: #8dcaff;
+    font-weight: 800;
+}
 
 #nombreCliente,
 #codigoCliente,
 #correoCliente,
 #nombreCasillero,
 #codigoCasillero {
-    color: var(--rg-azul);
+    display: inline;
+    color: #ffffff;
     font-weight: 800;
     overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
-.contenedor > p {
-    line-height: 1.8;
+#codigoCliente,
+#codigoCasillero {
+    color: #ffbd59;
 }
 
-.contenedor > p strong {
-    color: var(--rg-azul);
-}
-
-/* TARJETAS DE PAQUETES */
+/* =====================================================
+   MIS PAQUETES — TARJETAS TECNOLÓGICAS
+   ===================================================== */
 
 #resumenPaquetes {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 16px;
-    margin: 20px 0 30px;
+    gap: 17px;
+    margin: 22px 0 30px;
 }
 
 .grupo-paquetes {
     position: relative;
     overflow: hidden;
-    padding: 20px;
-    background: linear-gradient(135deg, #ffffff, #f4f8fe);
-    border: 1px solid #dbe7f5;
+    padding: 21px;
+    background:
+        linear-gradient(
+            120deg,
+            rgba(16, 49, 83, 0.98),
+            rgba(7, 28, 52, 0.98)
+        );
+    border: 1px solid rgba(76, 166, 255, 0.28);
     border-radius: 16px;
-    box-shadow: 0 6px 18px rgba(0, 51, 102, 0.07);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.17),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.grupo-paquetes::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        var(--rg-azul-vivo),
+        var(--rg-azul-luz),
+        transparent 85%
+    );
+    opacity: 0.85;
 }
 
 .grupo-paquetes:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 51, 102, 0.12);
+    transform: translateY(-3px);
+    border-color: rgba(54, 197, 255, 0.58);
+    box-shadow:
+        0 13px 30px rgba(0, 0, 0, 0.22),
+        0 0 20px rgba(0, 119, 255, 0.10);
 }
 
 .encabezado-grupo {
@@ -163,165 +376,313 @@ h2 {
 }
 
 .encabezado-grupo h3 {
-    margin: 0 0 8px;
-    color: var(--rg-azul);
+    margin: 0 0 9px;
+    color: #ffffff;
     font-size: 19px;
+    font-weight: 800;
+    line-height: 1.4;
 }
 
 .encabezado-grupo p {
     margin: 0;
-    color: #60758b;
+    color: #b9cce2;
     text-align: left;
+    font-size: 15px;
 }
 
 .encabezado-grupo p strong {
-    color: var(--rg-azul);
-    font-size: 22px;
+    color: #ffb547;
+    font-size: 25px;
+    font-weight: 900;
 }
+
+/* Botones de las tarjetas */
 
 .encabezado-grupo button,
 .item-tracking button {
     width: auto;
+    min-height: 40px;
     margin: 0;
     padding: 10px 14px;
     flex-shrink: 0;
     color: #ffffff;
-    background: linear-gradient(135deg, #0068bd, #003f7d);
-    border: none;
+    background: linear-gradient(
+        120deg,
+        #087df5,
+        #004b98
+    );
+    border: 1px solid rgba(100, 190, 255, 0.35);
     border-radius: 9px;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 800;
     cursor: pointer;
-    transition: 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .encabezado-grupo button:hover,
 .item-tracking button:hover {
-    background: var(--rg-naranja);
+    background: linear-gradient(
+        120deg,
+        #ffb22c,
+        #ff8500
+    );
+    border-color: rgba(255, 204, 115, 0.75);
+    box-shadow: 0 5px 16px rgba(255, 153, 0, 0.18);
     transform: translateY(-1px);
 }
 
 .lista-tracking {
     margin-top: 18px;
-    padding-top: 10px;
-    border-top: 1px solid #dce7f2;
+    padding-top: 13px;
+    border-top: 1px solid rgba(105, 169, 225, 0.24);
 }
 
 .item-tracking {
     margin: 10px 0;
     padding: 14px !important;
-    background: #ffffff;
-    border: 1px solid #e0eaf5;
+    background: #edf5ff;
+    border: 1px solid #c9def6;
     border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
 }
 
 .item-tracking:last-child {
-    border-bottom: 1px solid #e0eaf5;
+    border-bottom: 1px solid #c9def6;
 }
 
 .item-tracking span {
     color: #18324d !important;
-    font-weight: 700;
+    font-weight: 800;
 }
 
-/* CAMPOS Y FORMULARIOS */
+/* =====================================================
+   CAMPOS Y FORMULARIOS
+   ===================================================== */
+
+label {
+    display: block;
+    margin-top: 10px;
+    color: #d7eaff;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+label strong {
+    color: #b9dcff;
+    font-weight: 800;
+}
 
 input,
 select,
 textarea {
+    display: block;
     width: 100%;
     max-width: 100%;
+    min-height: 47px;
     padding: 13px 14px;
-    margin: 8px 0 15px;
-    box-sizing: border-box;
+    margin: 8px 0 16px;
     color: #18324d;
-    background: #f9fbff;
-    border: 1px solid #ccd9e8;
+    background: #f4f8ff;
+    border: 1px solid #9cb9d9;
     border-radius: 10px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    line-height: 1.5;
+    box-sizing: border-box;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #73869d;
+    opacity: 1;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
     outline: none;
+    color: #18324d;
     background: #ffffff;
-    border-color: var(--rg-azul-vivo);
-    box-shadow: 0 0 0 3px rgba(0, 85, 165, 0.12);
+    border-color: #159bff;
+    box-shadow:
+        0 0 0 3px rgba(0, 132, 255, 0.19),
+        0 0 18px rgba(0, 132, 255, 0.08);
 }
 
-label {
-    display: block;
-    margin-top: 8px;
-    color: var(--rg-azul);
-    line-height: 1.5;
+select {
+    cursor: pointer;
 }
 
 textarea {
+    min-height: 100px;
     resize: vertical;
 }
 
-/* BOTONES PRINCIPALES */
+/* =====================================================
+   BOTONES PRINCIPALES
+   ===================================================== */
 
 .contenedor > button,
 #prealerta,
 #guardarDatosEntrega {
+    position: relative;
     width: 100%;
-    min-height: 48px;
+    min-height: 50px;
     margin: 12px 0;
-    padding: 13px 18px;
+    padding: 14px 18px;
+    overflow: hidden;
     color: #ffffff;
-    background: linear-gradient(110deg, #0055a5, #003366);
-    border: none;
+    background: linear-gradient(
+        105deg,
+        #087df5 0%,
+        #0051a1 65%,
+        #003366 100%
+    );
+    border: 1px solid rgba(100, 190, 255, 0.38);
     border-radius: 11px;
-    box-shadow: 0 5px 14px rgba(0, 51, 102, 0.16);
+    box-shadow:
+        0 6px 17px rgba(0, 0, 0, 0.20),
+        0 0 14px rgba(0, 119, 255, 0.09);
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 800;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
 
 .contenedor > button:hover,
 #prealerta:hover,
 #guardarDatosEntrega:hover {
-    background: linear-gradient(110deg, #ffad24, #ff8800);
-    box-shadow: 0 7px 18px rgba(255, 153, 0, 0.23);
-    transform: translateY(-1px);
+    color: #ffffff;
+    background: linear-gradient(
+        105deg,
+        #ffb22c,
+        #ff8500
+    );
+    border-color: rgba(255, 203, 118, 0.7);
+    box-shadow:
+        0 8px 22px rgba(255, 153, 0, 0.16),
+        0 0 16px rgba(255, 153, 0, 0.10);
+    transform: translateY(-2px);
 }
 
-/* MENSAJE DE GUARDADO */
+.contenedor > button:active,
+#prealerta:active,
+#guardarDatosEntrega:active {
+    transform: translateY(0);
+}
+
+/* =====================================================
+   REGISTRAR PREALERTA
+   ===================================================== */
+
+#tracking {
+    min-height: 54px;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+#tracking::placeholder {
+    font-weight: 400;
+}
+
+/* =====================================================
+   MENSAJE DE DATOS GUARDADOS
+   ===================================================== */
 
 #mensajeDatosEntrega {
-    padding: 10px;
-    color: #176b3a;
-    background: #effaf3;
+    padding: 12px;
+    color: #b6ffd1;
+    background: rgba(24, 140, 74, 0.13);
+    border: 1px solid rgba(86, 219, 139, 0.28);
     border-radius: 9px;
+    font-weight: 800;
+    line-height: 1.6;
 }
 
-/* MÓVILES */
+/* =====================================================
+   ANIMACIONES Y ACCESIBILIDAD
+   ===================================================== */
 
-@media (max-width: 650px) {
-    .contenedor {
-        width: calc(100% - 20px);
-        margin: 12px auto;
-        padding: 22px 15px;
-        border-radius: 17px;
-    }
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--rg-azul-luz);
+    outline-offset: 3px;
+}
 
-    h1 {
-        font-size: 27px;
-    }
+/* =====================================================
+   ADAPTACIÓN A TELÉFONOS Y TABLETAS
+   ===================================================== */
 
-    h2 {
-        margin: 25px 0 15px;
-        padding: 13px;
-        font-size: 19px;
+@media (min-width: 760px) {
+    #resumenPaquetes {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: stretch;
     }
 
     .grupo-paquetes {
-        padding: 15px;
+        padding: 18px;
+    }
+
+    .encabezado-grupo {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .encabezado-grupo button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 759px) {
+    .contenedor {
+        width: calc(100% - 20px);
+        margin: 13px auto;
+        padding: 22px 15px;
+        border-radius: 18px;
+    }
+
+    .contenedor > img {
+        width: min(290px, 82vw) !important;
+        margin: 12px auto 20px !important;
+    }
+
+    h1 {
+        font-size: 28px;
+        letter-spacing: -0.4px;
+    }
+
+    h1 + p {
+        font-size: 15px;
+    }
+
+    h2 {
+        margin: 26px 0 16px;
+        padding: 13px 12px;
+        font-size: 19px;
+    }
+
+    .contenedor > p {
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+    .grupo-paquetes {
+        padding: 16px;
     }
 
     .encabezado-grupo {
@@ -334,7 +695,7 @@ textarea {
     }
 
     .encabezado-grupo button {
-        padding: 9px 11px;
+        padding: 10px 12px;
         font-size: 13px;
     }
 
@@ -349,26 +710,50 @@ textarea {
     }
 }
 
+@media (max-width: 380px) {
+    .contenedor {
+        width: calc(100% - 14px);
+        padding: 18px 12px;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    .encabezado-grupo {
+        gap: 10px;
+    }
+
+    .encabezado-grupo button {
+        max-width: 100%;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
         scroll-behavior: auto !important;
+        animation: none !important;
         transition: none !important;
     }
 }
 </style>
-    
-    
 </head>
 
 <body>
 
 <div class="contenedor">
 
-<img src="ChatGPT Image 27 de jul. de 2026 16_26_44.png" 
-alt="Rápido Global" 
-style="display:block; margin:20px auto; width:180px;">
+<img
+src="ChatGPT Image 27 de jul. de 2026 16_26_44.png"
+alt="Rápido Global"
+style="display:block; margin:20px auto; width:180px;"
+>
 
 <h1>Bienvenido a tu cuenta 👋</h1>
 
@@ -414,7 +799,6 @@ Aquí puedes consultar tus paquetes y prealertas.
         ></div>
     </div>
 
-
     <div class="grupo-paquetes" id="grupoBodega">
         <div class="encabezado-grupo">
             <div>
@@ -436,7 +820,6 @@ Aquí puedes consultar tus paquetes y prealertas.
             style="display:none;"
         ></div>
     </div>
-
 
     <div class="grupo-paquetes" id="grupoVenezuela">
         <div class="encabezado-grupo">
@@ -461,7 +844,6 @@ Aquí puedes consultar tus paquetes y prealertas.
     </div>
 
 </div>
-    
 
 <h2>📦 Registrar Prealerta</h2>
 
@@ -472,15 +854,14 @@ Ingresa el número de tracking de tu compra.
 <input
 type="text"
 id="tracking"
-placeholder="Número de Tracking">
+placeholder="Número de Tracking"
+>
 
 <button id="prealerta">
 Registrar Prealerta
 </button>
 
 <hr>
-
-
 
 <h2>📍 Mi Casillero</h2>
 
@@ -545,7 +926,8 @@ style="width:100%; padding:10px; margin:8px 0 15px;"
 <input
 type="text"
 id="estadoEntrega"
-placeholder="Ejemplo: Zulia">
+placeholder="Ejemplo: Zulia"
+>
 
 <label for="ciudadEntrega">
 <strong>Ciudad / Municipio</strong>
@@ -554,7 +936,8 @@ placeholder="Ejemplo: Zulia">
 <input
 type="text"
 id="ciudadEntrega"
-placeholder="Ejemplo: Maracaibo">
+placeholder="Ejemplo: Maracaibo"
+>
 
 <label for="oficinaEntrega">
 <strong>Nombre de la oficina</strong>
@@ -563,7 +946,8 @@ placeholder="Ejemplo: Maracaibo">
 <input
 type="text"
 id="oficinaEntrega"
-placeholder="Nombre de la oficina">
+placeholder="Nombre de la oficina"
+>
 
 <label for="direccionOficina">
 <strong>Dirección completa de la oficina</strong>
@@ -572,7 +956,8 @@ placeholder="Nombre de la oficina">
 <input
 type="text"
 id="direccionOficina"
-placeholder="Dirección completa de la oficina">
+placeholder="Dirección completa de la oficina"
+>
 
 </div>
 
@@ -587,1089 +972,8 @@ placeholder="Dirección completa de la oficina">
 <input
 type="text"
 id="estadoDomicilio"
-placeholder="Ejemplo: Zulia">
+placeholder="Ejemplo: Zulia"
+>
 
 <label for="ciudadDomicilio">
-<strong>Ciudad / Municipio</strong>
-</label>
-
-<input
-type="text"
-id="ciudadDomicilio"
-placeholder="Ejemplo: Maracaibo">
-
-<label for="codigoPostal">
-<strong>Código postal</strong>
-</label>
-
-<input
-type="text"
-id="codigoPostal"
-placeholder="Código postal">
-
-<label for="barrioUrbanizacion">
-<strong>Barrio / Urbanización</strong>
-</label>
-
-<input
-type="text"
-id="barrioUrbanizacion"
-placeholder="Barrio o urbanización">
-
-<label for="calleAvenida">
-<strong>Calle / Carrera / Avenida</strong>
-</label>
-
-<input
-type="text"
-id="calleAvenida"
-placeholder="Ejemplo: Avenida 5, Calle 10, Carrera 20">
-
-<label for="numeroCasa">
-<strong>Número de casa / apartamento</strong>
-</label>
-
-<input
-type="text"
-id="numeroCasa"
-placeholder="Ejemplo: Casa 15, Apartamento 3">
-
-<label for="direccionDomicilio">
-<strong>Dirección completa</strong>
-</label>
-
-<input
-type="text"
-id="direccionDomicilio"
-placeholder="Escribe la dirección completa">
-
-<label for="puntoReferencia">
-<strong>Punto de referencia</strong>
-</label>
-
-<input
-type="text"
-id="puntoReferencia"
-placeholder="Ejemplo: Cerca de...">
-
-</div>
-
-<label for="telefonoEntrega">
-<strong>Teléfono de contacto</strong>
-</label>
-
-<input
-type="text"
-id="telefonoEntrega"
-placeholder="Número de teléfono">
-
-<label for="personaRecibe">
-<strong>Persona que recibe</strong>
-</label>
-
-<input
-type="text"
-id="personaRecibe"
-placeholder="Nombre de la persona que recibirá">
-
-<label for="cedulaRecibe">
-<strong>Cédula de identidad de quien recibe</strong>
-</label>
-
-<input
-type="text"
-id="cedulaRecibe"
-placeholder="Ejemplo: V-12345678"
-autocomplete="off"
-style="width:100%; padding:10px; margin:8px 0 15px; box-sizing:border-box;"
->
-    
-<label for="observacionesEntrega">
-<strong>Observaciones</strong>
-</label>
-
-<textarea
-id="observacionesEntrega"
-placeholder="Información adicional para la entrega"
-style="width:100%; min-height:90px; padding:10px; margin:8px 0 15px; box-sizing:border-box;"
-></textarea>
-
-<button
-id="guardarDatosEntrega"
-type="button"
->
-💾 Guardar datos de entrega
-</button>
-
-<p
-id="mensajeDatosEntrega"
-style="text-align:center; font-weight:bold;"
-></p>
-
-<hr>
-
-<button onclick="cerrarSesion()">
-Cerrar sesión
-</button>
-
-</div>
-
-
-<script type="module">
-
-import { auth, db } from "./firebase.js";
-
-import {
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  addDoc,
-  doc,
-  setDoc,
-  getDoc,
-  deleteDoc
-} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-    
-let usuarioActual = null;
-
-
-// ===============================
-// CARGAR PREALERTAS
-// ===============================
-
-async function cargarPrealertas(usuario) {
-
-  try {
-
-    const consultaPrealertas =
-      query(
-        collection(db, "prealertas"),
-        where(
-          "uid",
-          "==",
-          usuario.uid
-        )
-      );
-
-    const resultadoPrealertas =
-      await getDocs(
-        consultaPrealertas
-      );
-
-    console.log(
-      "UID DEL CLIENTE:",
-      usuario.uid
-    );
-
-    console.log(
-      "PREALERTAS ENCONTRADAS:",
-      resultadoPrealertas.size
-    );
-
-    // ===============================
-    // SEPARAR LOS PAQUETES POR ESTADO
-    // ===============================
-
-    const prealertados = [];
-    const bodega = [];
-    const venezuela = [];
-
-    resultadoPrealertas.forEach((documento) => {
-
-      const datos = documento.data();
-
-      const paquete = {
-        id: documento.id,
-        tracking: datos.tracking || "Sin tracking",
-        estado: datos.estado || "Prealertado"
-      };
-
-      if (paquete.estado === "Recibido en bodega") {
-
-        bodega.push(paquete);
-
-      } else if (paquete.estado === "Llegó a Venezuela") {
-
-        venezuela.push(paquete);
-
-      } else {
-
-        prealertados.push(paquete);
-
-      }
-
-    });
-
-    // ===============================
-    // CONTADORES
-    // ===============================
-
-    document
-      .getElementById("contadorPrealertados")
-      .textContent = prealertados.length;
-
-    document
-      .getElementById("contadorBodega")
-      .textContent = bodega.length;
-
-    document
-      .getElementById("contadorVenezuela")
-      .textContent = venezuela.length;
-
-    // ===============================
-    // MOSTRAR PAQUETES
-    // ===============================
-
-    document.getElementById("listaPrealertados").innerHTML =
-      crearListaTracking(prealertados, true);
-
-    document.getElementById("listaBodega").innerHTML =
-      crearListaTracking(bodega, false);
-
-    document.getElementById("listaVenezuela").innerHTML =
-      crearListaTracking(venezuela, false);
-
-  } catch (error) {
-
-    console.error(
-      "ERROR CARGANDO PREALERTAS:",
-      error
-    );
-
-  }
-
-}
-
-    
-// ===============================
-// CREAR LISTA DE TRACKING
-// ===============================
-
-function escaparHTML(texto) {
-  return String(texto).replace(/[&<>"']/g, (caracter) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[caracter]);
-}
-
-function crearListaTracking(paquetes, permitirEliminar = false) {
-  if (!paquetes.length) {
-    return `
-      <p style="text-align:center;">
-        No tienes paquetes en este estado.
-      </p>
-    `;
-  }
-
-  return paquetes.map((paquete) => {
-    const id = escaparHTML(paquete.id);
-    const tracking = escaparHTML(paquete.tracking);
-
-    return `
-      <div class="item-tracking"
-           style="display:flex; flex-direction:column; align-items:stretch; gap:10px; padding:12px;">
-
-        <div style="width:100%; box-sizing:border-box; color:#000000; font-size:18px; font-weight:bold; overflow-wrap:anywhere; word-break:break-word;">
-          📦 ${tracking}
-        </div>
-
-        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-          <button
-            type="button"
-            data-tracking="${tracking}"
-            onclick="copiarTracking(this.dataset.tracking)"
-            style="width:auto; flex:0 0 auto; margin:0; padding:8px 12px; white-space:nowrap;"
-          >
-            📋 Copiar
-          </button>
-
-          ${permitirEliminar ? `
-            <button
-              type="button"
-              data-id="${id}"
-              onclick="eliminarPrealerta(this.dataset.id)"
-              style="width:auto; flex:0 0 auto; margin:0; padding:8px 12px; white-space:nowrap; background:#dc3545; color:white;"
-            >
-              🗑️ Eliminar
-            </button>
-          ` : ""}
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-    
-// ===============================
-// MOSTRAR / OCULTAR TRACKINGS
-// ===============================
-
-window.toggleTracking = function(id) {
-
-  const lista =
-    document.getElementById(id);
-
-
-  if (!lista) {
-    return;
-  }
-
-
-  if (lista.style.display === "none") {
-
-    lista.style.display = "block";
-
-  } else {
-
-    lista.style.display = "none";
-
-  }
-
-};
-
-
-// ===============================
-// COPIAR TRACKING
-// ===============================
-
-window.copiarTracking = async function(tracking) {
-
-  try {
-
-    await navigator.clipboard.writeText(tracking);
-
-    alert(
-      "Tracking copiado: " + tracking
-    );
-
-  } catch (error) {
-
-    console.error(
-      "No fue posible copiar el tracking:",
-      error
-    );
-
-  }
-
-};
-
-
-// ===============================
-// ELIMINAR PREALERTA
-// ===============================
-
-window.eliminarPrealerta = async function(id) {
-
-  if (!usuarioActual) {
-    alert("Debes iniciar sesión.");
-    return;
-  }
-
-  const confirmar = confirm(
-    "¿Estás seguro de que deseas eliminar esta prealerta?\n\n" +
-    "Esta acción no se puede deshacer."
-  );
-
-  if (!confirmar) {
-    return;
-  }
-
-  try {
-
-    const referencia = doc(db, "prealertas", id);
-
-    const resultado = await getDoc(referencia);
-
-    if (!resultado.exists()) {
-
-      alert("Esta prealerta ya no existe.");
-
-      await cargarPrealertas(usuarioActual);
-
-      return;
-    }
-
-    const datos = resultado.data();
-
-    if (datos.uid !== usuarioActual.uid) {
-
-      alert("No tienes permiso para eliminar esta prealerta.");
-
-      return;
-    }
-
-    const estadoActual = datos.estado || "Prealertado";
-
-    if (estadoActual !== "Prealertado") {
-
-      alert("Este paquete ya cambió de estado y no se puede eliminar.");
-
-      await cargarPrealertas(usuarioActual);
-
-      return;
-    }
-
-    await deleteDoc(referencia);
-
-    await cargarPrealertas(usuarioActual);
-
-    alert("✅ Prealerta eliminada correctamente.");
-
-  } catch (error) {
-
-    console.error(
-      "ERROR AL ELIMINAR PREALERTA:",
-      error
-    );
-
-    alert(
-      "No fue posible eliminar la prealerta. Verifica tu conexión e inténtalo nuevamente."
-    );
-
-  }
-
-};
-    
-
-// ===============================
-// CERRAR SESIÓN
-// ===============================
-
-window.cerrarSesion = async function () {
-
-  await signOut(auth);
-
-  window.location.href = "index.html";
-
-};
-
-
-// ===============================
-// CAMBIO DE EMPRESA
-// ===============================
-
-document
-.getElementById("empresaEnvio")
-.addEventListener("change", () => {
-
-  const empresa =
-    document.getElementById("empresaEnvio").value;
-
-  const contenedorTipo =
-    document.getElementById("contenedorTipoEntrega");
-
-  const tipoEntrega =
-    document.getElementById("tipoEntrega");
-
-  const datosOficina =
-    document.getElementById("datosOficina");
-
-  const datosDomicilio =
-    document.getElementById("datosDomicilio");
-
-
-  if (empresa === "Domesa") {
-
-    contenedorTipo.style.display = "block";
-
-    actualizarTipoEntrega();
-
-  } else {
-
-    contenedorTipo.style.display = "none";
-
-    tipoEntrega.value = "oficina";
-
-    datosOficina.style.display = "block";
-
-    datosDomicilio.style.display = "none";
-
-  }
-
-});
-
-
-// ===============================
-// CAMBIO TIPO DE ENTREGA DOMESA
-// ===============================
-
-document
-.getElementById("tipoEntrega")
-.addEventListener("change", actualizarTipoEntrega);
-
-
-function actualizarTipoEntrega() {
-
-  const tipo =
-    document.getElementById("tipoEntrega").value;
-
-  const datosOficina =
-    document.getElementById("datosOficina");
-
-  const datosDomicilio =
-    document.getElementById("datosDomicilio");
-
-
-  if (tipo === "domicilio") {
-
-    datosOficina.style.display = "none";
-
-    datosDomicilio.style.display = "block";
-
-  } else {
-
-    datosOficina.style.display = "block";
-
-    datosDomicilio.style.display = "none";
-
-  }
-
-}
-
-
-// ===============================
-// GUARDAR DATOS DE ENTREGA
-// ===============================
-
-document
-.getElementById("guardarDatosEntrega")
-.addEventListener("click", async () => {
-
-  if (!usuarioActual) {
-
-    alert("Debe iniciar sesión.");
-
-    return;
-
-  }
-
-
-  const empresa =
-    document.getElementById("empresaEnvio").value;
-
-
-  if (!empresa) {
-
-    alert("Seleccione una empresa de envío.");
-
-    return;
-
-  }
-
-
-  const tipoEntrega =
-    empresa === "Domesa"
-      ? document.getElementById("tipoEntrega").value
-      : "oficina";
-
-
-  const datos = {
-
-    uid: usuarioActual.uid,
-
-    correo: usuarioActual.email,
-
-    empresaEnvio: empresa,
-
-    tipoEntrega: tipoEntrega,
-
-    // DATOS GENERALES
-    telefono:
-      document.getElementById("telefonoEntrega").value.trim(),
-
-
-     personaRecibe:
-      document.getElementById("personaRecibe").value.trim(),
-
-    cedulaRecibe:
-      document.getElementById("cedulaRecibe").value.trim(),
-
-    observaciones:
-      document.getElementById("observacionesEntrega").value.trim(),      
-
-    // DATOS DE OFICINA
-    estado:
-      document.getElementById("estadoEntrega").value.trim(),
-
-    ciudad:
-      document.getElementById("ciudadEntrega").value.trim(),
-
-    oficina:
-      document.getElementById("oficinaEntrega").value.trim(),
-
-    direccionOficina:
-      document.getElementById("direccionOficina").value.trim(),
-
-    // DATOS DE DOMICILIO
-    estadoDomicilio:
-      document.getElementById("estadoDomicilio").value.trim(),
-
-    ciudadDomicilio:
-      document.getElementById("ciudadDomicilio").value.trim(),
-
-    codigoPostal:
-      document.getElementById("codigoPostal").value.trim(),
-
-    barrioUrbanizacion:
-      document.getElementById("barrioUrbanizacion").value.trim(),
-
-    calleAvenida:
-      document.getElementById("calleAvenida").value.trim(),
-
-    numeroCasa:
-      document.getElementById("numeroCasa").value.trim(),
-
-    direccionDomicilio:
-      document.getElementById("direccionDomicilio").value.trim(),
-
-    puntoReferencia:
-      document.getElementById("puntoReferencia").value.trim(),
-
-    fechaActualizacion: new Date()
-
-  };
-
-
-  try {
-
-    await setDoc(
-      doc(
-        db,
-        "datosEntrega",
-        usuarioActual.uid
-      ),
-      datos,
-      {
-        merge: true
-      }
-    );
-
-
-    const mensaje =
-      document.getElementById("mensajeDatosEntrega");
-
-
-    mensaje.textContent =
-      "✅ Datos de entrega guardados correctamente.";
-
-
-    setTimeout(() => {
-
-      mensaje.textContent = "";
-
-    }, 4000);
-
-
-  } catch (error) {
-
-    alert(
-      "No fue posible guardar los datos de entrega.\n\n" +
-      error.message
-    );
-
-  }
-
-});
-
-
-// ===============================
-// PREALERTA
-// ===============================
-
-document
-.getElementById("prealerta")
-.addEventListener("click", async () => {
-
-  const tracking =
-    document.getElementById("tracking").value.trim();
-
-
-  if (!tracking) {
-
-    alert("Ingrese el número de tracking.");
-
-    return;
-
-  }
-
-
-  // ===============================
-  // RECHAZAR CÓDIGOS GSH
-  // ===============================
-
-  const trackingMayusculas =
-    tracking.toUpperCase();
-
-
-  if (trackingMayusculas.startsWith("GSH")) {
-
-    alert(
-      "⚠️ Tracking no válido.\n\n" +
-      "El código ingresado corresponde a un número de pedido " +
-      "o proceso de compra y no a la guía de envío.\n\n" +
-      "Por favor, ingresa el número de tracking proporcionado " +
-      "por la empresa de transporte."
-    );
-
-    return;
-
-  }
-
-
-  const usuario = auth.currentUser;
-
-
-  if (!usuario) {
-
-    alert("Debe iniciar sesión.");
-
-    return;
-
-  }
-
-
-  try {
-
-    // ===============================
-    // VERIFICAR TRACKING DUPLICADO
-    // ===============================
-
-    const consultaTracking =
-      query(
-        collection(db, "prealertas"),
-        where(
-          "tracking",
-          "==",
-          tracking
-        )
-      );
-
-
-    const resultadoTracking =
-      await getDocs(
-        consultaTracking
-      );
-
-
-    if (!resultadoTracking.empty) {
-
-      alert(
-        "⚠️ Este tracking ya fue registrado."
-      );
-
-      return;
-
-    }
-
-
-    // ===============================
-    // GUARDAR PREALERTA
-    // ===============================
-
-    await addDoc(
-      collection(db, "prealertas"),
-      {
-
-        uid: usuario.uid,
-
-        correo: usuario.email,
-
-        tracking: tracking,
-
-        estado: "Prealertado",
-
-        fecha: new Date()
-
-      }
-    );
-
-
-    alert(
-      "Prealerta registrada correctamente."
-    );
-
-
-    location.reload();
-
-
-  } catch (error) {
-
-    alert(
-      "Error: " + error.message
-    );
-
-  }
-
-});
-
-    
-
-// ===============================
-// CARGAR CUENTA
-// ===============================
-
-onAuthStateChanged(
-  auth,
-  async (usuario) => {
-
-    if (!usuario) {
-
-      window.location.href = "index.html";
-
-      return;
-
-    }
-
-
-    usuarioActual = usuario;
-
-
-    // ===============================
-    // CARGAR PREALERTAS INMEDIATAMENTE
-    // ===============================
-
-    await cargarPrealertas(usuario);
-
-
-    document
-    .getElementById("correoCliente")
-    .textContent = usuario.email;
-
-
-    // ===============================
-    // DATOS DEL CLIENTE
-    // ===============================
-
-    const consulta =
-      query(
-        collection(db, "usuarios"),
-        where(
-          "uid",
-          "==",
-          usuario.uid
-        )
-      );
-
-
-    const resultado =
-      await getDocs(consulta);
-
-
-    if (!resultado.empty) {
-
-      const datos =
-        resultado.docs[0].data();
-
-
-      document
-      .getElementById("nombreCliente")
-      .textContent =
-        datos.nombre;
-
-
-      document
-      .getElementById("codigoCliente")
-      .textContent =
-        datos.codigo;
-
-
-      document
-      .getElementById("nombreCasillero")
-      .textContent =
-        datos.nombre;
-
-
-      document
-      .getElementById("codigoCasillero")
-      .textContent =
-        datos.codigo;
-
-    }
-
-
-    // ===============================
-    // CARGAR DATOS DE ENTREGA
-    // ===============================
-
-    const referenciaEntrega =
-      doc(
-        db,
-        "datosEntrega",
-        usuario.uid
-      );
-
-
-    const resultadoEntrega =
-      await getDoc(
-        referenciaEntrega
-      );
-
-
-    if (!resultadoEntrega.exists()) {
-
-      return;
-
-    }
-
-
-    const entrega =
-      resultadoEntrega.data();
-
-
-    // EMPRESA
-
-    document
-    .getElementById("empresaEnvio")
-    .value =
-      entrega.empresaEnvio || "";
-
-
-    // TIPO
-
-    if (
-      entrega.empresaEnvio === "Domesa"
-    ) {
-
-      document
-      .getElementById("contenedorTipoEntrega")
-      .style.display = "block";
-
-
-      document
-      .getElementById("tipoEntrega")
-      .value =
-        entrega.tipoEntrega || "oficina";
-
-
-    } else {
-
-      document
-      .getElementById("contenedorTipoEntrega")
-      .style.display = "none";
-
-    }
-
-
-    actualizarTipoEntrega();
-
-
-    // OFICINA
-
-    document
-    .getElementById("estadoEntrega")
-    .value =
-      entrega.estado || "";
-
-
-    document
-    .getElementById("ciudadEntrega")
-    .value =
-      entrega.ciudad || "";
-
-
-    document
-    .getElementById("oficinaEntrega")
-    .value =
-      entrega.oficina || "";
-
-
-    document
-    .getElementById("direccionOficina")
-    .value =
-      entrega.direccionOficina || "";
-
-
-    // DOMICILIO
-
-    document
-    .getElementById("estadoDomicilio")
-    .value =
-      entrega.estadoDomicilio || "";
-
-
-    document
-    .getElementById("ciudadDomicilio")
-    .value =
-      entrega.ciudadDomicilio || "";
-
-
-    document
-    .getElementById("codigoPostal")
-    .value =
-      entrega.codigoPostal || "";
-
-
-    document
-    .getElementById("barrioUrbanizacion")
-    .value =
-      entrega.barrioUrbanizacion || "";
-
-
-    document
-    .getElementById("calleAvenida")
-    .value =
-      entrega.calleAvenida || "";
-
-
-    document
-    .getElementById("numeroCasa")
-    .value =
-      entrega.numeroCasa || "";
-
-
-    document
-    .getElementById("direccionDomicilio")
-    .value =
-      entrega.direccionDomicilio || "";
-
-
-    document
-    .getElementById("puntoReferencia")
-    .value =
-      entrega.puntoReferencia || "";
-
-
-    // GENERALES
-
-    document
-    .getElementById("telefonoEntrega")
-    .value =
-      entrega.telefono || "";
-
-
-    document
-    .getElementById("personaRecibe")
-    .value =
-      entrega.personaRecibe || "";
-
-
-    document
-    .getElementById("cedulaRecibe")
-    .value =
-      entrega.cedulaRecibe || "";
-
-
-    document
-    .getElementById("observacionesEntrega")
-    .value =
-      entrega.observaciones || "";
-
-  }
-
-);
-
-</script>
-
-</body>
-</html>
-
-    
+<strong>Ciudad / Municipio
