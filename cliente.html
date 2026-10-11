@@ -3,452 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#061a32">
+
 <title>Mi Cuenta | Rápido Global</title>
+
 <link rel="stylesheet" href="style.css">
 
+
 <style>
-:root {
-    --rg-azul: #061a32;
-    --rg-azul-panel: #0b294b;
-    --rg-azul-claro: #087cff;
-    --rg-celeste: #42c5ff;
-    --rg-naranja: #ff9d24;
-    --rg-blanco: #f5f9ff;
-    --rg-suave: #afc5df;
-    --rg-borde: rgba(91,170,255,.24);
-}
-
-* { box-sizing: border-box; }
-
-html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 20px;
-}
-
-body {
-    min-height: 100vh;
-    margin: 0;
-    padding: 1px 0 30px;
-    color: var(--rg-blanco);
-    font-family: "Segoe UI", Arial, sans-serif;
-    background:
-        radial-gradient(circle at 8% 5%, rgba(0,124,255,.24), transparent 32%),
-        radial-gradient(circle at 95% 35%, rgba(255,157,36,.10), transparent 27%),
-        linear-gradient(145deg,#020d1c,#082b50 55%,#020d1c);
-    background-attachment: fixed;
-}
-
-.contenedor {
-    position: relative;
-    isolation: isolate;
-    width: calc(100% - 30px);
-    max-width: 1120px;
-    margin: 25px auto;
-    padding: 32px;
-    overflow: hidden;
-    background: linear-gradient(145deg,rgba(11,38,68,.98),rgba(4,20,39,.98));
-    border: 1px solid var(--rg-borde);
-    border-radius: 24px;
-    box-shadow: 0 20px 60px rgba(0,0,0,.32);
-}
-
-.contenedor::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    top: -140px;
-    right: -100px;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    background: rgba(0,124,255,.13);
-    filter: blur(65px);
-    pointer-events: none;
-}
-
-.contenedor::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    bottom: 8%;
-    left: -150px;
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    background: rgba(255,157,36,.07);
-    filter: blur(65px);
-    pointer-events: none;
-}
-
-.contenedor > img {
-    display: block;
-    width: 210px;
-    max-width: 78%;
-    height: auto;
-    margin: 12px auto 22px !important;
-    filter: drop-shadow(0 0 18px rgba(66,197,255,.20));
-    animation: rgEntrada .65s ease both;
-}
-
-h1 {
-    margin: 12px 0;
-    color: #fff;
-    font-size: clamp(27px,4vw,39px);
-    font-weight: 850;
-    line-height: 1.2;
-    text-align: center;
-    letter-spacing: -.7px;
-    text-shadow: 0 0 25px rgba(66,197,255,.15);
-}
-
-h1 + p {
-    color: var(--rg-suave);
-    font-size: 15px;
-    line-height: 1.8;
-}
-
-h2 {
-    margin: 30px 0 18px;
-    padding: 15px 17px;
-    color: #fff;
-    background: linear-gradient(100deg,rgba(8,124,255,.19),rgba(12,43,75,.35));
-    border: 1px solid rgba(91,170,255,.15);
-    border-left: 4px solid var(--rg-naranja);
-    border-radius: 11px;
-    font-size: clamp(18px,2.5vw,22px);
-    line-height: 1.4;
-    text-align: left;
-}
-
-h3 { color: #fff; }
-
-.contenedor > hr {
-    height: 1px;
-    margin: 28px 0;
-    border: 0;
-    background: linear-gradient(90deg,transparent,rgba(91,170,255,.38),transparent);
-}
-
-.contenedor > p {
-    color: #d5e4f6;
-    font-size: 15px;
-    line-height: 1.9;
-    overflow-wrap: anywhere;
-}
-
-.contenedor > p strong { color: #91ceff; }
-
-#nombreCliente,
-#codigoCliente,
-#correoCliente,
-#nombreCasillero,
-#codigoCasillero {
-    color: #fff;
-    font-weight: 800;
-    overflow-wrap: anywhere;
-}
-
-/* TARJETAS DE PAQUETES */
 
 #resumenPaquetes {
-    display: grid;
-    grid-template-columns: repeat(3,minmax(0,1fr));
-    gap: 16px;
-    margin: 20px 0 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
 }
 
 .grupo-paquetes {
-    position: relative;
-    min-width: 0;
-    padding: 19px;
-    overflow: hidden;
-    background: linear-gradient(145deg,rgba(18,54,91,.96),rgba(6,27,49,.98));
-    border: 1px solid var(--rg-borde);
-    border-radius: 16px;
-    box-shadow: 0 10px 28px rgba(0,0,0,.16);
-    transition: transform .25s ease,border-color .25s ease,box-shadow .25s ease;
-}
-
-.grupo-paquetes::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg,var(--rg-azul-claro),var(--rg-celeste),var(--rg-naranja));
-}
-
-.grupo-paquetes:hover {
-    transform: translateY(-3px);
-    border-color: rgba(66,197,255,.55);
-    box-shadow: 0 15px 30px rgba(0,0,0,.22);
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.10);
+    border: 1px solid #e5e5e5;
 }
 
 .encabezado-grupo {
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 14px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
 }
 
 .encabezado-grupo h3 {
-    margin: 3px 0 9px;
-    color: #fff;
-    font-size: 17px;
-    line-height: 1.5;
+    margin: 0 0 5px 0;
 }
 
 .encabezado-grupo p {
     margin: 0;
-    color: var(--rg-suave);
-    text-align: left;
-    font-size: 14px;
+    color: #666;
 }
 
-.encabezado-grupo p strong {
-    color: var(--rg-naranja);
-    font-size: 28px;
-    font-weight: 850;
-}
-
-.encabezado-grupo button,
-.item-tracking button {
-    width: auto;
-    max-width: 100%;
-    margin: 0;
-    padding: 10px 12px;
-    flex-shrink: 0;
-    color: #fff;
-    background: linear-gradient(110deg,#087cff,#07509a);
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: 9px;
-    font-size: 13px;
-    font-weight: 750;
+.encabezado-grupo button {
+    border: none;
+    background: #007bff;
+    color: white;
+    padding: 9px 13px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background .2s ease,transform .2s ease;
+    font-weight: bold;
 }
-
-.encabezado-grupo button:hover,
-.item-tracking button:hover {
-    background: linear-gradient(110deg,#ffad38,#ed7900);
-    transform: translateY(-1px);
-}
-
+    
 .lista-tracking {
-    margin-top: 17px;
+    margin-top: 15px;
+    border-top: 1px solid #eeeeee;
     padding-top: 10px;
-    border-top: 1px solid var(--rg-borde);
 }
 
 .item-tracking {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 10px 0;
-    padding: 13px !important;
-    background: rgba(2,15,29,.8);
-    border: 1px solid rgba(91,170,255,.2);
-    border-radius: 11px;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.item-tracking:last-child {
+    border-bottom: none;
 }
 
 .item-tracking span {
-    color: #fff !important;
-    font-weight: 750;
-}
-
-/* CAMPOS Y FORMULARIOS */
-
-label {
     display: block;
-    margin-top: 12px;
-    color: #c9e4ff;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-input,
-select,
-textarea {
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    min-height: 47px;
-    margin: 8px 0 16px;
-    padding: 13px 14px;
-    color: #f4f8ff;
-    background: rgba(3,19,37,.82);
-    border: 1px solid rgba(91,170,255,.30);
-    border-radius: 10px;
-    font-family: inherit;
+    flex: 1;
+    min-width: 0;
+    color: #222222 !important;
+    background: transparent;
     font-size: 16px;
-    transition: border-color .2s ease,box-shadow .2s ease;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow-x: auto;
+    word-break: normal;
 }
+    
 
-input::placeholder,
-textarea::placeholder {
-    color: #829bb7;
-    opacity: 1;
-}
-
-select option {
-    color: #18324d;
-    background: #fff;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    outline: none;
-    border-color: var(--rg-celeste);
-    box-shadow: 0 0 0 3px rgba(66,197,255,.13);
-}
-
-textarea {
-    min-height: 100px;
-    resize: vertical;
-}
-
-/* BOTONES PRINCIPALES */
-
-.contenedor > button,
-#prealerta,
-#guardarDatosEntrega {
-    display: block;
-    width: 100%;
-    min-height: 49px;
-    margin: 12px 0;
-    padding: 14px 18px;
-    color: #fff;
-    background: linear-gradient(110deg,#087cff,#064783);
-    border: 1px solid rgba(119,195,255,.2);
-    border-radius: 11px;
-    box-shadow: 0 8px 22px rgba(0,91,190,.2);
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 800;
+.item-tracking button {
+    flex-shrink: 0;
+    border: none;
+    background: #007bff;
+    color: white;
+    padding: 7px 10px;
+    border-radius: 7px;
     cursor: pointer;
-    transition: transform .2s ease,box-shadow .2s ease,background .2s ease;
+    font-weight: bold;
 }
 
-.contenedor > button:hover,
-#prealerta:hover,
-#guardarDatosEntrega:hover {
-    background: linear-gradient(110deg,#ffad38,#ed7900);
-    box-shadow: 0 8px 24px rgba(255,157,36,.17);
-    transform: translateY(-2px);
-}
+    
+@media (max-width: 600px) {
 
-#contenedorTipoEntrega,
-#datosOficina,
-#datosDomicilio {
-    padding: 15px;
-    margin: 12px 0;
-    background: rgba(4,24,45,.55);
-    border: 1px solid rgba(91,170,255,.18);
-    border-radius: 13px;
-}
-
-#datosDomicilio h3 {
-    color: #fff;
-    font-size: 17px;
-}
-
-#mensajeDatosEntrega {
-    padding: 12px;
-    color: #8ef0b2;
-    background: rgba(24,145,80,.13);
-    border: 1px solid rgba(76,210,130,.24);
-    border-radius: 9px;
-    overflow-wrap: anywhere;
-}
-
-@keyframes rgEntrada {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width:850px) {
-    .contenedor { padding: 25px; }
-    #resumenPaquetes { grid-template-columns: 1fr; }
     .encabezado-grupo {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
+        align-items: flex-start;
     }
-    .encabezado-grupo button { max-width: 48%; }
-}
-
-@media (max-width:600px) {
-    body {
-        padding-bottom: 15px;
-        background-attachment: scroll;
-    }
-
-    .contenedor {
-        width: calc(100% - 18px);
-        margin: 10px auto;
-        padding: 20px 14px;
-        border-radius: 19px;
-    }
-
-    .contenedor > img {
-        width: 175px;
-        margin: 7px auto 20px !important;
-    }
-
-    h1 { font-size: 27px; letter-spacing: -.4px; }
-
-    h2 {
-        margin: 25px 0 15px;
-        padding: 13px 12px;
-        font-size: 18px;
-    }
-
-    .contenedor > p { font-size: 14px; }
-
-    #resumenPaquetes {
-        gap: 13px;
-        margin-top: 15px;
-    }
-
-    .grupo-paquetes { padding: 16px; }
-    .encabezado-grupo { gap: 10px; }
-    .encabezado-grupo h3 { font-size: 16px; }
-    .encabezado-grupo p strong { font-size: 25px; }
 
     .encabezado-grupo button {
-        padding: 10px;
-        font-size: 12px;
+        white-space: nowrap;
     }
 
-    #contenedorTipoEntrega,
-    #datosOficina,
-    #datosDomicilio {
-        padding: 11px;
+    .item-tracking {
+        align-items: flex-start;
     }
+
 }
 
-@media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto !important; }
-    *, *::before, *::after {
-        animation: none !important;
-        transition: none !important;
-    }
-}
 </style>
+    
 </head>
 
 <body>
 
 <div class="contenedor">
 
-<img
-    src="ChatGPT Image 27 de jul. de 2026 16_26_44.png"
-    alt="Rápido Global"
-    style="display:block; margin:20px auto; width:180px;"
->
+<img src="ChatGPT Image 27 de jul. de 2026 16_26_44.png" 
+alt="Rápido Global" 
+style="display:block; margin:20px auto; width:180px;">
 
 <h1>Bienvenido a tu cuenta 👋</h1>
 
@@ -460,14 +134,11 @@ Aquí puedes consultar tus paquetes y prealertas.
 
 <h2>👤 Mi Información</h2>
 
-<p><strong>Nombre:</strong>
-<span id="nombreCliente">Cargando...</span></p>
+<p><strong>Nombre:</strong> <span id="nombreCliente">Cargando...</span></p>
 
-<p><strong>Código:</strong>
-<span id="codigoCliente">Cargando...</span></p>
+<p><strong>Código:</strong> <span id="codigoCliente">Cargando...</span></p>
 
-<p><strong>Correo:</strong>
-<span id="correoCliente">Cargando...</span></p>
+<p><strong>Correo:</strong> <span id="correoCliente">Cargando...</span></p>
 
 <hr>
 
@@ -481,14 +152,22 @@ Aquí puedes consultar tus paquetes y prealertas.
                 <h3>🟡 Prealertados</h3>
                 <p><strong id="contadorPrealertados">0</strong> paquetes</p>
             </div>
-            <button type="button"
-                onclick="toggleTracking('listaPrealertados')">
+
+            <button
+                type="button"
+                onclick="toggleTracking('listaPrealertados')"
+            >
                 Ver paquetes →
             </button>
         </div>
-        <div id="listaPrealertados"
-            class="lista-tracking" style="display:none;"></div>
+
+        <div
+            id="listaPrealertados"
+            class="lista-tracking"
+            style="display:none;"
+        ></div>
     </div>
+
 
     <div class="grupo-paquetes" id="grupoBodega">
         <div class="encabezado-grupo">
@@ -496,126 +175,298 @@ Aquí puedes consultar tus paquetes y prealertas.
                 <h3>🔵 Recibidos en bodega</h3>
                 <p><strong id="contadorBodega">0</strong> paquetes</p>
             </div>
-            <button type="button"
-                onclick="toggleTracking('listaBodega')">
+
+            <button
+                type="button"
+                onclick="toggleTracking('listaBodega')"
+            >
                 Ver paquetes →
             </button>
         </div>
-        <div id="listaBodega"
-            class="lista-tracking" style="display:none;"></div>
+
+        <div
+            id="listaBodega"
+            class="lista-tracking"
+            style="display:none;"
+        ></div>
     </div>
+
 
     <div class="grupo-paquetes" id="grupoVenezuela">
+        <div class="encabezado-grupo">
+            <div>
+                <h3>🟢 Llegaron a Venezuela</h3>
+                <p><strong id="contadorVenezuela">0</strong> paquetes</p>
+            </div>
 
-  <h2>📦 Mi Casillero</h2>
+            <button
+                type="button"
+                onclick="toggleTracking('listaVenezuela')"
+            >
+                Ver paquetes →
+            </button>
+        </div>
 
-<div class="tarjeta">
-    <p><strong>📍 Dirección de mi casillero</strong></p>
-    <p>Colombia</p>
-    <p>
-        <strong>Nombre:</strong>
-        <span id="nombreCasillero">Cargando...</span>
-    </p>
-    <p>
-        <strong>Código:</strong>
-        <span id="codigoCasillero">Cargando...</span>
-    </p>
+        <div
+            id="listaVenezuela"
+            class="lista-tracking"
+            style="display:none;"
+        ></div>
+    </div>
+
 </div>
+    
 
-<hr>
+<h2>📦 Registrar Prealerta</h2>
 
-<h2>🚚 Datos de entrega en Venezuela</h2>
+<p>
+Ingresa el número de tracking de tu compra.
+</p>
 
-<div class="tarjeta">
-    <label for="empresaEnvio">Empresa de envío</label>
-    <select id="empresaEnvio">
-        <option value="">Selecciona una empresa</option>
-        <option value="MRW">MRW</option>
-        <option value="Zoom">Zoom</option>
-        <option value="Tealca">Tealca</option>
-        <option value="Domesa">Domesa</option>
-    </select>
+<input
+type="text"
+id="tracking"
+placeholder="Número de Tracking">
 
-    <div id="contenedorTipoEntrega">
-        <label for="tipoEntrega">Tipo de entrega</label>
-        <select id="tipoEntrega">
-            <option value="oficina">Retiro en oficina</option>
-            <option value="domicilio">Entrega a domicilio</option>
-        </select>
-    </div>
-
-    <div id="datosOficina">
-        <h3>📍 Dirección de la oficina</h3>
-
-        <label for="estadoEntrega">Estado</label>
-        <input id="estadoEntrega" type="text">
-
-        <label for="ciudadEntrega">Ciudad o municipio</label>
-        <input id="ciudadEntrega" type="text">
-
-        <label for="oficinaEntrega">Código o nombre de oficina</label>
-        <input id="oficinaEntrega" type="text">
-
-        <label for="direccionOficina">Dirección de la oficina</label>
-        <textarea id="direccionOficina"></textarea>
-    </div>
-
-    <div id="datosDomicilio">
-        <h3>🏠 Dirección de domicilio</h3>
-
-        <label for="estadoDomicilio">Estado</label>
-        <input id="estadoDomicilio" type="text">
-
-        <label for="ciudadDomicilio">Ciudad o municipio</label>
-        <input id="ciudadDomicilio" type="text">
-
-        <label for="codigoPostal">Código postal</label>
-        <input id="codigoPostal" type="text">
-
-        <label for="barrioUrbanizacion">Barrio o urbanización</label>
-        <input id="barrioUrbanizacion" type="text">
-
-        <label for="calleAvenida">Calle o avenida</label>
-        <input id="calleAvenida" type="text">
-
-        <label for="numeroCasa">Número de casa o apartamento</label>
-        <input id="numeroCasa" type="text">
-
-        <label for="direccionDomicilio">Dirección completa</label>
-        <textarea id="direccionDomicilio"></textarea>
-
-        <label for="puntoReferencia">Punto de referencia</label>
-        <textarea id="puntoReferencia"></textarea>
-    </div>
-
-    <hr>
-
-    <h3>👤 Datos de quien recibe</h3>
-
-    <label for="telefonoEntrega">Teléfono</label>
-    <input id="telefonoEntrega" type="tel">
-
-    <label for="personaRecibe">Nombre de quien recibe</label>
-    <input id="personaRecibe" type="text">
-
-    <label for="cedulaRecibe">Cédula de quien recibe</label>
-    <input id="cedulaRecibe" type="text">
-
-    <label for="observacionesEntrega">Observaciones</label>
-    <textarea id="observacionesEntrega"></textarea>
-
-    <button id="guardarDatosEntrega" type="button">
-        Guardar datos de entrega
-    </button>
-
-    <p id="mensajeDatosEntrega"></p>
-</div>
-
-<hr>
-
-<button id="cerrarSesion" type="button" onclick="cerrarSesion()">
-    Cerrar sesión
+<button id="prealerta">
+Registrar Prealerta
 </button>
+
+<hr>
+
+
+
+<h2>📍 Mi Casillero</h2>
+
+<p>
+<strong>Ubicación:</strong> Colombia<br>
+<strong>Nombre y apellido:</strong> <span id="nombreCasillero">Cargando...</span><br>
+<strong>Número de teléfono:</strong> +57 301 383 6779<br>
+<strong>Departamento:</strong> Norte de Santander<br>
+<strong>Municipio:</strong> Villa del Rosario<br>
+<strong>Código postal:</strong> 541030<br>
+<strong>Tipo de calle:</strong> Carrera<br>
+<strong>Dirección:</strong> Barrio Primero de Mayo, Carrera 15 #17-19<br>
+<strong>Apartamento / Suite / Unidad:</strong> Casillero Rápido Global <span id="codigoCasillero">Cargando...</span>
+</p>
+
+<hr>
+
+<h2>📍 Datos de entrega en Venezuela</h2>
+
+<p>
+Aquí puedes indicar dónde deseas recibir tus paquetes.
+Puedes modificar estos datos cuando lo necesites.
+</p>
+
+<label for="empresaEnvio">
+<strong>Empresa de envío</strong>
+</label>
+
+<select
+id="empresaEnvio"
+style="width:100%; padding:10px; margin:8px 0 15px;"
+>
+<option value="">Selecciona una empresa</option>
+<option value="MRW">MRW</option>
+<option value="Zoom">Zoom</option>
+<option value="Tealca">Tealca</option>
+<option value="Domesa">Domesa</option>
+</select>
+
+<div id="contenedorTipoEntrega" style="display:none;">
+
+<label for="tipoEntrega">
+<strong>Tipo de entrega</strong>
+</label>
+
+<select
+id="tipoEntrega"
+style="width:100%; padding:10px; margin:8px 0 15px;"
+>
+<option value="oficina">🏢 Retiro en oficina</option>
+<option value="domicilio">🏠 Puerta a puerta</option>
+</select>
+
+</div>
+
+<div id="datosOficina">
+
+<label for="estadoEntrega">
+<strong>Estado</strong>
+</label>
+
+<input
+type="text"
+id="estadoEntrega"
+placeholder="Ejemplo: Zulia">
+
+<label for="ciudadEntrega">
+<strong>Ciudad / Municipio</strong>
+</label>
+
+<input
+type="text"
+id="ciudadEntrega"
+placeholder="Ejemplo: Maracaibo">
+
+<label for="oficinaEntrega">
+<strong>Nombre de la oficina</strong>
+</label>
+
+<input
+type="text"
+id="oficinaEntrega"
+placeholder="Nombre de la oficina">
+
+<label for="direccionOficina">
+<strong>Dirección completa de la oficina</strong>
+</label>
+
+<input
+type="text"
+id="direccionOficina"
+placeholder="Dirección completa de la oficina">
+
+</div>
+
+<div id="datosDomicilio" style="display:none;">
+
+<h3>🏠 Dirección de domicilio</h3>
+
+<label for="estadoDomicilio">
+<strong>Estado</strong>
+</label>
+
+<input
+type="text"
+id="estadoDomicilio"
+placeholder="Ejemplo: Zulia">
+
+<label for="ciudadDomicilio">
+<strong>Ciudad / Municipio</strong>
+</label>
+
+<input
+type="text"
+id="ciudadDomicilio"
+placeholder="Ejemplo: Maracaibo">
+
+<label for="codigoPostal">
+<strong>Código postal</strong>
+</label>
+
+<input
+type="text"
+id="codigoPostal"
+placeholder="Código postal">
+
+<label for="barrioUrbanizacion">
+<strong>Barrio / Urbanización</strong>
+</label>
+
+<input
+type="text"
+id="barrioUrbanizacion"
+placeholder="Barrio o urbanización">
+
+<label for="calleAvenida">
+<strong>Calle / Carrera / Avenida</strong>
+</label>
+
+<input
+type="text"
+id="calleAvenida"
+placeholder="Ejemplo: Avenida 5, Calle 10, Carrera 20">
+
+<label for="numeroCasa">
+<strong>Número de casa / apartamento</strong>
+</label>
+
+<input
+type="text"
+id="numeroCasa"
+placeholder="Ejemplo: Casa 15, Apartamento 3">
+
+<label for="direccionDomicilio">
+<strong>Dirección completa</strong>
+</label>
+
+<input
+type="text"
+id="direccionDomicilio"
+placeholder="Escribe la dirección completa">
+
+<label for="puntoReferencia">
+<strong>Punto de referencia</strong>
+</label>
+
+<input
+type="text"
+id="puntoReferencia"
+placeholder="Ejemplo: Cerca de...">
+
+</div>
+
+<label for="telefonoEntrega">
+<strong>Teléfono de contacto</strong>
+</label>
+
+<input
+type="text"
+id="telefonoEntrega"
+placeholder="Número de teléfono">
+
+<label for="personaRecibe">
+<strong>Persona que recibe</strong>
+</label>
+
+<input
+type="text"
+id="personaRecibe"
+placeholder="Nombre de la persona que recibirá">
+
+<label for="cedulaRecibe">
+<strong>Cédula de identidad de quien recibe</strong>
+</label>
+
+<input
+type="text"
+id="cedulaRecibe"
+placeholder="Ejemplo: V-12345678"
+autocomplete="off"
+style="width:100%; padding:10px; margin:8px 0 15px; box-sizing:border-box;"
+>
+    
+<label for="observacionesEntrega">
+<strong>Observaciones</strong>
+</label>
+
+<textarea
+id="observacionesEntrega"
+placeholder="Información adicional para la entrega"
+style="width:100%; min-height:90px; padding:10px; margin:8px 0 15px; box-sizing:border-box;"
+></textarea>
+
+<button
+id="guardarDatosEntrega"
+type="button"
+>
+💾 Guardar datos de entrega
+</button>
+
+<p
+id="mensajeDatosEntrega"
+style="text-align:center; font-weight:bold;"
+></p>
+
+<hr>
+
+<button onclick="cerrarSesion()">
+Cerrar sesión
+</button>
+
+</div>
 
 
 <script type="module">
@@ -623,706 +474,952 @@ Aquí puedes consultar tus paquetes y prealertas.
 import { auth, db } from "./firebase.js";
 
 import {
-    onAuthStateChanged,
-    signOut
+  onAuthStateChanged,
+  signOut
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
 import {
-    collection,
-    query,
-    where,
-    getDocs,
-    addDoc,
-    doc,
-    setDoc,
-    getDoc,
-    deleteDoc
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  doc,
+  setDoc,
+  getDoc,
+  deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-
+    
 let usuarioActual = null;
 
 
-// =====================================
-// CARGAR PREALERTAS DEL CLIENTE
-// =====================================
+// ===============================
+// CARGAR PREALERTAS
+// ===============================
 
 async function cargarPrealertas(usuario) {
 
-    const listaPrealertados =
-        document.getElementById("listaPrealertados");
+  try {
 
-    const listaBodega =
-        document.getElementById("listaBodega");
+    const consultaPrealertas =
+      query(
+        collection(db, "prealertas"),
+        where(
+          "uid",
+          "==",
+          usuario.uid
+        )
+      );
 
-    const listaVenezuela =
-        document.getElementById("listaVenezuela");
+    const resultadoPrealertas =
+      await getDocs(
+        consultaPrealertas
+      );
 
-    listaPrealertados.innerHTML = "";
-    listaBodega.innerHTML = "";
-    listaVenezuela.innerHTML = "";
+    console.log(
+      "UID DEL CLIENTE:",
+      usuario.uid
+    );
 
-    let prealertados = [];
-    let bodega = [];
-    let venezuela = [];
+    console.log(
+      "PREALERTAS ENCONTRADAS:",
+      resultadoPrealertas.size
+    );
 
-    try {
+    // ===============================
+    // SEPARAR LOS PAQUETES POR ESTADO
+    // ===============================
 
-        const consulta = query(
-            collection(db, "prealertas"),
-            where("uid", "==", usuario.uid)
-        );
+    const prealertados = [];
+    const bodega = [];
+    const venezuela = [];
 
-        const resultado = await getDocs(consulta);
+    resultadoPrealertas.forEach((documento) => {
 
-        resultado.forEach((documento) => {
+      const datos = documento.data();
 
-            const paquete = documento.data();
+      const paquete = {
+        id: documento.id,
+        tracking: datos.tracking || "Sin tracking",
+        estado: datos.estado || "Prealertado"
+      };
 
-            paquete.id = documento.id;
+      if (paquete.estado === "Recibido en bodega") {
 
-            const estado =
-                paquete.estado || "Prealertado";
+        bodega.push(paquete);
 
-            if (estado === "Prealertado") {
+      } else if (paquete.estado === "Llegó a Venezuela") {
 
-                prealertados.push(paquete);
+        venezuela.push(paquete);
 
-            } else if (estado === "Recibido en bodega") {
+      } else {
 
-                bodega.push(paquete);
+        prealertados.push(paquete);
 
-            } else if (estado === "Llegó a Venezuela") {
+      }
 
-                venezuela.push(paquete);
+    });
 
-            }
+    // ===============================
+    // CONTADORES
+    // ===============================
 
-        });
+    document
+      .getElementById("contadorPrealertados")
+      .textContent = prealertados.length;
 
-        document.getElementById(
-            "contadorPrealertados"
-        ).textContent = prealertados.length;
+    document
+      .getElementById("contadorBodega")
+      .textContent = bodega.length;
 
-        document.getElementById(
-            "contadorBodega"
-        ).textContent = bodega.length;
+    document
+      .getElementById("contadorVenezuela")
+      .textContent = venezuela.length;
 
-        document.getElementById(
-            "contadorVenezuela"
-        ).textContent = venezuela.length;
+    // ===============================
+    // MOSTRAR PAQUETES
+    // ===============================
 
-    } catch (error) {
+    document.getElementById("listaPrealertados").innerHTML =
+      crearListaTracking(prealertados, true);
 
-        console.error(
-            "Error cargando prealertas:",
-            error
-        );
+    document.getElementById("listaBodega").innerHTML =
+      crearListaTracking(bodega, false);
 
-    }
+    document.getElementById("listaVenezuela").innerHTML =
+      crearListaTracking(venezuela, false);
+
+  } catch (error) {
+
+    console.error(
+      "ERROR CARGANDO PREALERTAS:",
+      error
+    );
+
+  }
 
 }
 
-
-// =====================================
-// MOSTRAR LOS TRACKINGS
-// =====================================
+    
+// ===============================
+// CREAR LISTA DE TRACKING
+// ===============================
 
 function escaparHTML(texto) {
-    return String(texto ?? "").replace(
-        /[&<>"']/g,
-        caracter => ({
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;"
-        })[caracter]
-    );
+  return String(texto).replace(/[&<>"']/g, (caracter) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[caracter]);
 }
 
-function crearListaTracking(paquetes, contenedor) {
+function crearListaTracking(paquetes, permitirEliminar = false) {
+  if (!paquetes.length) {
+    return `
+      <p style="text-align:center;">
+        No tienes paquetes en este estado.
+      </p>
+    `;
+  }
 
-    contenedor.innerHTML = "";
+  return paquetes.map((paquete) => {
+    const id = escaparHTML(paquete.id);
+    const tracking = escaparHTML(paquete.tracking);
 
-    paquetes.forEach(paquete => {
+    return `
+      <div class="item-tracking"
+           style="display:flex; flex-direction:column; align-items:stretch; gap:10px; padding:12px;">
 
-        const tracking = escaparHTML(paquete.tracking);
-        const id = escaparHTML(paquete.id);
+        <div style="width:100%; box-sizing:border-box; color:#000000; font-size:18px; font-weight:bold; overflow-wrap:anywhere; word-break:break-word;">
+          📦 ${tracking}
+        </div>
 
-        const elemento = document.createElement("div");
-        elemento.className = "item-tracking";
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <button
+            type="button"
+            data-tracking="${tracking}"
+            onclick="copiarTracking(this.dataset.tracking)"
+            style="width:auto; flex:0 0 auto; margin:0; padding:8px 12px; white-space:nowrap;"
+          >
+            📋 Copiar
+          </button>
 
-        elemento.innerHTML = `
-            <strong>${tracking}</strong>
-
-            <div class="acciones-tracking">
-                <button
-                    type="button"
-                    onclick="copiarTracking('${tracking}')">
-                    Copiar
-                </button>
-
-                <button
-                    type="button"
-                    onclick="eliminarPrealerta('${id}')">
-                    Eliminar
-                </button>
-            </div>
-        `;
-
-        contenedor.appendChild(elemento);
-    });
+          ${permitirEliminar ? `
+            <button
+              type="button"
+              data-id="${id}"
+              onclick="eliminarPrealerta(this.dataset.id)"
+              style="width:auto; flex:0 0 auto; margin:0; padding:8px 12px; white-space:nowrap; background:#dc3545; color:white;"
+            >
+              🗑️ Eliminar
+            </button>
+          ` : ""}
+        </div>
+      </div>
+    `;
+  }).join("");
 }
 
-
-// =====================================
-// COPIAR TRACKING
-// =====================================
-
-window.copiarTracking = async function(tracking) {
-
-    try {
-        await navigator.clipboard.writeText(tracking);
-        alert("Tracking copiado correctamente.");
-    } catch (error) {
-        alert("No se pudo copiar. Selecciona el tracking y cópialo.");
-    }
-};
-
-
-// =====================================
-// ABRIR Y CERRAR LISTAS DE PAQUETES
-// =====================================
+    
+// ===============================
+// MOSTRAR / OCULTAR TRACKINGS
+// ===============================
 
 window.toggleTracking = function(id) {
 
-    const lista = document.getElementById(id);
+  const lista =
+    document.getElementById(id);
 
-    if (!lista) return;
 
-    lista.style.display =
-        lista.style.display === "none" ? "block" : "none";
+  if (!lista) {
+    return;
+  }
+
+
+  if (lista.style.display === "none") {
+
+    lista.style.display = "block";
+
+  } else {
+
+    lista.style.display = "none";
+
+  }
+
 };
 
 
-// =====================================
+// ===============================
+// COPIAR TRACKING
+// ===============================
+
+window.copiarTracking = async function(tracking) {
+
+  try {
+
+    await navigator.clipboard.writeText(tracking);
+
+    alert(
+      "Tracking copiado: " + tracking
+    );
+
+  } catch (error) {
+
+    console.error(
+      "No fue posible copiar el tracking:",
+      error
+    );
+
+  }
+
+};
+
+
+// ===============================
 // ELIMINAR PREALERTA
-// =====================================
+// ===============================
 
 window.eliminarPrealerta = async function(id) {
 
-    if (!usuarioActual) {
-        alert("Debes iniciar sesión.");
-        return;
+  if (!usuarioActual) {
+    alert("Debes iniciar sesión.");
+    return;
+  }
+
+  const confirmar = confirm(
+    "¿Estás seguro de que deseas eliminar esta prealerta?\n\n" +
+    "Esta acción no se puede deshacer."
+  );
+
+  if (!confirmar) {
+    return;
+  }
+
+  try {
+
+    const referencia = doc(db, "prealertas", id);
+
+    const resultado = await getDoc(referencia);
+
+    if (!resultado.exists()) {
+
+      alert("Esta prealerta ya no existe.");
+
+      await cargarPrealertas(usuarioActual);
+
+      return;
     }
 
-    const confirmar = confirm(
-        "¿Estás seguro de que deseas eliminar esta prealerta?"
+    const datos = resultado.data();
+
+    if (datos.uid !== usuarioActual.uid) {
+
+      alert("No tienes permiso para eliminar esta prealerta.");
+
+      return;
+    }
+
+    const estadoActual = datos.estado || "Prealertado";
+
+    if (estadoActual !== "Prealertado") {
+
+      alert("Este paquete ya cambió de estado y no se puede eliminar.");
+
+      await cargarPrealertas(usuarioActual);
+
+      return;
+    }
+
+    await deleteDoc(referencia);
+
+    await cargarPrealertas(usuarioActual);
+
+    alert("✅ Prealerta eliminada correctamente.");
+
+  } catch (error) {
+
+    console.error(
+      "ERROR AL ELIMINAR PREALERTA:",
+      error
     );
 
-    if (!confirmar) return;
+    alert(
+      "No fue posible eliminar la prealerta. Verifica tu conexión e inténtalo nuevamente."
+    );
 
-    try {
-
-        const referencia = doc(db, "prealertas", id);
-        const resultado = await getDoc(referencia);
-
-        if (!resultado.exists()) {
-            alert("Esta prealerta ya no existe.");
-            return;
-        }
-
-        const paquete = resultado.data();
-
-        // Verificar que pertenezca al cliente actual.
-        if (paquete.uid !== usuarioActual.uid) {
-            alert("No tienes permiso para eliminar esta prealerta.");
-            return;
-        }
-
-        // Solo se pueden eliminar prealertas pendientes.
-        const estado = paquete.estado || "Prealertado";
-
-        if (estado !== "Prealertado") {
-            alert(
-                "Solo puedes eliminar paquetes que estén Prealertados."
-            );
-            return;
-        }
-
-        await deleteDoc(referencia);
-
-        alert("Prealerta eliminada correctamente.");
-
-        await cargarPrealertas(usuarioActual);
-
-    } catch (error) {
-
-        console.error("Error al eliminar la prealerta:", error);
-
-        alert("No se pudo eliminar la prealerta. Inténtalo nuevamente.");
-
-    }
+  }
 
 };
+    
 
-
-// =====================================
+// ===============================
 // CERRAR SESIÓN
-// =====================================
+// ===============================
 
-window.cerrarSesion = async function() {
+window.cerrarSesion = async function () {
 
-    try {
+  await signOut(auth);
 
-        await signOut(auth);
-
-        window.location.href = "index.html";
-
-    } catch (error) {
-
-        console.error("Error al cerrar sesión:", error);
-
-        alert("No se pudo cerrar la sesión.");
-
-    }
+  window.location.href = "index.html";
 
 };
 
 
-   // =====================================
-// COMPLETAR CARGA DE PREALERTAS
-// =====================================
+// ===============================
+// CAMBIO DE EMPRESA
+// ===============================
 
-function mostrarGrupoPaquetes(paquetes, idLista) {
+document
+.getElementById("empresaEnvio")
+.addEventListener("change", () => {
 
-    const contenedor = document.getElementById(idLista);
+  const empresa =
+    document.getElementById("empresaEnvio").value;
 
-    if (!contenedor) return;
+  const contenedorTipo =
+    document.getElementById("contenedorTipoEntrega");
 
-    crearListaTracking(paquetes, contenedor);
-}
+  const tipoEntrega =
+    document.getElementById("tipoEntrega");
 
+  const datosOficina =
+    document.getElementById("datosOficina");
 
-// =====================================
-// ACTUALIZAR LOS TRES GRUPOS
-// =====================================
+  const datosDomicilio =
+    document.getElementById("datosDomicilio");
 
-async function actualizarGruposPaquetes(usuario) {
 
-    if (!usuario) return;
+  if (empresa === "Domesa") {
 
-    await cargarPrealertas(usuario);
-}
+    contenedorTipo.style.display = "block";
 
+    actualizarTipoEntrega();
 
-// =====================================
-// ALTERNAR TIPO DE ENTREGA
-// =====================================
+  } else {
 
-function actualizarTipoEntrega() {
+    contenedorTipo.style.display = "none";
 
-    const empresa = document.getElementById("empresaEnvio").value;
-    const tipo = document.getElementById("tipoEntrega").value;
+    tipoEntrega.value = "oficina";
 
-    const contenedorTipo = document.getElementById("contenedorTipoEntrega");
-    const datosOficina = document.getElementById("datosOficina");
-    const datosDomicilio = document.getElementById("datosDomicilio");
+    datosOficina.style.display = "block";
 
-    if (empresa === "Domesa") {
+    datosDomicilio.style.display = "none";
 
-        contenedorTipo.style.display = "block";
-
-        if (tipo === "domicilio") {
-            datosOficina.style.display = "none";
-            datosDomicilio.style.display = "block";
-        } else {
-            datosOficina.style.display = "block";
-            datosDomicilio.style.display = "none";
-        }
-
-    } else {
-
-        contenedorTipo.style.display = "none";
-        datosOficina.style.display = "block";
-        datosDomicilio.style.display = "none";
-
-    }
-}
-
-
-// Escuchar cambios en el formulario.
-
-document.getElementById("empresaEnvio")
-    .addEventListener("change", actualizarTipoEntrega);
-
-document.getElementById("tipoEntrega")
-    .addEventListener("change", actualizarTipoEntrega);
-
-actualizarTipoEntrega();
-
-
-
-// =====================================
-// CARGAR Y MOSTRAR LOS PAQUETES
-// =====================================
-
-async function cargarPrealertas(usuario) {
-
-    const listaPrealertados =
-        document.getElementById("listaPrealertados");
-
-    const listaBodega =
-        document.getElementById("listaBodega");
-
-    const listaVenezuela =
-        document.getElementById("listaVenezuela");
-
-    if (!listaPrealertados || !listaBodega || !listaVenezuela) {
-        console.error("No se encontraron las listas de paquetes.");
-        return;
-    }
-
-    let prealertados = [];
-    let bodega = [];
-    let venezuela = [];
-
-    try {
-
-        const consulta = query(
-            collection(db, "prealertas"),
-            where("uid", "==", usuario.uid)
-        );
-
-        const resultado = await getDocs(consulta);
-
-        resultado.forEach(documento => {
-
-            const paquete = {
-                ...documento.data(),
-                id: documento.id
-            };
-
-            const estado = paquete.estado || "Prealertado";
-
-            if (estado === "Prealertado") {
-                prealertados.push(paquete);
-
-            } else if (estado === "Recibido en bodega") {
-                bodega.push(paquete);
-
-            } else if (estado === "Llegó a Venezuela") {
-                venezuela.push(paquete);
-            }
-
-        });
-
-        // Mostrar cada grupo.
-        mostrarGrupoPaquetes(
-            prealertados,
-            "listaPrealertados"
-        );
-
-        mostrarGrupoPaquetes(
-            bodega,
-            "listaBodega"
-        );
-
-        mostrarGrupoPaquetes(
-            venezuela,
-            "listaVenezuela"
-        );
-
-        // Actualizar contadores.
-        document.getElementById("contadorPrealertados").textContent =
-            prealertados.length;
-
-        document.getElementById("contadorBodega").textContent =
-            bodega.length;
-
-        document.getElementById("contadorVenezuela").textContent =
-            venezuela.length;
-
-    } catch (error) {
-
-        console.error(
-            "Error al cargar los paquetes:",
-            error
-        );
-
-    }
-}
-
-
-// =====================================
-// CARGAR DATOS DEL CLIENTE
-// =====================================
-
-onAuthStateChanged(auth, async (usuario) => {
-
-    if (!usuario) {
-        window.location.href = "index.html";
-        return;
-    }
-
-    usuarioActual = usuario;
-
-    try {
-
-        // Cargar primero las prealertas.
-        await cargarPrealertas(usuario);
-
-        // Buscar los datos del cliente.
-        const consultaUsuario = query(
-            collection(db, "usuarios"),
-            where("uid", "==", usuario.uid)
-        );
-
-        const resultadoUsuario = await getDocs(consultaUsuario);
-
-        if (!resultadoUsuario.empty) {
-
-            const datos = resultadoUsuario.docs[0].data();
-
-            document.getElementById("nombreCliente").textContent =
-                datos.nombre || "No disponible";
-
-            document.getElementById("codigoCliente").textContent =
-                datos.codigo || "No disponible";
-
-            document.getElementById("correoCliente").textContent =
-                datos.correo || usuario.email || "No disponible";
-
-            document.getElementById("nombreCasillero").textContent =
-                datos.nombre || "No disponible";
-
-            document.getElementById("codigoCasillero").textContent =
-                datos.codigo || "No disponible";
-        }
-
-        // Cargar los datos de entrega guardados.
-        const referenciaEntrega = doc(
-            db,
-            "datosEntrega",
-            usuario.uid
-        );
-
-        const resultadoEntrega = await getDoc(referenciaEntrega);
-
-        if (resultadoEntrega.exists()) {
-
-            const datosEntrega = resultadoEntrega.data();
-
-            const campos = [
-                "empresaEnvio",
-                "tipoEntrega",
-                "estadoEntrega",
-                "ciudadEntrega",
-                "oficinaEntrega",
-                "direccionOficina",
-                "estadoDomicilio",
-                "ciudadDomicilio",
-                "codigoPostal",
-                "barrioUrbanizacion",
-                "calleAvenida",
-                "numeroCasa",
-                "direccionDomicilio",
-                "puntoReferencia",
-                "telefonoEntrega",
-                "personaRecibe",
-                "cedulaRecibe",
-                "observacionesEntrega"
-            ];
-
-            campos.forEach(campo => {
-
-                const elemento = document.getElementById(campo);
-
-                if (elemento && datosEntrega[campo] != null) {
-                    elemento.value = datosEntrega[campo];
-                }
-
-            });
-
-            actualizarTipoEntrega();
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Error al cargar los datos del cliente:",
-            error
-        );
-
-        alert("Ocurrió un problema al cargar tu información.");
-
-    }
+  }
 
 });
 
 
-// =====================================
+// ===============================
+// CAMBIO TIPO DE ENTREGA DOMESA
+// ===============================
+
+document
+.getElementById("tipoEntrega")
+.addEventListener("change", actualizarTipoEntrega);
+
+
+function actualizarTipoEntrega() {
+
+  const tipo =
+    document.getElementById("tipoEntrega").value;
+
+  const datosOficina =
+    document.getElementById("datosOficina");
+
+  const datosDomicilio =
+    document.getElementById("datosDomicilio");
+
+
+  if (tipo === "domicilio") {
+
+    datosOficina.style.display = "none";
+
+    datosDomicilio.style.display = "block";
+
+  } else {
+
+    datosOficina.style.display = "block";
+
+    datosDomicilio.style.display = "none";
+
+  }
+
+}
+
+
+// ===============================
 // GUARDAR DATOS DE ENTREGA
-// =====================================
+// ===============================
 
-document.getElementById("guardarDatosEntrega")
-    .addEventListener("click", async () => {
+document
+.getElementById("guardarDatosEntrega")
+.addEventListener("click", async () => {
 
-        if (!usuarioActual) {
-            alert("Debes iniciar sesión.");
-            return;
-        }
+  if (!usuarioActual) {
 
-        const empresaEnvio =
-            document.getElementById("empresaEnvio").value;
+    alert("Debe iniciar sesión.");
 
-        const tipoEntrega =
-            document.getElementById("tipoEntrega").value;
+    return;
 
-        if (!empresaEnvio) {
-            alert("Selecciona una empresa de envío.");
-            return;
-        }
-
-        const ids = [
-            "estadoEntrega",
-            "ciudadEntrega",
-            "oficinaEntrega",
-            "direccionOficina",
-            "estadoDomicilio",
-            "ciudadDomicilio",
-            "codigoPostal",
-            "barrioUrbanizacion",
-            "calleAvenida",
-            "numeroCasa",
-            "direccionDomicilio",
-            "puntoReferencia",
-            "telefonoEntrega",
-            "personaRecibe",
-            "cedulaRecibe",
-            "observacionesEntrega"
-        ];
-
-        const datos = {
-            empresaEnvio,
-            tipoEntrega,
-            uid: usuarioActual.uid,
-            fechaActualizacion: new Date()
-        };
-
-        ids.forEach(id => {
-            const campo = document.getElementById(id);
-            datos[id] = campo ? campo.value.trim() : "";
-        });
-
-        try {
-
-            await setDoc(
-                doc(db, "datosEntrega", usuarioActual.uid),
-                datos,
-                { merge: true }
-            );
-
-            document.getElementById(
-                "mensajeDatosEntrega"
-            ).textContent = "✅ Datos guardados correctamente.";
-
-            alert("Tus datos de entrega se guardaron correctamente.");
-
-        } catch (error) {
-
-            console.error(
-                "Error guardando los datos de entrega:",
-                error
-            );
-
-            alert("No se pudieron guardar los datos. Inténtalo nuevamente.");
-
-        }
-
-    });
+  }
 
 
+  const empresa =
+    document.getElementById("empresaEnvio").value;
 
-   // =====================================
-// REGISTRAR PREALERTA
-// =====================================
 
-document.getElementById("prealerta")
-    .addEventListener("click", async () => {
+  if (!empresa) {
 
-        if (!usuarioActual) {
-            alert("Debes iniciar sesión.");
-            return;
-        }
+    alert("Seleccione una empresa de envío.");
 
-        const campoTracking =
-            document.getElementById("tracking");
+    return;
 
-        const tracking = campoTracking.value.trim();
+  }
 
-        if (!tracking) {
-            alert("Ingresa el número de tracking.");
-            campoTracking.focus();
-            return;
-        }
 
-        // Rechazar códigos que comiencen con GSH.
-        if (tracking.toUpperCase().startsWith("GSH")) {
-            alert(
-                "⚠️ Este código no es válido para registrar una prealerta."
-            );
-            campoTracking.focus();
-            return;
-        }
+  const tipoEntrega =
+    empresa === "Domesa"
+      ? document.getElementById("tipoEntrega").value
+      : "oficina";
 
-        try {
 
-            // Verificar si el tracking ya fue registrado.
-            const consulta = query(
-                collection(db, "prealertas"),
-                where("tracking", "==", tracking)
-            );
+  const datos = {
 
-            const resultado = await getDocs(consulta);
+    uid: usuarioActual.uid,
 
-            if (!resultado.empty) {
-                alert("⚠️ Este tracking ya fue registrado.");
-                return;
-            }
+    correo: usuarioActual.email,
 
-            // Guardar la nueva prealerta.
-            await addDoc(
-                collection(db, "prealertas"),
-                {
-                    tracking: tracking,
-                    uid: usuarioActual.uid,
-                    correo: usuarioActual.email || "",
-                    estado: "Prealertado",
-                    fecha: new Date()
-                }
-            );
+    empresaEnvio: empresa,
 
-            alert("✅ Prealerta registrada correctamente.");
+    tipoEntrega: tipoEntrega,
 
-            campoTracking.value = "";
+    // DATOS GENERALES
+    telefono:
+      document.getElementById("telefonoEntrega").value.trim(),
 
-            await cargarPrealertas(usuarioActual);
 
-        } catch (error) {
+     personaRecibe:
+      document.getElementById("personaRecibe").value.trim(),
 
-            console.error(
-                "Error al registrar la prealerta:",
-                error
-            );
+    cedulaRecibe:
+      document.getElementById("cedulaRecibe").value.trim(),
 
-            alert(
-                "No se pudo registrar la prealerta. Inténtalo nuevamente."
-            );
+    observaciones:
+      document.getElementById("observacionesEntrega").value.trim(),      
 
-        }
+    // DATOS DE OFICINA
+    estado:
+      document.getElementById("estadoEntrega").value.trim(),
 
-    });
+    ciudad:
+      document.getElementById("ciudadEntrega").value.trim(),
+
+    oficina:
+      document.getElementById("oficinaEntrega").value.trim(),
+
+    direccionOficina:
+      document.getElementById("direccionOficina").value.trim(),
+
+    // DATOS DE DOMICILIO
+    estadoDomicilio:
+      document.getElementById("estadoDomicilio").value.trim(),
+
+    ciudadDomicilio:
+      document.getElementById("ciudadDomicilio").value.trim(),
+
+    codigoPostal:
+      document.getElementById("codigoPostal").value.trim(),
+
+    barrioUrbanizacion:
+      document.getElementById("barrioUrbanizacion").value.trim(),
+
+    calleAvenida:
+      document.getElementById("calleAvenida").value.trim(),
+
+    numeroCasa:
+      document.getElementById("numeroCasa").value.trim(),
+
+    direccionDomicilio:
+      document.getElementById("direccionDomicilio").value.trim(),
+
+    puntoReferencia:
+      document.getElementById("puntoReferencia").value.trim(),
+
+    fechaActualizacion: new Date()
+
+  };
+
+
+  try {
+
+    await setDoc(
+      doc(
+        db,
+        "datosEntrega",
+        usuarioActual.uid
+      ),
+      datos,
+      {
+        merge: true
+      }
+    );
+
+
+    const mensaje =
+      document.getElementById("mensajeDatosEntrega");
+
+
+    mensaje.textContent =
+      "✅ Datos de entrega guardados correctamente.";
+
+
+    setTimeout(() => {
+
+      mensaje.textContent = "";
+
+    }, 4000);
+
+
+  } catch (error) {
+
+    alert(
+      "No fue posible guardar los datos de entrega.\n\n" +
+      error.message
+    );
+
+  }
+
+});
+
+
+// ===============================
+// PREALERTA
+// ===============================
+
+document
+.getElementById("prealerta")
+.addEventListener("click", async () => {
+
+  const tracking =
+    document.getElementById("tracking").value.trim();
+
+
+  if (!tracking) {
+
+    alert("Ingrese el número de tracking.");
+
+    return;
+
+  }
+
+
+  // ===============================
+  // RECHAZAR CÓDIGOS GSH
+  // ===============================
+
+  const trackingMayusculas =
+    tracking.toUpperCase();
+
+
+  if (trackingMayusculas.startsWith("GSH")) {
+
+    alert(
+      "⚠️ Tracking no válido.\n\n" +
+      "El código ingresado corresponde a un número de pedido " +
+      "o proceso de compra y no a la guía de envío.\n\n" +
+      "Por favor, ingresa el número de tracking proporcionado " +
+      "por la empresa de transporte."
+    );
+
+    return;
+
+  }
+
+
+  const usuario = auth.currentUser;
+
+
+  if (!usuario) {
+
+    alert("Debe iniciar sesión.");
+
+    return;
+
+  }
+
+
+  try {
+
+    // ===============================
+    // VERIFICAR TRACKING DUPLICADO
+    // ===============================
+
+    const consultaTracking =
+      query(
+        collection(db, "prealertas"),
+        where(
+          "tracking",
+          "==",
+          tracking
+        )
+      );
+
+
+    const resultadoTracking =
+      await getDocs(
+        consultaTracking
+      );
+
+
+    if (!resultadoTracking.empty) {
+
+      alert(
+        "⚠️ Este tracking ya fue registrado."
+      );
+
+      return;
+
+    }
+
+
+    // ===============================
+    // GUARDAR PREALERTA
+    // ===============================
+
+    await addDoc(
+      collection(db, "prealertas"),
+      {
+
+        uid: usuario.uid,
+
+        correo: usuario.email,
+
+        tracking: tracking,
+
+        estado: "Prealertado",
+
+        fecha: new Date()
+
+      }
+    );
+
+
+    alert(
+      "Prealerta registrada correctamente."
+    );
+
+
+    location.reload();
+
+
+  } catch (error) {
+
+    alert(
+      "Error: " + error.message
+    );
+
+  }
+
+});
+
+    
+
+// ===============================
+// CARGAR CUENTA
+// ===============================
+
+onAuthStateChanged(
+  auth,
+  async (usuario) => {
+
+    if (!usuario) {
+
+      window.location.href = "index.html";
+
+      return;
+
+    }
+
+
+    usuarioActual = usuario;
+
+
+    // ===============================
+    // CARGAR PREALERTAS INMEDIATAMENTE
+    // ===============================
+
+    await cargarPrealertas(usuario);
+
+
+    document
+    .getElementById("correoCliente")
+    .textContent = usuario.email;
+
+
+    // ===============================
+    // DATOS DEL CLIENTE
+    // ===============================
+
+    const consulta =
+      query(
+        collection(db, "usuarios"),
+        where(
+          "uid",
+          "==",
+          usuario.uid
+        )
+      );
+
+
+    const resultado =
+      await getDocs(consulta);
+
+
+    if (!resultado.empty) {
+
+      const datos =
+        resultado.docs[0].data();
+
+
+      document
+      .getElementById("nombreCliente")
+      .textContent =
+        datos.nombre;
+
+
+      document
+      .getElementById("codigoCliente")
+      .textContent =
+        datos.codigo;
+
+
+      document
+      .getElementById("nombreCasillero")
+      .textContent =
+        datos.nombre;
+
+
+      document
+      .getElementById("codigoCasillero")
+      .textContent =
+        datos.codigo;
+
+    }
+
+
+    // ===============================
+    // CARGAR DATOS DE ENTREGA
+    // ===============================
+
+    const referenciaEntrega =
+      doc(
+        db,
+        "datosEntrega",
+        usuario.uid
+      );
+
+
+    const resultadoEntrega =
+      await getDoc(
+        referenciaEntrega
+      );
+
+
+    if (!resultadoEntrega.exists()) {
+
+      return;
+
+    }
+
+
+    const entrega =
+      resultadoEntrega.data();
+
+
+    // EMPRESA
+
+    document
+    .getElementById("empresaEnvio")
+    .value =
+      entrega.empresaEnvio || "";
+
+
+    // TIPO
+
+    if (
+      entrega.empresaEnvio === "Domesa"
+    ) {
+
+      document
+      .getElementById("contenedorTipoEntrega")
+      .style.display = "block";
+
+
+      document
+      .getElementById("tipoEntrega")
+      .value =
+        entrega.tipoEntrega || "oficina";
+
+
+    } else {
+
+      document
+      .getElementById("contenedorTipoEntrega")
+      .style.display = "none";
+
+    }
+
+
+    actualizarTipoEntrega();
+
+
+    // OFICINA
+
+    document
+    .getElementById("estadoEntrega")
+    .value =
+      entrega.estado || "";
+
+
+    document
+    .getElementById("ciudadEntrega")
+    .value =
+      entrega.ciudad || "";
+
+
+    document
+    .getElementById("oficinaEntrega")
+    .value =
+      entrega.oficina || "";
+
+
+    document
+    .getElementById("direccionOficina")
+    .value =
+      entrega.direccionOficina || "";
+
+
+    // DOMICILIO
+
+    document
+    .getElementById("estadoDomicilio")
+    .value =
+      entrega.estadoDomicilio || "";
+
+
+    document
+    .getElementById("ciudadDomicilio")
+    .value =
+      entrega.ciudadDomicilio || "";
+
+
+    document
+    .getElementById("codigoPostal")
+    .value =
+      entrega.codigoPostal || "";
+
+
+    document
+    .getElementById("barrioUrbanizacion")
+    .value =
+      entrega.barrioUrbanizacion || "";
+
+
+    document
+    .getElementById("calleAvenida")
+    .value =
+      entrega.calleAvenida || "";
+
+
+    document
+    .getElementById("numeroCasa")
+    .value =
+      entrega.numeroCasa || "";
+
+
+    document
+    .getElementById("direccionDomicilio")
+    .value =
+      entrega.direccionDomicilio || "";
+
+
+    document
+    .getElementById("puntoReferencia")
+    .value =
+      entrega.puntoReferencia || "";
+
+
+    // GENERALES
+
+    document
+    .getElementById("telefonoEntrega")
+    .value =
+      entrega.telefono || "";
+
+
+    document
+    .getElementById("personaRecibe")
+    .value =
+      entrega.personaRecibe || "";
+
+
+    document
+    .getElementById("cedulaRecibe")
+    .value =
+      entrega.cedulaRecibe || "";
+
+
+    document
+    .getElementById("observacionesEntrega")
+    .value =
+      entrega.observaciones || "";
+
+  }
+
+);
 
 </script>
 
