@@ -3264,7 +3264,7 @@ if (
 
 // ======================================================
 // ESCÁNER USB - BLOQUE 2
-// VALIDACIÓN DEL TRACKING Y ESTADOS
+// PROCESAR TRACKING Y CAMBIAR ESTADO
 // ======================================================
 
 async function procesarEscaneoUSB(codigoUSB) {
@@ -3291,18 +3291,146 @@ async function procesarEscaneoUSB(codigoUSB) {
     resultadoEscaneoUSBRG.textContent =
       "🔎 Buscando paquete: " + codigoUSB;
 
-    // La búsqueda y el cambio de estado
-    // se completarán en el bloque 3.
+    const paqueteEncontrado =
+      Object.entries(datosPrealertas).find(
+        ([id, paquete]) => {
+
+          return (
+            normalizarTexto(paquete.tracking) ===
+            normalizarTexto(codigoUSB)
+          );
+
+        }
+      );
+
+    if (!paqueteEncontrado) {
+
+      resultadoEscaneoUSBRG.textContent =
+        "❌ Tracking no encontrado: " + codigoUSB;
+
+      return;
+
+    }
+
+    const [id, paquete] = paqueteEncontrado;
+
+    const estadoAnterior =
+      paquete.estado || "Prealertado";
+
+    let nuevoEstado = "";
+
+    if (estadoAnterior === "Prealertado") {
+
+      nuevoEstado = "Recibido en bodega";
+
+    } else if (
+      estadoAnterior === "Recibido en bodega"
+    ) {
+
+      nuevoEstado = "Llegó a Venezuela";
+
+    } else if (
+      estadoAnterior === "Llegó a Venezuela"
+    ) {
+
+      resultadoEscaneoUSBRG.textContent =
+        "⚠️ Este paquete ya llegó a Venezuela.";
+
+      return;
+
+    } else {
+
+      resultadoEscaneoUSBRG.textContent =
+        "❌ Estado anterior no reconocido.";
+
+      return;
+
+    }
+
+    const referencia =
+      doc(db, "prealertas", id);
+
+    await updateDoc(
+      referencia,
+      {
+        estado: nuevoEstado
+      }
+    );
+
+    // Actualizar datos locales y tablero.
+
+    datosPrealertas[id].estado = nuevoEstado;
+
+    colocarTarjetaEnColumna(id);
+
+    actualizarContadoresTablero();
+
+    resultadoEscaneoUSBRG.textContent =
+      "✅ " + codigoUSB + " → " + nuevoEstado;
+
+    console.log(
+      "✅ ESCÁNER USB:",
+      codigoUSB,
+      estadoAnterior,
+      "→",
+      nuevoEstado
+    );
+
+    // Enviar correo al cliente.
+
+    const correoCliente =
+      paquete.cliente?.correo ||
+      paquete.correo ||
+      "";
+
+    const nombreCliente =
+      paquete.cliente?.nombre ||
+      "Cliente";
+
+    if (correoCliente) {
+
+      try {
+
+        await emailjs.send(
+          "service_pvubcrq",
+          "template_1r3aqf9",
+          {
+            to_email: correoCliente,
+            email: correoCliente,
+            nombre: nombreCliente,
+            tracking: paquete.tracking || codigoUSB,
+            estado: nuevoEstado
+          }
+        );
+
+        console.log(
+          "📧 CORREO ENVIADO A:",
+          correoCliente
+        );
+
+      } catch (errorCorreo) {
+
+        console.error(
+          "❌ ERROR ENVIANDO CORREO:",
+          errorCorreo
+        );
+
+        resultadoEscaneoUSBRG.textContent =
+          "⚠️ Estado actualizado, pero falló el correo.";
+
+      }
+
+    }
 
   } catch (error) {
 
     console.error(
-      "Error en escáner USB:",
+      "ERROR EN ESCÁNER USB:",
       error
     );
 
     resultadoEscaneoUSBRG.textContent =
-      "❌ Error al procesar el escaneo.";
+      "❌ Error: " + error.message;
 
   } finally {
 
