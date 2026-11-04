@@ -1599,7 +1599,8 @@ function obtenerContenedorEstado(
 
   }
 
-  if (
+
+if (
     estado === "Recibido en bodega"
   ) {
 
@@ -3194,10 +3195,139 @@ if (btnBuscarPrincipal) {
 }
 
 // ======================================================
+// ESCÁNER USB - RÁPIDO GLOBAL
+// BLOQUE 1: ACTIVACIÓN Y CAPTURA DEL ESCÁNER
+// ======================================================
+
+const scannerUSBInputRG = document.getElementById(
+  "scannerUSBInput"
+);
+
+const btnActivarScannerUSBRG = document.getElementById(
+  "btnActivarScannerUSB"
+);
+
+const resultadoEscaneoUSBRG = document.getElementById(
+  "resultadoEscaneoUSB"
+);
+
+let procesandoEscaneoUSBRG = false;
+let ultimoTrackingEscaneoUSBRG = "";
+let ultimoTiempoEscaneoUSBRG = 0;
+
+if (
+  scannerUSBInputRG &&
+  btnActivarScannerUSBRG
+) {
+
+  btnActivarScannerUSBRG.addEventListener(
+    "click",
+    () => {
+
+      scannerUSBInputRG.focus();
+
+      resultadoEscaneoUSBRG.textContent =
+        "🟢 Escáner USB activado. Listo para escanear.";
+
+    }
+  );
+
+  scannerUSBInputRG.addEventListener(
+    "keydown",
+    async (event) => {
+
+      if (event.key !== "Enter") {
+        return;
+      }
+
+      event.preventDefault();
+
+      const codigoUSB = scannerUSBInputRG.value.trim();
+
+      if (!codigoUSB) {
+        return;
+      }
+
+      scannerUSBInputRG.value = "";
+
+      await procesarEscaneoUSB(codigoUSB);
+
+    }
+  );
+
+}
+
+// ======================================================
+// FIN DEL BLOQUE 1 DEL ESCÁNER USB
+// ======================================================
+
+
+// ======================================================
+// ESCÁNER USB - BLOQUE 2
+// VALIDACIÓN DEL TRACKING Y ESTADOS
+// ======================================================
+
+async function procesarEscaneoUSB(codigoUSB) {
+
+  if (procesandoEscaneoUSBRG) {
+    return;
+  }
+
+  const ahora = Date.now();
+
+  if (
+    codigoUSB === ultimoTrackingEscaneoUSBRG &&
+    ahora - ultimoTiempoEscaneoUSBRG < 2500
+  ) {
+    return;
+  }
+
+  procesandoEscaneoUSBRG = true;
+  ultimoTrackingEscaneoUSBRG = codigoUSB;
+  ultimoTiempoEscaneoUSBRG = ahora;
+
+  try {
+
+    resultadoEscaneoUSBRG.textContent =
+      "🔎 Buscando paquete: " + codigoUSB;
+
+    // La búsqueda y el cambio de estado
+    // se completarán en el bloque 3.
+
+  } catch (error) {
+
+    console.error(
+      "Error en escáner USB:",
+      error
+    );
+
+    resultadoEscaneoUSBRG.textContent =
+      "❌ Error al procesar el escaneo.";
+
+  } finally {
+
+    procesandoEscaneoUSBRG = false;
+
+  }
+
+}
+
+// ======================================================
+// FIN DEL BLOQUE 2 DEL ESCÁNER USB
+// ======================================================
+
+
+
+// ======================================================
 // FIN DE ADMIN.JS
 // ======================================================
 
 console.log(
   "✅ ADMIN.JS COMPLETO CARGADO"
 );
+
+
+
+
+
 
