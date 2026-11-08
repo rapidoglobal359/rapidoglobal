@@ -1420,6 +1420,53 @@ if (datos.fecha) {
 
 </p>
 
+<div style="
+  background:#f0f5fa;
+  border:1px solid #dce5ee;
+  border-radius:10px;
+  padding:12px;
+  margin:12px 0;
+">
+
+  <strong style="
+    display:block;
+    color:#003366;
+    margin-bottom:10px;
+  ">
+    📊 Paquetes de este cliente
+  </strong>
+
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    gap:5px;
+    text-align:center;
+  ">
+
+    <div style="flex:1;">
+      <div style="font-size:19px;font-weight:bold;color:#003366;">
+        ${conteosCliente.prealertados}
+      </div>
+      <div style="font-size:11px;">Prealertados</div>
+    </div>
+
+    <div style="flex:1;">
+      <div style="font-size:19px;font-weight:bold;color:#0A84FF;">
+        ${conteosCliente.bodega}
+      </div>
+      <div style="font-size:11px;">En bodega</div>
+    </div>
+
+    <div style="flex:1;">
+      <div style="font-size:19px;font-weight:bold;color:#28a745;">
+        ${conteosCliente.venezuela}
+      </div>
+      <div style="font-size:11px;">En Venezuela</div>
+    </div>
+
+  </div>
+</div>
+
     <p style="margin:8px 0;">
 
       <strong>📋 Estado:</strong><br>
