@@ -1420,13 +1420,16 @@ if (datos.fecha) {
 
 </p>
 
-<div style="
-  background:#f0f5fa;
-  border:1px solid #dce5ee;
-  border-radius:10px;
-  padding:12px;
-  margin:12px 0;
-">
+<div
+  id="conteosCliente-${id}"
+  style="
+    background:#f0f5fa;
+    border:1px solid #dce5ee;
+    border-radius:10px;
+    padding:12px;
+    margin:12px 0;
+  "
+>
 
   <strong style="
     display:block;
