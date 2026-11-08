@@ -1302,6 +1302,16 @@ function crearTarjetaPrealerta(
     datos.estado ||
     "Prealertado";
 
+const uidCliente =
+    datos.uid || (cliente && cliente.uid) || "";
+
+  const conteosCliente =
+    conteosPrealertasPorUid[uidCliente] || {
+      prealertados: 0,
+      bodega: 0,
+      venezuela: 0
+    };
+  
   let fechaHoraPrealerta = "No disponible";
 
 if (datos.fecha) {
