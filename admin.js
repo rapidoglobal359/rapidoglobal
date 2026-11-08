@@ -1790,40 +1790,97 @@ function colocarTarjetaEnColumna(
 
 
 // ======================================================
-// ACTUALIZAR CONTADORES DEL TABLERO
+// ACTUALIZAR CONTADORES DEL TABLERO Y POR CLIENTE
 // ======================================================
 
 function actualizarContadoresTablero() {
+
+  // Recalcular primero los paquetes de cada cliente
+  recalcularConteosPorCliente();
 
   let prealertados = 0;
   let bodega = 0;
   let venezuela = 0;
 
-  Object.values(
+  Object.entries(
     datosPrealertas
-  ).forEach((paquete) => {
+  ).forEach(([id, paquete]) => {
 
     const estado =
       paquete.estado ||
       "Prealertado";
 
-    if (
-      estado === "Prealertado"
-    ) {
+    if (estado === "Prealertado") {
 
       prealertados++;
 
-    } else if (
-      estado === "Recibido en bodega"
-    ) {
+    } else if (estado === "Recibido en bodega") {
 
       bodega++;
 
-    } else if (
-      estado === "Llegó a Venezuela"
-    ) {
+    } else if (estado === "Llegó a Venezuela") {
 
       venezuela++;
+
+    }
+
+    // Actualizar los contadores de este cliente
+    const uid =
+      paquete.uid ||
+      (paquete.cliente && paquete.cliente.uid) ||
+      "";
+
+    const conteos =
+      conteosPrealertasPorUid[uid];
+
+    const contenedor =
+      document.getElementById(
+        "conteosCliente-" + id
+      );
+
+    if (contenedor && conteos) {
+
+      contenedor.innerHTML = `
+
+        <strong style="
+          display:block;
+          color:#003366;
+          margin-bottom:10px;
+        ">
+          📊 Paquetes de este cliente
+        </strong>
+
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          gap:5px;
+          text-align:center;
+        ">
+
+          <div style="flex:1;">
+            <div style="font-size:19px;font-weight:bold;color:#003366;">
+              ${conteos.prealertados}
+            </div>
+            <div style="font-size:11px;">Prealertados</div>
+          </div>
+
+          <div style="flex:1;">
+            <div style="font-size:19px;font-weight:bold;color:#0A84FF;">
+              ${conteos.bodega}
+            </div>
+            <div style="font-size:11px;">En bodega</div>
+          </div>
+
+          <div style="flex:1;">
+            <div style="font-size:19px;font-weight:bold;color:#28a745;">
+              ${conteos.venezuela}
+            </div>
+            <div style="font-size:11px;">En Venezuela</div>
+          </div>
+
+        </div>
+
+      `;
 
     }
 
@@ -1881,8 +1938,6 @@ function actualizarContadoresTablero() {
   }
 
 }
-
-
 
 // ======================================================
 // ACTUALIZAR SOLO UNA TARJETA
