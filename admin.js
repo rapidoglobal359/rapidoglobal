@@ -886,6 +886,62 @@ onSnapshot(
 
 let datosPrealertas = {};
 
+// ======================================================
+// CONTADORES DE PAQUETES POR CLIENTE
+// ======================================================
+
+let conteosPrealertasPorUid = {};
+
+
+// ======================================================
+// RECALCULAR PAQUETES DE CADA CLIENTE
+// ======================================================
+
+function recalcularConteosPorCliente() {
+
+  conteosPrealertasPorUid = {};
+
+  Object.values(datosPrealertas).forEach(
+    paquete => {
+
+      const uid = paquete.uid;
+
+      if (!uid) {
+        return;
+      }
+
+      if (!conteosPrealertasPorUid[uid]) {
+
+        conteosPrealertasPorUid[uid] = {
+          prealertados: 0,
+          bodega: 0,
+          venezuela: 0
+        };
+
+      }
+
+      const estado =
+        paquete.estado || "Prealertado";
+
+      if (estado === "Prealertado") {
+
+        conteosPrealertasPorUid[uid].prealertados++;
+
+      } else if (estado === "Recibido en bodega") {
+
+        conteosPrealertasPorUid[uid].bodega++;
+
+      } else if (estado === "Llegó a Venezuela") {
+
+        conteosPrealertasPorUid[uid].venezuela++;
+
+      }
+
+    }
+  );
+
+}
+
 let escuchaPrealertasActiva = false;
 
 
