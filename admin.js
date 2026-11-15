@@ -825,6 +825,31 @@ function pintarUsuarios(usuarios) {
 
     `;
 
+   const botonCambiarCorreo =
+      document.createElement("button");
+
+    botonCambiarCorreo.type = "button";
+
+    botonCambiarCorreo.textContent =
+      "📧 Cambiar correo del cliente";
+
+    botonCambiarCorreo.style.width = "100%";
+    botonCambiarCorreo.style.padding = "12px";
+    botonCambiarCorreo.style.marginTop = "12px";
+    botonCambiarCorreo.style.border = "0";
+    botonCambiarCorreo.style.borderRadius = "10px";
+    botonCambiarCorreo.style.background = "#003366";
+    botonCambiarCorreo.style.color = "white";
+    botonCambiarCorreo.style.fontWeight = "bold";
+    botonCambiarCorreo.style.cursor = "pointer";
+
+    botonCambiarCorreo.addEventListener(
+      "click",
+      () => cambiarCorreoDeUsuario(usuario)
+    );
+
+    tarjeta.appendChild(botonCambiarCorreo);
+    
     resultado.appendChild(
       tarjeta
     );
