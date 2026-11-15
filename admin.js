@@ -859,6 +859,92 @@ function pintarUsuarios(usuarios) {
 }
 
 // ======================================================
+// CAMBIAR CORREO DEL CLIENTE
+// ======================================================
+
+async function cambiarCorreoDeUsuario(usuario) {
+
+  if (!usuario.uid) {
+    alert(
+      "❌ Este cliente no tiene un UID registrado. No se puede cambiar el correo."
+    );
+    return;
+  }
+
+  const correoActual =
+    usuario.correo || usuario.email || "";
+
+  const nuevoCorreoIngresado = prompt(
+    "📧 Correo actual:\n" +
+    correoActual +
+    "\n\nEscribe el nuevo correo del cliente:"
+  );
+
+  if (nuevoCorreoIngresado === null) {
+    return;
+  }
+
+  const nuevoCorreo =
+    nuevoCorreoIngresado.trim().toLowerCase();
+
+  if (!nuevoCorreo) {
+    alert("Debes escribir un correo electrónico.");
+    return;
+  }
+
+  const formatoCorreo =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!formatoCorreo.test(nuevoCorreo)) {
+    alert("❌ El formato del correo no es válido.");
+    return;
+  }
+
+  if (
+    nuevoCorreo === correoActual.trim().toLowerCase()
+  ) {
+    alert("El nuevo correo es igual al correo actual.");
+    return;
+  }
+
+  const confirmar = confirm(
+    "¿Confirmas el cambio de correo?\n\n" +
+    "Correo actual: " + correoActual +
+    "\nNuevo correo: " + nuevoCorreo
+  );
+
+  if (!confirmar) {
+    return;
+  }
+
+  try {
+
+    const respuesta = await cambiarCorreoCliente({
+      uid: usuario.uid,
+      nuevoCorreo: nuevoCorreo
+    });
+
+    alert(
+      "✅ " + respuesta.data.mensaje
+    );
+
+  } catch (error) {
+
+    console.error(
+      "ERROR CAMBIANDO CORREO DEL CLIENTE:",
+      error
+    );
+
+    alert(
+      "❌ No se pudo cambiar el correo.\n\n" +
+      (error.message || "Error desconocido.")
+    );
+
+  }
+
+}
+
+// ======================================================
 // ESCUCHAR NUEVOS USUARIOS EN TIEMPO REAL
 // ======================================================
 
