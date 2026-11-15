@@ -3438,6 +3438,27 @@ if (
 // PROCESAR TRACKING Y CAMBIAR ESTADO
 // ======================================================
 
+function anunciarAlertaEscaneoRG(frase) {
+
+  if (!("speechSynthesis" in window)) {
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const anuncio =
+    new SpeechSynthesisUtterance(frase);
+
+  anuncio.lang = "es-ES";
+  anuncio.volume = 1;
+  anuncio.rate = 0.9;
+  anuncio.pitch = 1;
+
+  window.speechSynthesis.speak(anuncio);
+
+}
+
+
 async function procesarEscaneoUSB(codigoUSB) {
 
   if (procesandoEscaneoUSBRG) {
