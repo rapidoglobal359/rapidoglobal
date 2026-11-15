@@ -3497,6 +3497,8 @@ async function procesarEscaneoUSB(codigoUSB) {
 
     if (!paqueteEncontrado) {
 
+anunciarAlertaEscaneoRG("¡No encontrado!");
+      
       resultadoEscaneoUSBRG.textContent =
         "❌ Tracking no encontrado: " + codigoUSB;
 
