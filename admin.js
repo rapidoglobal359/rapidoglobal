@@ -3551,6 +3551,19 @@ anunciarAlertaEscaneoRG("¡No encontrado!");
       }
     );
 
+
+    // ALERTA DE VOZ SEGÚN EL NUEVO ESTADO
+
+if (nuevoEstado === "Recibido en bodega") {
+
+  anunciarAlertaEscaneoRG("¡Recibido en bodega!");
+
+} else if (nuevoEstado === "Llegó a Venezuela") {
+
+  anunciarAlertaEscaneoRG("¡Llegó a Venezuela!");
+
+}
+    
     // Actualizar datos locales y tablero.
 
     datosPrealertas[id].estado = nuevoEstado;
